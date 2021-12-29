@@ -10,6 +10,7 @@ var verifyToken = require("../helper/helperVerify")
 module.exports = function(app,con){
     
     app.db = con;
+    app.onlineDrivers=[];
     app.post('/api/auth/login', controllerAuth.loginPost)
     app.post('/api/auth/logout',verifyToken.verify, controllerAuth.logoutPost)
     app.post('/api/devices',verifyToken.verify, controllerDevices.devicesPost)
@@ -18,4 +19,12 @@ module.exports = function(app,con){
     app.post('/api/devices',verifyToken.verify, controllerGroup.groupPost)
     app.post('/api/maintenances',verifyToken.verify, controllerMaintenances.maintenancesPost)
     app.post('/api/socket',verifyToken.verify, controllerSocket.socketPost)
+
+    app.ws('/', controllerSocket.socketPost)
+    app.ws('/driver', controllerSocket.listenDriver)
+    app.get('/onlinedriver', (req, res) =>{
+        res.send({ 
+            connections: req.app.onlineDrivers.length 
+        });
+      });
 }

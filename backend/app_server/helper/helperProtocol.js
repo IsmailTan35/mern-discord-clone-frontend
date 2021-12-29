@@ -20,11 +20,11 @@ module.exports.httpsServer= function () {
 	});	
 }
 
-module.exports.httpServer= function (app) {
+module.exports.httpServer= function (app,port) {
 	const http = require('http')
 	const httpServer = http.createServer(app)
-	httpServer.listen(8080, function() {
-		console.log((new Date()) + ' Server is listening on port 8080');
+	httpServer.listen(port, function() {
+		console.log((new Date()) + ' Server is listening on port ' + port);
 	});
 	return httpServer
 }

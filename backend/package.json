@@ -22,6 +22,8 @@
     "websocket": "^1.0.34",
     "ws": "^8.2.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
   "description": ""
 }
