@@ -1,13 +1,12 @@
-import { Switch, Route } from 'react-router-dom'
-import Main from 'layouts/Main';
+import VideoChat from 'layouts/VideoChat';
 import SocketController from 'controller/SocketController';
 import 'bootstrap/dist/css/bootstrap.min.css';
-function App() {
+const App = () => {
   return (
     <>
      
-       <SocketController/>
-       <Main/>
+       {/* <SocketController/> */}
+       <VideoChat/>
     
     </> 
   );

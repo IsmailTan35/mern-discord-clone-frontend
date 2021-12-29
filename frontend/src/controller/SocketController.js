@@ -14,6 +14,7 @@ const SocketController = () => {
 
     client.onerror = function() {
       console.log('Connection Error')
+      setTimeout(SocketController, 5* 1000)
     }
 
 
