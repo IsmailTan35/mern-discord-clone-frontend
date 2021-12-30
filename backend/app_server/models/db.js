@@ -23,10 +23,6 @@ const database = (con) => {
             con.changeUser({database : 'wooztracker'}, function(err) { 
               if (err) throw err; 
             });
-
-            // con.query("CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))", function (err, result) {
-            //   err ? console.log(err.sqlMessage):console.log("Created table.")
-            // })
         })
       }
     })

@@ -12,17 +12,17 @@ module.exports.socketPost =function (req,res) {
         res.end()
 }
 
-module.exports.listenDriver=(ws,req)=>{
-    if(!req.app.onlineDrivers.includes(ws)){
-        req.app.onlineDrivers.push(ws);
+module.exports.listenUser=(ws,req)=>{
+    if(!req.app.onlineUsers.includes(ws)){
+        req.app.onlineUsers.push(ws);
     }
 
-    console.log(req.app.onlineDrivers.length)
+    console.log(req.app.onlineUsers.length)
 
     ws.on('close', function close(code, reason) {
         var con =req.app.db
-        var idx = req.app.onlineDrivers.indexOf(ws);
-        var info = req.app.onlineDrivers[idx].info;
+        var idx = req.app.onlineUsers.indexOf(ws);
+        var info = req.app.onlineUsers[idx].info;
         switch (code) {
             case 1000:
                 console.log('Normal closure, meaning that the purpose for which the connection was established has been fulfilled.');
@@ -68,16 +68,16 @@ module.exports.listenDriver=(ws,req)=>{
                 break;
         }
         if (idx !== -1) {
-            req.app.onlineDrivers.splice(idx, 1);
+            req.app.onlineUsers.splice(idx, 1);
           }
-          console.log(req.app.onlineDrivers.length)
+          console.log(req.app.onlineUsers.length)
     });
     ws.on('message', (msg) =>{
         
         msg=JSON.parse(msg)
-        var idx = req.app.onlineDrivers.indexOf(ws);
-        req.app.onlineDrivers[idx].info = msg
-        console.log(req.app.onlineDrivers[idx].info)
+        var idx = req.app.onlineUsers.indexOf(ws);
+        req.app.onlineUsers[idx].info = msg
+        console.log(req.app.onlineUsers[idx].info)
         var con =req.app.db
 
 

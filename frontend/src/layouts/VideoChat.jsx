@@ -60,7 +60,7 @@ const VideoChat = () => {
         rawPeer.on('call', async (call) => {
             console.log(call)
             const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
-            call.answer(stream); // Answer the call with an A/V stream.
+            call.answer(stream)
               call.on('stream', (remoteStream) => {
                     console.log("remoteStream: ",remoteStream);
                 setStream(remoteStream);
@@ -154,7 +154,6 @@ const VideoChat = () => {
                                 style={{ width: "50vw" ,height: "50vh"}}
                                 autoPlay
                                 playsInline
-                                muted
                                 ref={(video) => {
                                     if (video) {
                                         video.srcObject = stream;
