@@ -1,0 +1,165 @@
+.sidebar-wrapper{
+    width: 72px;
+    height: 100%;
+    background-color: #202225;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  
+}
+.sidebar-wrapper::-webkit-scrollbar {
+    display: none;
+}
+.sidebar-list-item{
+    width: 72px;
+    height: 48px;
+    padding: 0;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.sidebar-list-item span{
+    width: 8px;
+    height: 40px;
+    border-radius: 0 4px 4px 0;
+    margin-left: -4px;
+    background-color: #dcddde;
+    margin-right: 10px;
+    position: absolute;
+}
+.sidebarCircle{
+    width:48px;
+    height:48px;
+    border-radius: 24px;
+    background-color: #36393F;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sidebarCircle:hover{
+    border-radius: 17px;
+    background-color: #5865F2;
+    transition: all 0.5s;
+
+}
+
+.sidebarLine{
+    width:30px;
+    height:2px;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.sidebarLine span{
+    width:48px;
+    height:2px;
+    background-color: hsla(0,0%,100%,0.06);
+
+}
+
+.sidebarUserCircle{
+    width:48px;
+    height:48px;
+    border-radius: 24px;
+    background-color: #36393F;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.sidebarUserCircle:hover{
+    border-radius: 17px;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.sidebarAddUser{
+    width:48px;
+    height:48px;
+    border-radius: 24px;
+    margin: auto;
+
+    background-color: #36393F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebarAddUser:hover {
+    border-radius: 17px;
+    background-color: #3ba55d;
+    transition: all 0.5s ease-in-out;
+
+}
+.sidebarAddUser div{
+    width:15px;
+    height:2px;
+    background-color: #3ba55d;
+    position: absolute;
+}
+.sidebarAddUser:hover div{
+    background-color: #fff;
+    transition: all 0.5s ease-in-out;
+
+
+}
+.sidebarAddUser:hover svg{
+    fill: #fff;
+    transition: all 0.5s ease-in-out;
+
+}
+
+.sidebarAddUser div:first-child{
+    height: 15px;
+    width: 2px;
+}
+
+.sidebarAddUser svg{
+    fill: #3ba55d;
+}
+
+.dashboard-sidebar-search-button-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow:0 1px 0 rgba(4,4,5,0.2),0 1.5px 0 rgba(6,6,7,0.05),0 2px 0 rgba(4,4,5,0.05);
+
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    padding: 0 10px;
+    height: 48px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.dashboard-sidebar-search-button{
+    width:100%;
+    height: 28px;
+    overflow: hidden;
+    background-color: #202225;
+    border-radius: 4px;
+    border: none;
+    color: #72767d;
+    text-align: left;
+    padding-left: 5px;
+    
+    text-align: left;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    white-space: nowrap;
+}
+
+.dashboard-sidebar-section{
+    width: 240px;
+    height: 48px;
+    background-color: #292B2F;
+}
