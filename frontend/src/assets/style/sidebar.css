@@ -44,7 +44,7 @@
 .sidebarCircle:hover{
     border-radius: 17px;
     background-color: #5865F2;
-    transition: all 0.5s;
+    transition: all 0.1s;
 
 }
 
@@ -93,7 +93,7 @@
 .sidebarAddUser:hover {
     border-radius: 17px;
     background-color: #3ba55d;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.1s ease-in-out;
 
 }
 .sidebarAddUser div{

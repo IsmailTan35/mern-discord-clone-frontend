@@ -6,12 +6,11 @@ const Dashboard =()=>{
                 <div className="dashboard-second-wrapper">
                     <div className="dashboard-sidebar">
                         <nav className="dashboard-side-navbar">
-
-                        <div className="dashboard-sidebar-search-button-wrapper">
-                            <button className="dashboard-sidebar-search-button">
-                                {"Sohbet bul ya da başlat"}
-                            </button>
-                        </div>
+                            <div className="dashboard-sidebar-search-button-wrapper">
+                                <button className="dashboard-sidebar-search-button">
+                                    {"Sohbet bul ya da başlat"}
+                                </button>
+                            </div>
                         </nav>
                             <div style={{height:"8px",width:"100%"}}></div>
                             <div className="dashnoard-sidebar-chat-wrapper">
