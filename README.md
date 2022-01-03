@@ -1,1 +1,1 @@
-<a href="#"><img width="100%" height="auto" src="https://github.com/IsmailTan35/React-Nodejs-Discord-Clone/tree/master/progress%20images/03.01.2022-dashboard.png" height="175px"/></a>
+<a href="#"><img width="100%" height="auto" src="https://github.com/IsmailTan35/React-Nodejs-Discord-Clone/tree/master/progress/first.png" height="175px"/></a>
