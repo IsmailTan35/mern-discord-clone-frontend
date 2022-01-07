@@ -1,5 +1,5 @@
 {
-  "name": "dicord-clone",
+  "name": "discord-clone",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,6 +15,8 @@
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "simple-peer": "^9.11.0",
+    "socket.io-client": "^4.4.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

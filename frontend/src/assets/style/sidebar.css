@@ -1,12 +1,12 @@
 .sidebar-wrapper{
     width: 72px;
-    height: 100%;
     background-color: #202225;
     overflow-y: scroll;
     overflow-x: hidden;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
-  
+    display: flex;
+    flex-direction: column;
 }
 .sidebar-wrapper::-webkit-scrollbar {
     display: none;
@@ -23,12 +23,8 @@
     position: relative;
 }
 .sidebar-list-item span{
-    width: 8px;
-    height: 40px;
-    border-radius: 0 4px 4px 0;
-    margin-left: -4px;
-    background-color: #dcddde;
-    margin-right: 10px;
+    width: 0px;
+    height: 0px;
     position: absolute;
 }
 .sidebarCircle{
@@ -40,6 +36,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 .sidebarCircle:hover{
     border-radius: 17px;
@@ -48,10 +45,43 @@
 
 }
 
+.sidebarCircle-active{
+    width:48px;
+    height:48px;
+    border-radius: 24px;
+    background-color: #36393F;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 17px;
+    background-color: #5865F2;
+    transition: all 0.1s;
+    cursor: pointer;
+}
+.sidebarCircle-active ~ span{
+    width: 8px;
+    height: 40px;
+    border-radius: 0 4px 4px 0;
+    margin-left: -4px;
+    background-color: #dcddde;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+.sidebarCircle:hover ~ span{
+    width: 8px;
+    height: 20px;
+    border-radius: 0 4px 4px 0;
+    margin-left: -4px;
+    background-color: #dcddde;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
 .sidebarLine{
     width:30px;
     height:2px;
-    margin: auto;
+    margin: 0 auto;
     justify-content: center;
     align-items: center;
     display: flex;
@@ -96,6 +126,16 @@
     transition: all 0.1s ease-in-out;
 
 }
+
+.sidebarAddUser:hover ~ span{
+    width: 8px;
+    height: 20px;
+    border-radius: 0 4px 4px 0;
+    margin-left: -4px;
+    background-color: #dcddde;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
 .sidebarAddUser div{
     width:15px;
     height:2px;
@@ -126,7 +166,6 @@
 .dashboard-sidebar-search-button-wrapper{
     display: flex;
     justify-content: center;
-    align-items: center;
     box-shadow:0 1px 0 rgba(4,4,5,0.2),0 1.5px 0 rgba(6,6,7,0.05),0 2px 0 rgba(4,4,5,0.05);
 
     -webkit-box-flex: 0;

@@ -1,20 +1,26 @@
 import "assets/style/panel.css"
-import Dashboard from "components/Dashboard";
-import Siderbar from "components/Siderbar";
-import { useState ,useLayoutEffect } from "react";
+import Dashboard from "views/Dashboard";
+import ServerDashboard from "views/ServerDashboard";
+
+import Sidebar from "components/Sidebar";
+import { Redirect, Route, Switch } from "react-router-dom";
 
 const Panel = () => {
-    const [height,setHeight] = useState(window.innerHeight);
-    const [width,setWidth] = useState(window.innerWidth);
-    useLayoutEffect(() => {
-        setHeight(window.innerHeight);
-        setWidth(window.innerWidth);
-    })
+
     return(
         
-        <div className="panelWrapper" style={{height:window.innerHeight,width:window.innerWidth}}>
-            <Siderbar/>
-            <Dashboard/>
+        <div className="panelWrapper">
+            <Sidebar/>
+            {/* <div style={{background:"red"}}>
+                <div style={{width:"72px"}}></div>
+            </div>
+            <div style={{display:"flex",flexDirection:"1 auto"}}>
+
+            </div> */}
+            <Switch>
+                <Route path="/channels/@me" component={Dashboard} />
+                <Route path="/store" component={Dashboard} />
+            </Switch>
         </div>
         
     )

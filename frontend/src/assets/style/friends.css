@@ -1,0 +1,103 @@
+.friends-wrapper{
+    display: flex;
+    padding: 0px 10px;
+    flex: 1 1;
+    flex-direction: row;
+}
+.friends-nowplaying-wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    height: 100%;
+    padding: 15px 10px;
+    flex: 0 0 auto;
+    border-left: #3A3E44 1px solid;
+}
+.friends-add-wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    border-bottom: brown 1px solid;
+}
+.friends-add-input-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    height: 54px;
+    background-color: rgba(0,0,0,0.1);
+    border:rgba(0,0,0,0.3) 1px solid;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+.friends-add-header{
+    color: #fff;
+    font-size: 19px;
+    font-weight: bold;
+}
+.friends-add-subheader{
+    color: #aaa;
+}
+.friends-add-input{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 16px;
+    color: #fff;
+    width: auto;
+    display: flex;
+    flex: wrap;
+}
+.friends-add-input-button{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 12px;
+    color: #fff;
+    background-color: #5865f2;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 13px;
+}
+.friends-add-input-button:disabled,
+.friends-add-input-button[disabled]{
+    background-color: #444C96;
+    color: #72767D;
+  }
+.friends-add-image{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-image: url(https://discord.com/assets/b5eb2f7d6b3f8cc9b60be4a5dcf28015.svg);
+}
+
+.friends-active-body-text-wrapper div{
+    text-align: center;
+}
+
+.friends-empty{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color:#72767D;
+    align-items: center;
+}
+.friends-active-body-firstText{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+}
+.friends-active-body-secondText{
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: #72767D;
+}

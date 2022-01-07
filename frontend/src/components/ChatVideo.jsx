@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Peer from 'peerjs';
-import { Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 
 
 const VideoChat = () => {
@@ -8,7 +8,7 @@ const VideoChat = () => {
     const [video, setVideo] = useState(false);
     const [conn,setConn] = useState(null);
     const [audio, setAudio] = useState(false);
-    const [stream, setStream] = useState(null);
+    const streamRef =useRef(null);
     const [peer, setPeer] = useState(null);
     const [peerId,setPeerId]=useState(null);
     const [call, setCall] = useState(null);
@@ -58,12 +58,11 @@ const VideoChat = () => {
             setPeer(null);
         });
         rawPeer.on('call', async (call) => {
-            console.log(call)
             const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
             call.answer(stream)
               call.on('stream', (remoteStream) => {
                     console.log("remoteStream: ",remoteStream);
-                setStream(remoteStream);
+                    streamRef.current =remoteStream
               });
           });
         setPeer(rawPeer);
@@ -106,16 +105,17 @@ const VideoChat = () => {
             const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
             const call = peer.call(formText, stream);
             call.on('stream', (remoteStream) => {
-                setStream(remoteStream);
+                streamRef.current =remoteStream 
                 
             });
         });
         // Handle incoming data (messages only since this is the signal sender)
         rawConn.on('data', (data) => {
         });
-        rawConn.on('close', () =>{
+        rawConn.on('close', function () {
+            console.log("Connection closed");
         });
-        setConn(rawConn);
+        // setConn(rawConn);
     }
 
     const getUrlParam =(name)=> {
@@ -141,14 +141,7 @@ const VideoChat = () => {
             </Button>
             {true && (
                 <div>
-                    <Button onClick={()=>{}}>
-                        {video ? "Stop" : "Start"} Video
-                    </Button>
-                    <Button onClick={()=>{}}>
-                        {audio ? "Stop" : "Start"} Audio
-                    </Button>
-                    <Button onClick={()=>{}}>Start Video Chat</Button>
-                    {stream && (
+                    {streamRef.current !==null ? 
                         <div style={{ width: "50vw" ,height: "50vh",backgroundColor: "black"}}>
                             <video
                                 style={{ width: "50vw" ,height: "50vh"}}
@@ -156,12 +149,13 @@ const VideoChat = () => {
                                 playsInline
                                 ref={(video) => {
                                     if (video) {
-                                        video.srcObject = stream;
+                                        video.srcObject = streamRef.current
                                     }
                                 }}
                             />
-                        </div>
-                    )}
+                        </div>:
+                        null
+                    }
                 </div>
             )}
         </div>

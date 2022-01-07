@@ -1,4 +1,3 @@
-import VideoChat from 'layouts/VideoChat';
 import Main from 'layouts/Main';
 import Panel from 'layouts/Panel';
 
@@ -10,7 +9,7 @@ const App = () => {
     <>
      
        {/* <SocketController/> */}
-       <Panel/>
+      <Panel/>
     
     </> 
   );
