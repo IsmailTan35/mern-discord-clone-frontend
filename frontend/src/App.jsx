@@ -1,4 +1,3 @@
-import Main from 'layouts/Main';
 import Panel from 'layouts/Panel';
 
 import SocketController from 'controller/SocketController';
