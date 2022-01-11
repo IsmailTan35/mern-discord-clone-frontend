@@ -1,8 +1,8 @@
-const mysql = require('mysql');
+import mysql  from 'mysql'
 
 const database = (con) => {
 
-    con.connect(function(err) {
+    con.connect((err) =>{
       if(err) {
         console.log("Could not connect to mysql.",err)
         con.end()
@@ -10,8 +10,8 @@ const database = (con) => {
       }
       else{
         console.log("Mysql connection successfull.")
-        con.connect(function(err) {
-            con.query("CREATE DATABASE wooztracker", function (err, result) {
+        con.connect((err) =>{
+            con.query("CREATE DATABASE wooztracker", (err, result) =>{
               if(err ) {
                 console.log(err.sqlMessage)
               }
@@ -38,4 +38,4 @@ const con = mysql.createConnection({
 
 database(con)
 
-module.exports = con
+export default con

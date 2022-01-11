@@ -1,9 +1,16 @@
+import { useSelector } from "react-redux"
 import { useHistory, useLocation } from "react-router-dom"
 import EmptyFriends from "./EmptyFriends"
 
 const Friends = () => {
     const location= useLocation()
     const history = useHistory()
+    const friends = useSelector(state => state.friends.items)
+
+    const openChat=(id)=>{
+        if(!id) return;
+        history.push(`/channels/@me/${id}`)
+    }
     const changeHistory = (e)=>{
         history.push(e)
     }
@@ -33,7 +40,12 @@ const Friends = () => {
                     </svg>
                 </div>
                 <div className="dashboard-sidebar-chat">
-                    <EmptyFriends/>
+                    {friends.length==0 ? <EmptyFriends/>:
+                    friends.map((friend,index)=>{
+                        return(
+                            <div key={index} onClick={()=>{openChat(friend.id)}}>{friend.name} </div>
+                        )
+                    })}
                 </div>
             </div>
         </>

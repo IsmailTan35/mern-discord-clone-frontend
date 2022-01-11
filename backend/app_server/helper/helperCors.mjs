@@ -8,4 +8,4 @@ const corsOptions ={
 
 cors(corsOptions)
 
-module.exports= cors
+export default cors

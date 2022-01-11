@@ -1,12 +1,11 @@
 import ChatBody from "components/ChatBody"
 import ChatInput from "components/ChatInput"
-import Test from "components/Test"
-
+import ChatVideo from "components/ChatVideo"
 
 const Chat = () => {
     return(
         <>
-            <Test/>
+            {/* <ChatVideo/> */}
             <ChatBody/>
             <ChatInput/>
         </>

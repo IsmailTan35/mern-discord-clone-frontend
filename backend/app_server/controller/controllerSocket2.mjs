@@ -1,18 +1,7 @@
-module.exports.socketPost =function (req,res) {
-    var con =req.app.db
-    res.setHeader('Content-Type', 'application/json')
-        res.status(200)
-        res.send(JSON.stringify({
-        data: {
-            devices:{},
-            positions:{},
-            events:{}
-        }
-        }))
-        res.end()
-}
+
 
 module.exports.listenUser=(ws,req)=>{
+    console.log(ws.id)
     if(!req.app.onlineUsers.includes(ws)){
         req.app.onlineUsers.push(ws);
     }
@@ -79,7 +68,6 @@ module.exports.listenUser=(ws,req)=>{
         req.app.onlineUsers[idx].info = msg
         console.log(req.app.onlineUsers[idx].info)
         var con =req.app.db
-
-
     })
+    ws.on()
 }

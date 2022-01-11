@@ -1,41 +1,50 @@
-import { connect } from 'react-redux'
+import { useEffect, useContext } from 'react';
+import { connect, useDispatch, useSelector } from 'react-redux'
 import { useEffectAsync } from 'reactHelper'
-
+import { friendsActions } from 'store';
+import {SocketContext} from "./Context"
 const SocketController = () => {
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  const client = new WebSocket(`${protocol}//${"localhost"}:${10000}/driver`,'echo-protocol')
+  const client = useContext(SocketContext);
+  const friends = useSelector(state => state.friends.items)
+
+  const dispatch = useDispatch()
 
   const connectSocket = () => {
-    function sendNumber() {
-      if (client.readyState === client.OPEN) {
-      }
-      setTimeout(sendNumber, 5* 1000)
-    }
+    client.on("connect", () => {
+      
+    });
+    
+    client.on("disconnect", () => {
 
-    client.onerror = function() {
-      console.log('Connection Error')
-      setTimeout(SocketController, 5* 1000)
-    }
+    });
+
+    client.on("me", (id) => {
+
+    })
+
+    client.on("messages", (messages) => { 
+      console.log(messages)
+     });
+
+    client.on("data",(data)=>{
+      dispatch(friendsActions.refresh({name:"items",value:data.onlineUser}))
+    })
+    
+    client.on("user left", (user) => {
+      console.log(user)
+      dispatch(friendsActions.update({type:"remove",name:"items",value:user}))
 
 
-    client.onopen = function() {
-      console.log('WebSocket Client Connected')
-        sendNumber()
+    });
 
-    }
+    client.on("user join", (user) => {
+      dispatch(friendsActions.update({type:"add",name:"items",value:user}))
 
-    client.onclose = function() {
-        console.log('echo-protocol Client Closed')
-    }
-
-    client.onmessage = function(e) {
-
-    }
+    });
   }
 
   useEffectAsync(async () => {
     connectSocket()
-
   }, [])
 
   return null

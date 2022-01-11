@@ -1,18 +1,18 @@
 import Panel from 'layouts/Panel';
 
-import SocketController from 'controller/SocketController';
+import {SocketContext, client} from 'controller/Context';
 import { Switch, Route } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import SocketController from 'controller/SocketController';
 const App = () => {
   return (
     <>
      
-       {/* <SocketController/> */}
-       <Switch>
-          <Route exact path="/" component={Panel}/>
-      </Switch>
-    
+     <SocketContext.Provider value={client}>
+       <SocketController/>
+        <Panel/>
+      </SocketContext.Provider>
     </> 
   );
 }

@@ -1,5 +1,20 @@
+import React, { useState, useContext } from 'react'
+import { SocketContext } from 'controller/Context';
+
 import "assets/style/chat.css"
 const ChatInput = () => {
+    const client = useContext(SocketContext);
+    const [message, setMessage] = useState("");
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            setMessage("")
+            client.emit("send message", {to:"asda",message});
+        }
+      }
+    
+      const onChangeText = (event) => {
+        setMessage(event.target.value)
+        }
     return(
         <>
         <div className="chat-input-wrapper">
@@ -11,7 +26,7 @@ const ChatInput = () => {
             </svg>
             </div>
             <div className="chat-input">
-                <input placeholder="@ kanalına mesaj gönder"></input>
+                <input placeholder="@ kanalına mesaj gönder" value={message} onChange={onChangeText} onKeyDown={handleKeyDown}></input>
             </div>
             <div className="chat-input-right-button-wrapper">
             <div>

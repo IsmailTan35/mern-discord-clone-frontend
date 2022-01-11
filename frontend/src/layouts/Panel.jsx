@@ -3,10 +3,18 @@ import Dashboard from "views/Dashboard";
 import ServerDashboard from "views/ServerDashboard";
 
 import Sidebar from "components/Sidebar";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 const Panel = () => {
+    const history = useHistory()
+    const location = useLocation()
 
+    useEffect(() => {
+        if(location.pathname === "/"){
+        history.push("/channels/@me")
+    }
+}, [])
     return(
         
         <div className="panelWrapper">
@@ -17,10 +25,8 @@ const Panel = () => {
             <div style={{display:"flex",flexDirection:"1 auto"}}>
 
             </div> */}
-            <Switch>
-                <Route path="/channels/@me" component={Dashboard} />
-                <Route path="/store" component={Dashboard} />
-            </Switch>
+            <Route strict path="/channels/" component={Dashboard} />
+            <Route path="/store" component={Dashboard} />
         </div>
         
     )
