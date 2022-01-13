@@ -75,6 +75,10 @@ const httpsServer = (app,port) =>{
 
 const webSocket = (httpServer,app) =>{
     const io = new Server(httpServer, { 
+		cors: {
+			origin: "*",
+			methods: ["GET", "POST"]
+		  },
         app
     });
     return io;
