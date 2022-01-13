@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.mjs",
   "scripts": {
-    "start": "nodemon server.mjs --ignore frontend",
+    "start": "nodemon --experimental-modules server.mjs --ignore frontend",
     "test": "nodemon server2.mjs"
 
   },

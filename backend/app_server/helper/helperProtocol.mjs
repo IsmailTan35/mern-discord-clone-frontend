@@ -1,4 +1,4 @@
-import socket from "socket.io";
+import { Server } from "socket.io";
 import http from "http";
 
 // module.exports.httpsServer= function () {
@@ -65,7 +65,7 @@ const httpServer = (app,port) =>{
 
 
 const webSocket = (httpServer,app) =>{
-    const io = socket.Server(httpServer, { 
+    const io = new Server(httpServer, { 
         cors: {
             origin: "http://localhost:3000",
             methods: [ "GET", "POST" ]
