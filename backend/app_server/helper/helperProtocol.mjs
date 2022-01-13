@@ -1,5 +1,5 @@
-import { Server } from "socket.io";
-import { createServer } from "http";
+import socket from "socket.io";
+import http from "http";
 
 // module.exports.httpsServer= function () {
 // 	const https = require('https')
@@ -24,7 +24,7 @@ import { createServer } from "http";
 // }
 
 const httpServer = (app,port) =>{
-	const httpServer = createServer(app)
+	const httpServer = http.createServer(app)
 	httpServer.listen(port, () =>{
 		console.log((new Date()) + ' Server is listening on port ' + port);
 	});
@@ -65,7 +65,7 @@ const httpServer = (app,port) =>{
 
 
 const webSocket = (httpServer,app) =>{
-    const io = new Server(httpServer, { 
+    const io = socket.Server(httpServer, { 
         cors: {
             origin: "http://localhost:3000",
             methods: [ "GET", "POST" ]
