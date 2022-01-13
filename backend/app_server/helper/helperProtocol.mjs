@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
 import http from "http";
+import https from "https";
+
 
 // module.exports.httpsServer= function () {
 // 	const https = require('https')
@@ -31,6 +33,13 @@ const httpServer = (app,port) =>{
 	return httpServer
 }
 
+const httpsServer = (app,port) =>{
+	const httpsServer = https.createServer(app)
+	httpsServer.listen(port, () =>{
+		console.log((new Date()) + ' Server is listening on port ' + port);
+	});
+	return httpsServer
+}
 // module.exports.webSocket =function(server){
 // 	const webSocketServer = require('websocket').server
 
@@ -77,5 +86,6 @@ const webSocket = (httpServer,app) =>{
 
 export {
     httpServer,
+    httpsServer,
     webSocket
 }
