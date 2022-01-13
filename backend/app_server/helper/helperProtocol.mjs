@@ -77,10 +77,10 @@ const webSocket = (httpServer,app) =>{
     const io = new Server(httpServer, { 
 		cors: {
 			origin: "*",
-			methods: ["GET", "POST"]
 		  },
         app
     });
+	io.origins('*')
     return io;
 }
 
