@@ -75,10 +75,6 @@ const httpsServer = (app,port) =>{
 
 const webSocket = (httpServer,app) =>{
     const io = new Server(httpServer, { 
-        cors: {
-            origin: "http://localhost:3000",
-            methods: [ "GET", "POST" ]
-        },
         app
     });
     return io;
