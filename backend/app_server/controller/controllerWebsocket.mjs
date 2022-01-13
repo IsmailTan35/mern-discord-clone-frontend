@@ -7,9 +7,12 @@ export default (io,con)=>{
     io.db = con;
     io.on("connection", (socket) => {
         socket.name =UniqueName()
+        socket.code =UniqueId()
+
         socket.emit("data", {
             id: socket.id,
             name: socket.name,
+            code: socket.code,
             onlineUser,
             users,
             socketToRoom
@@ -24,22 +27,7 @@ export default (io,con)=>{
             name: socket.name})
         // console.log(io.opts.app.ismail)
         // console.log(io.app.ismail)
-        // socket.emit("me", socket.id)
     
-        // socket.on("disconnect", () => {
-        //     socket.broadcast.emit("callEnded")
-        // })
-    
-        // socket.on("callUser", (data) => {
-        //     console.log(`${data.from} calling ${data.userToCall}`)
-        //     io.to(data.userToCall).emit("callUser", { signal: data.signalData, from: data.from, name: data.name })
-        // })
-    
-        // socket.on("answerCall", (data) => {
-        //     console.log(`${data.to} answering ${socket.id}`)	
-        //     io.to(data.to).emit("callAccepted", data.signal)
-        // })
-
         socket.on("join room", roomID => {
             if (users[roomID]) {
                 const length = users[roomID].length;

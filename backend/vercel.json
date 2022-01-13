@@ -1,0 +1,4 @@
+{
+    "version": 2,
+    "builds": [{ "src": "server.mjs", "use": "@now/node-server" }],
+  }

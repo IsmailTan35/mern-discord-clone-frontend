@@ -12,9 +12,7 @@ export default (app,con) =>{
 
     // app.ws('/', controllerSocket.socketPost)
     // app.ws('/user', controllerSocket.listenUser)
-    app.get('/onlineusers', (req, res) =>{
-        res.send({ 
-            connections: req.app.onlineUsers.length 
-        });
-      });
+    app.get('/',(req,res) => {
+        res.send("This is a sample express app")
+    })
 }

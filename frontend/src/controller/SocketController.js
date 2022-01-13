@@ -1,6 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { useEffectAsync } from 'reactHelper'
+import { userActions } from 'store';
 import { friendsActions } from 'store';
 import {SocketContext} from "./Context"
 const SocketController = () => {
@@ -28,6 +29,10 @@ const SocketController = () => {
 
     client.on("data",(data)=>{
       dispatch(friendsActions.refresh({name:"items",value:data.onlineUser}))
+      dispatch(userActions.refresh({name:"id",value:data.id}))
+      dispatch(userActions.refresh({name:"name",value:data.name}))
+      dispatch(userActions.refresh({name:"code",value:data.code}))
+
     })
     
     client.on("user left", (user) => {
