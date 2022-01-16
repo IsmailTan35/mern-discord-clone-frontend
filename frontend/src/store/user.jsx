@@ -6,11 +6,15 @@ const { reducer, actions } = createSlice({
       id:null,
       name:null,
       code:null,
+      message:[],
   },
   reducers: {
     refresh(state, action) {
         state[action.payload.name]=action.payload.value
     },
+    update(state, action) {
+      state[action.payload.name].push(action.payload.value)
+    }
   }
 });
 

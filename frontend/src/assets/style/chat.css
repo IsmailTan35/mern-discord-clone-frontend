@@ -59,4 +59,6 @@
 .chat-body-wrapper{
     display: flex;
     flex: auto 1;
+    flex-direction: column;
+    overflow:hidden;
 }

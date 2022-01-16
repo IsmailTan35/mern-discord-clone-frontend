@@ -13,12 +13,16 @@
     flex: 0 0 auto;
     border-left: #3A3E44 1px solid;
 }
+@media (max-width: 1200px) {
+    .friends-nowplaying-wrapper {
+      display: none;
+    }
+  }
 .friends-add-wrapper{
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 20px;
-    border-bottom: brown 1px solid;
 }
 .friends-add-input-wrapper{
     display: flex;
@@ -49,6 +53,7 @@
     width: auto;
     display: flex;
     flex: wrap;
+    
 }
 .friends-add-input-button{
     border: none;
@@ -62,6 +67,9 @@
     border-radius: 5px;
     font-weight: bold;
     font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .friends-add-input-button:disabled,
 .friends-add-input-button[disabled]{
@@ -101,3 +109,153 @@
     margin-bottom: 10px;
     color: #72767D;
 }
+
+.friends-online-text-wrapper{
+    display: flex;
+    flex-direction: column;
+    color:#b9bbbe;
+    margin: 16px 0px 8px 0px;
+}
+
+.friends-users-list-wrapper{
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+}
+.friends-users-list-item{
+    flex: 1 1;
+    border-top:1px solid hsla(0,0%,100%,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0px 10px;
+}
+.friends-users-list-item-wrapper{
+    display: flex;
+    height: 50px;
+    padding: 0px 10px;
+    border-radius: 7px;
+    cursor: pointer;
+
+
+}
+.friends-users-list-item-wrapper:hover{
+    background: #3A3E44;
+}
+
+.friends-users-list-item-wrapper:hover .friends-users-list-item{
+    border-top:1px solid transparent;
+    
+}
+.friends-users-list-item-wrapper:hover .friends-users-list-item-buttons div{
+    background-color: #202225;
+}
+
+.friends-users-list-item-wrapper:hover .friends-users-list-item-user-code{
+    display: block;
+}
+.friends-search-input-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.friends-search-input-wrapper input{
+    width: 100%;
+    height: 30px;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    padding: 0 10px;
+    outline: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 -2 30 30'  fillRule='evenodd'%3E%3Cpath d='M16.036 18.455l2.404-2.405 5.586 5.587-2.404 2.404zM8.5 2C12.1 2 15 4.9 15 8.5S12.1 15 8.5 15 2 12.1 2 8.5 4.9 2 8.5 2zm0-2C3.8 0 0 3.8 0 8.5S3.8 17 8.5 17 17 13.2 17 8.5 13.2 0 8.5 0zM15 16a1 1 0 1 1 2 0 1 1 0 1 1-2 0'%3E%3C/path%3E%3C/svg%3E") right / contain no-repeat ;
+    background-color: #202225;
+    padding-right:30px;
+    border-radius: 5px;
+}
+.friends-users-list-item-avatar{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background-color: #E64043;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.friends-users-list-item-state{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    background-color: #292B2F;
+    border-radius: 50%;
+    margin-left: 5px;
+    border: 3px solid #3BA55D;
+    box-shadow: 0px 0px 0px 3px #292B2F;    
+}
+
+.friends-users-list-item-user{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex:auto;
+
+}
+.friends-users-list-item-user-name{
+    height: 18px;
+    font-size: 15px;
+    color: white;
+    display: flex;
+    padding: 0;
+    align-items: flex-end;
+}
+.friends-users-list-item-user-code{
+    display: none;
+}
+.friends-users-list-item-user-state{
+    height: 13px;
+    font-size: 12px;
+    color: #ccc;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.friends-users-list-item-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.friends-users-list-item-buttons div{
+    border:  none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+    cursor: pointer;
+    background-color: #2f3136;
+    border-radius: 50%;
+    
+}
+.friends-users-list-item-buttons div svg{
+    color: #b9bbbe;
+}
+/* #202225 */

@@ -17,11 +17,11 @@ const dashboardRoutes = [
 ]
 
 const friendsRoutes = {
-    add: FriendsAdd,
-    online: FriendsOnline,
-    all: FriendsAll,
-    blocked: FriendsBlocked,
-    waiting: FriendsWaiting,
+    add: <FriendsAdd/>,
+    online: <FriendsOnline/>,
+    all: <FriendsAll/>,
+    blocked: <FriendsBlocked/>,
+    waiting: <FriendsWaiting/>,
   }
 
 

@@ -6,25 +6,23 @@ import { friendsActions } from 'store';
 import {SocketContext} from "./Context"
 const SocketController = () => {
   const client = useContext(SocketContext);
-  const friends = useSelector(state => state.friends.items)
+  const friends = useSelector(state => state.friends.items);
 
   const dispatch = useDispatch()
 
   const connectSocket = () => {
     client.on("connect", () => {
-      
     });
     
     client.on("disconnect", () => {
-
-    });
+      });
 
     client.on("me", (id) => {
 
     })
 
     client.on("messages", (messages) => { 
-      console.log(messages)
+      dispatch(userActions.update({name:"message",value:messages}))
      });
 
     client.on("data",(data)=>{
@@ -32,11 +30,10 @@ const SocketController = () => {
       dispatch(userActions.refresh({name:"id",value:data.id}))
       dispatch(userActions.refresh({name:"name",value:data.name}))
       dispatch(userActions.refresh({name:"code",value:data.code}))
-
+      dispatch(userActions.refresh({name:"message",value:data.messages}))
     })
     
     client.on("user left", (user) => {
-      console.log(user)
       dispatch(friendsActions.update({type:"remove",name:"items",value:user}))
 
 

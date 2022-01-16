@@ -1,12 +1,10 @@
 .dashboard-wrapper{
-    background-color: red;
     display: flex;
     overflow: hidden;
     flex-direction: column;
     flex: 1 auto;
 }
 .dashboard-second-wrapper{
-    background-color: red;
     display: flex;
     height: 100%;
 }
@@ -240,7 +238,8 @@
     color: #72767D;
     padding: 0px 10px;
     justify-content: space-between;
-
+    display: flex;
+    flex-direction: column;
 }
 .dashboard-sidebar-chat-button{
     padding: 5px 7px;

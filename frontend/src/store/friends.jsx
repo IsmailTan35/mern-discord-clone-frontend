@@ -13,9 +13,7 @@ const { reducer, actions } = createSlice({
     },
     update(state, action) {
         if(action.payload.type=='remove'){
-            const ids = state.items.map((e)=> { return e.id; }).indexOf(action.payload.value.id);
-            if(ids<0) return;
-            state.items=state.items.splice(ids,1)
+            state.items=state.items.filter(friend => friend.id!=action.payload.value.id)
         }
         else if(action.payload.type=='add'){
             state.items.push(action.payload.value)

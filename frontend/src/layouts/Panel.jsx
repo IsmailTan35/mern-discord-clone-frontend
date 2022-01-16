@@ -3,28 +3,24 @@ import Dashboard from "views/Dashboard";
 import ServerDashboard from "views/ServerDashboard";
 
 import Sidebar from "components/Sidebar";
-import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, useHistory, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const Panel = () => {
+    const friends = useSelector(state => state.friends.items);
     const history = useHistory()
     const location = useLocation()
 
     useEffect(() => {
-        if(location.pathname === "/"){
-        history.push("/channels/@me")
-    }
-}, [])
+        if(location.pathname === "/" || friends.filter(friend => friend.id==location.pathname.split("/")[3]).length === 0) {
+            history.push("/channels/@me")
+        }
+    }, [])
     return(
         
         <div className="panelWrapper">
             <Sidebar/>
-            {/* <div style={{background:"red"}}>
-                <div style={{width:"72px"}}></div>
-            </div>
-            <div style={{display:"flex",flexDirection:"1 auto"}}>
-
-            </div> */}
             <Route strict path="/channels/" component={Dashboard} />
             <Route path="/store" component={Dashboard} />
         </div>

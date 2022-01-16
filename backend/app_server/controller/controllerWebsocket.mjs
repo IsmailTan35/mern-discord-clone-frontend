@@ -1,6 +1,7 @@
 import {UniqueId,UniqueName} from "../helper/helperGetUniqueID.mjs";
 const users = {};
 let onlineUser=[];
+let messages={};
 const socketToRoom = {};
 
 export default (io,con)=>{
@@ -8,23 +9,27 @@ export default (io,con)=>{
     io.on("connection", (socket) => {
         socket.name =UniqueName()
         socket.code =UniqueId()
+        messages[socket.id]=[]
 
         socket.emit("data", {
             id: socket.id,
             name: socket.name,
             code: socket.code,
+            messages:messages[socket.id],
             onlineUser,
             users,
             socketToRoom
             });
         onlineUser.push({
             id: socket.id,
-            name: socket.name
+            name: socket.name,
+            code: socket.code,
             })
         
         socket.broadcast.emit("user join", { 
             id: socket.id,
-            name: socket.name})
+            name: socket.name,
+            code: socket.code})
         // console.log(io.opts.app.ismail)
         // console.log(io.app.ismail)
     
@@ -45,8 +50,12 @@ export default (io,con)=>{
             socket.emit("all users", usersInThisRoom);
         });
         
-        socket.on("send message",data=>{
-            console.log(data)
+        socket.on("send message",user=>{
+            messages[socket.id].push({from:socket.id,to:user.to,message:user.message})
+            messages[user.to].push({from:user.to,to:socket.id,message:user.message})
+            io.to(user.to).emit("messages",{from:socket.id,to:user.to,message:user.message});
+            io.to(socket.id).emit("messages",{from:socket.id,to:user.to,message:user.message});
+
         })
         socket.on("sending signal", payload => {
             io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
