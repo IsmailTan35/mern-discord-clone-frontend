@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "server.mjs",
   "scripts": {
-    "start": "nodemon --experimental-modules server.mjs --ignore frontend",
-    "test": "nodemon server2.mjs"
+    "test": "nodemon --experimental-modules server.mjs --ignore frontend",
+    "start": "node --experimental-modules server.mjs --ignore frontend"
 
   },
   "keywords": [],
