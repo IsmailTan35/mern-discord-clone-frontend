@@ -18,9 +18,7 @@ const httpsServer = (app,port) =>{
 	const ca = null
 	
 	const credentials = {
-		key: privateKey,
-		cert: certificate,
-		ca: ca
+		
 	};
 	const httpsServer = httpsCreate(credentials,app)
 	httpsServer.listen(port, () =>{
