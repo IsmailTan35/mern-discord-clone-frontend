@@ -77,6 +77,35 @@ export default (io,con)=>{
                 id: socket.id,
                 name: socket.name});
         });
+
+        socket.on("call video chat", user => {
+            socket.roomID = UniqueId()
+            if (users[socket.roomID]) {
+                const length = users[socket.roomID].length;
+                if (length === 4) {
+                    socket.emit("room full");
+                    return;
+                }
+                users[socket.roomID].push(socket.id);
+            } else {
+                users[socket.roomID] = [socket.id];
+            }
+            socketToRoom[socket.id] = socket.roomID;
+
+            io.to(user.to).emit('calling', { from: socket.id,name:socket.name });
+            console.log(socketToRoom)
+            console.log(users)
+        })
+        
+        socket.on("answerCall",data=> {
+            console.log(data)
+            const roomID = socketToRoom[data.from];
+            users[roomID].push(socket.id);
+            const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
+            socket.emit("all users", usersInThisRoom);
+            console.log({ from: socket.id,name:socket.name })
+            io.to(data.from).emit('acceptedCall', { from: socket.id,name:socket.name });
+        })
     
     })
 }

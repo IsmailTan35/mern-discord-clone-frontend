@@ -11,7 +11,7 @@ import controlleWebsocket from'./app_server/controller/controllerWebsocket.mjs'
 
 // const env = dotenv.config()
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 10000
 
 const server = httpServer(app,port)
 

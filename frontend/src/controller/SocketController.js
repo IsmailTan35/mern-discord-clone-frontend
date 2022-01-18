@@ -1,9 +1,9 @@
 import { useEffect, useContext } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { useEffectAsync } from 'reactHelper'
 import { userActions } from 'store';
-import { friendsActions } from 'store';
+import { friendsActions, streamActions } from 'store';
 import {SocketContext} from "./Context"
+
 const SocketController = () => {
   const client = useContext(SocketContext);
   const friends = useSelector(state => state.friends.items);
@@ -35,17 +35,20 @@ const SocketController = () => {
     
     client.on("user left", (user) => {
       dispatch(friendsActions.update({type:"remove",name:"items",value:user}))
-
-
     });
 
     client.on("user join", (user) => {
       dispatch(friendsActions.update({type:"add",name:"items",value:user}))
 
     });
+    client.on("calling", (user) => {
+      dispatch(streamActions.update({name:"calling",value:true}))
+      dispatch(streamActions.update({name:"callerId",value:user.from}))
+      dispatch(streamActions.update({name:"callerName",value:user.name}))
+    })
   }
 
-  useEffectAsync(async () => {
+  useEffect( () => {
     connectSocket()
   }, [])
 

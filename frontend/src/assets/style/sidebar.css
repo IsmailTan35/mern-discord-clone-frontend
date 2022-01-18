@@ -37,11 +37,14 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    color: #dcddde;
+    font-weight: 500;
 }
 .sidebarCircle:hover{
     border-radius: 17px;
     background-color: #5865F2;
     transition: all 0.1s;
+    color: #fff;
 
 }
 
@@ -118,6 +121,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .sidebarAddUser:hover {

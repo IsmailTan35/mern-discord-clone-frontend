@@ -3,20 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 const { reducer, actions } = createSlice({
   name: 'stream',
   initialState: {
-    peer:null,
-    receivingCall:false,
-    name:"",
-    callerSignal:null,
-    signal:null,
-    myStream:null,
-    userStream:null,
-    userId:null,
-    callAccepted:false,
-    callEnded:false,
-    data:null,
-    caller:null,
-    button1:null,
-    button2:null,
+    calling: false,
+    callerId: null,
+    callerName: null,
+    
   },
   reducers: {
     update(state, action) {

@@ -5,7 +5,6 @@
   "scripts": {
     "test": "nodemon --experimental-modules server.mjs --ignore frontend",
     "start": "node --experimental-modules server.mjs --ignore frontend"
-
   },
   "keywords": [],
   "author": "",

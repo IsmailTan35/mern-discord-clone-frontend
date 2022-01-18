@@ -5,7 +5,7 @@ import ChatVideo from "components/ChatVideo"
 const Chat = () => {
     return(
         <>
-            {/* <ChatVideo/> */}
+            <ChatVideo/>
             <ChatBody/>
             <ChatInput/>
         </>

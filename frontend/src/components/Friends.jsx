@@ -43,7 +43,15 @@ const Friends = () => {
                     {friends.length==0 ? <EmptyFriends/>:
                     friends.map((friend,index)=>{
                         return(
-                            <div key={index} onClick={()=>{openChat(friend.id)}}>{friend.name} </div>
+                            <div className="dashboard-sidebar-chat-item-wrapper" 
+                                key={index} 
+                                onClick={()=>{openChat(friend.id)}}>
+                                    <div className="dashboard-sidebar-chat-item-avatar"></div>
+                                    <div className="dashboard-sidebar-chat-item-name">
+                                        {friend.name} 
+                                    </div>
+
+                            </div>
                         )
                     })}
                 </div>

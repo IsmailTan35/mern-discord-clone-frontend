@@ -58,7 +58,54 @@
 
 .chat-body-wrapper{
     display: flex;
-    flex: auto 1;
+    flex: 1;
     flex-direction: column;
-    overflow:hidden;
+    overflow-y:scroll;
+    overflow-x: hidden; 
+    margin: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+.chat-body-wrapper::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2e3338;
+    border-radius: 5px;
+
+}
+.chat-body-wrapper::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+   
+.chat-body-wrapper::-webkit-scrollbar-thumb {
+    background: #202225; 
+    border-radius: 10px;
+}
+
+.chat-body-message{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.chat-body-message:hover{
+    background-color: #32353B;
+}
+.chat-body-message-text{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+.chat-body-message-text-name{
+    font-size: 15px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+}
+.chat-body-message-text-name:hover{
+    text-decoration: underline;
+}
+.chat-body-message-text-msg{
+    font-size: 14px;
+    color: #B9BBBA;
+    color:var(--deneme)
 }
