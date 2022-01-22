@@ -3,15 +3,16 @@ import { createSlice } from '@reduxjs/toolkit';
 const { reducer, actions } = createSlice({
   name: 'stream',
   initialState: {
-    calling: false,
-    callerId: null,
-    callerName: null,
+    items:{
+      calling: false,
+      callerId: null,
+      callerName: null,
+    }
     
   },
   reducers: {
     update(state, action) {
-      console.log(action.payload);
-      state[action.payload.name]=action.payload.value
+      state.items[action.payload.name]=action.payload.value
     },
   }
 });

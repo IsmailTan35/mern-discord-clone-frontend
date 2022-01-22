@@ -24,7 +24,6 @@ const FriendsChatHeader = () => {
         if(!location.pathname.split("/").length==3) return
         const friend=friends.filter(friend => friend.id==location.pathname.split("/")[3])
         if(friend.length>0){
-            console.log(location.pathname.split("/")[3])
             client.emit("call video chat",{to:location.pathname.split("/")[3]})
         }
     }

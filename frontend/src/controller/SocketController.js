@@ -17,10 +17,6 @@ const SocketController = () => {
     client.on("disconnect", () => {
       });
 
-    client.on("me", (id) => {
-
-    })
-
     client.on("messages", (messages) => { 
       dispatch(userActions.update({name:"message",value:messages}))
      });
