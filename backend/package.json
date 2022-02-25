@@ -18,6 +18,8 @@
     "express-ws": "^5.0.2",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.3.1",
+    "mongoose": "^6.1.8",
     "mysql": "^2.18.1",
     "simple-peer-server": "^0.0.8",
     "socket.io": "^4.4.1",

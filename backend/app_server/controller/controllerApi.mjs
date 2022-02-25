@@ -9,4 +9,5 @@ export default (app,con) =>{
 		res.setHeader('Content-Type', 'text/html');
 		res.end(`<h1>${req.headers['x-forwarded-for']?.split(',').shift()|| req.socket?.remoteAddress}</h1>`);
     })
+    
 }

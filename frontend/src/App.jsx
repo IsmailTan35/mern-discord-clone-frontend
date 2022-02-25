@@ -1,11 +1,11 @@
 import Panel from 'layouts/Panel';
 
 import {SocketContext, client} from 'controller/Context';
-import { Switch, Route } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SocketController from 'controller/SocketController';
 const App = () => {
+
   return (
     <>
      

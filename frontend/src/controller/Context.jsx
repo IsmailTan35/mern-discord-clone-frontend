@@ -1,10 +1,8 @@
 import React from "react";
 import { io } from "socket.io-client";
 const protocol = window.location.protocol
-const dev=`${protocol}//localhost:10000`
-const product=`https://discordbackend.herokuapp.com/`
-
-export const client = io.connect(product,{
+console.log(process.env.REACT_APP_URL_PRODUCTION);
+export const client = io.connect(protocol=="https"?process.env.REACT_APP_URL_PRODUCTION:process.env.REACT_APP_URL_DEV,{
     'reconnection': true,
     'reconnectionDelay': 2500,
     'reconnectionAttempts': 10

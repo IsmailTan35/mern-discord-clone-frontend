@@ -34,10 +34,10 @@ export default (io,con)=>{
         // console.log(io.app.ismail)
         
         socket.on("send message",user=>{
-            messages[socket.id].push({from:socket.id,to:user.to,message:user.message})
-            messages[user.to].push({from:user.to,to:socket.id,message:user.message})
-            io.to(user.to).emit("messages",{from:socket.id,to:user.to,message:user.message});
-            io.to(socket.id).emit("messages",{from:socket.id,to:user.to,message:user.message});
+            messages[socket.id].push({from:socket.id,to:user.to,message:user.message,read:false})
+            messages[user.to].push({from:user.to,to:socket.id,message:user.message,read:false})
+            io.to(user.to).emit("messages",{from:socket.id,to:user.to,message:user.message,read:false});
+            io.to(socket.id).emit("messages",{from:socket.id,to:user.to,message:user.message,read:false});
 
         })
         

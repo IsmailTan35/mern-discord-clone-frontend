@@ -61,7 +61,6 @@ const Room = () => {
     const createPeer = (to)=> {
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             const item = peersRef.current.find(p => p.peerID == to);  
-            console.log(peersRef.current);  
             if(item) return;
             const peer = new Peer({
                 initiator: true,
@@ -70,7 +69,6 @@ const Room = () => {
             });
             
         peer.on("signal", signal => {
-            console.log("girdi");
             client.emit("sending signal", { signal, to });    
         })
         peersRef.current.push({ peerID: to, peer: peer });
@@ -82,8 +80,7 @@ const Room = () => {
     const addPeer = (incomingSignal, to) => {
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             const item = peersRef.current.find(p => p.peerID == to);  
-            console.log(peersRef.current,to);  
-     
+      
             if(item) return;
 
         const peer = new Peer({
@@ -102,9 +99,24 @@ const Room = () => {
     })
     }
 
+    const handleHangup = () => {
+        peers.map(peer => {
+            peer.destroy()
+            navigator.mediaDevices.getTracks().forEach(function(track) {
+                track.stop();
+              });
+        })
+        setPeers([]);
+    }
     return (
         <div style={{height:"500p",overflowY:"scroll"}}>
             {myStoreStream.calling && <Button onClick={()=>{answer()}}>Answer</Button>}
+            {peers.length>0 ? <>
+                <Button onClick={()=>handleHangup()}>
+                    {`End Call`}
+                </Button>
+            </>:
+            null}
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer} />

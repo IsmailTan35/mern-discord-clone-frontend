@@ -52,7 +52,7 @@
     color: #fff;
     width: auto;
     display: flex;
-    flex: wrap;
+    flex: 1;
     
 }
 .friends-add-input-button{

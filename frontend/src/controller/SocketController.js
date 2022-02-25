@@ -7,7 +7,7 @@ import {SocketContext} from "./Context"
 const SocketController = () => {
   const client = useContext(SocketContext);
   const friends = useSelector(state => state.friends.items);
-
+  const unRead= useSelector(state => state.user.unRead);
   const dispatch = useDispatch()
 
   const connectSocket = () => {

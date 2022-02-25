@@ -14,6 +14,7 @@ const { reducer, actions } = createSlice({
     },
     update(state, action) {
       state[action.payload.name].push(action.payload.value)
+
     }
   }
 });
