@@ -8,7 +8,6 @@ const App = () => {
 
   return (
     <>
-     
      <SocketContext.Provider value={client}>
        <SocketController/>
         <Panel/>
