@@ -59,6 +59,7 @@ const Room = () => {
     }
 
     const createPeer = (to)=> {
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             const item = peersRef.current.find(p => p.peerID == to);  
             if(item) return;
@@ -109,7 +110,7 @@ const Room = () => {
         setPeers([]);
     }
     return (
-        <div style={{height:"500p",overflowY:"scroll"}}>
+        <div style={{height:"500p",overflowY:"scroll"}} id="deneme">
             {myStoreStream.calling && <Button onClick={()=>{answer()}}>Answer</Button>}
             {peers.length>0 ? <>
                 <Button onClick={()=>handleHangup()}>
