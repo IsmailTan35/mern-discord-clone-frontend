@@ -1,0 +1,208 @@
+.landing-navbar{
+    padding: 0 85px;
+    width: 100%;
+    z-index: 1030;
+    height: 80px;
+    display: flex;
+}
+
+.landing-navbar-logo-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.landing-navbar-center-wrapper{
+    color: white;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+.landing-navbar-login-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.landing-navbar-center-wrapper span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-inline: 10px;
+    cursor: pointer;
+}
+
+.landing-navbar-center-wrapper span:hover{
+    text-decoration:underline
+}
+
+.landing-buttons-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-navbar-login-button{
+    background-color: #fff;
+    border-radius: 40px;
+    border: none;
+    font-size: 14px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 7px 16px;
+}
+
+.landing-01{
+    background-image: url(/public/assets/img/landing-1.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height:calc(100vh - 80px);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:120px 80px;
+    color: white;
+}
+
+.landing-wrapper{
+    height: 100vh; 
+    width: 100%;
+    padding: 120px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.landing-wrapper-01{
+    padding: 120px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.landing-wrapper-01 button{
+    background-color: #5865f2;
+    color: white;
+    margin-top: 40px;
+    border-radius: 40px;
+    border: none;
+    font-size: 20px;
+    padding: 16px 32px;
+    text-align: center;
+    cursor: pointer;
+}
+.landing-wrapper-01 h4{
+    font-weight: 600;
+    font-size: 32px;
+    font-family:"Ginto Normal","Whitney","Helvetica Neue","Helvetica","Arial",sans-serif
+}
+
+.landing-01-download-button{
+    background-color: #fff;
+    border-radius: 40px;
+    border: none;
+    font-size: 14px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 7px 16px;
+    cursor: pointer;
+
+}
+
+.landing-01-open-button{
+    background-color: #23272a;
+    color:#fff;
+    border-radius: 40px;
+    border: none;
+    font-size: 14px;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 7px 16px;
+    cursor: pointer;
+
+}
+
+
+.footer-wrapper{
+    background-color: #23272a;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    width: 100%;
+    padding: 80px 0 64px 0;
+}
+
+.footer-first-wrapper{
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    
+}
+
+.footer-links-01{
+}
+
+.footer-links{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.footer-links-01-media{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-links span{
+    margin-bottom: 8px;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.footer-links span:hover{
+    text-decoration: underline;
+}
+
+.footer-links h5{
+    color: #5865f2;
+}
+
+.footer-second-wrapper{
+    padding: 0 40px;
+}
+
+.footer-second-wrapper-01{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-divider{
+    border-bottom: 1px solid #5865f2;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.footer-second-wrapper-01 button{
+    background-color: #5865f2;
+    color: #fff;
+    border: none;
+    border-radius: 40px;
+    font-size: 14px;
+    padding: 7px 16px;
+    font-weight: 600;
+    cursor: pointer;
+}

@@ -16,7 +16,7 @@ const Panel = () => {
 
     useEffect(() => {
         if(location.pathname === "/" || friends.filter(friend => friend.id==location.pathname.split("/")[3]).length === 0) {
-            history.push("/channels/@me")
+            // history.push("/channels/@me")
         }
     }, [])
     useEffect(() => {

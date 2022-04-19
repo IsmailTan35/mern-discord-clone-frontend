@@ -1,0 +1,34 @@
+.login-wrapper{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login{
+    background-color: #36393F;
+    color: white;
+    padding: 32px;
+    display: flex;
+    flex-direction: row;
+}
+
+.login-header-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login-email-wrapper{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.login-password-wrapper{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
