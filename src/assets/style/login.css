@@ -1,17 +1,21 @@
 .login-wrapper{
-    width: 100%;
+    width: 100vw;
     height: 100vh;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url(../img/background.svg);
 }
 
 .login{
     background-color: #36393F;
     color: white;
     padding: 32px;
+    width: 784px;
     display: flex;
     flex-direction: row;
+    border-radius: 5px;
 }
 
 .login-header-wrapper{
@@ -25,10 +29,117 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-top: 20px;
 }
 
 .login-password-wrapper{
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+.login-button{
+    background-color: hsl(235,calc(1 * 85.6%),64.7%);
+    color: white;
+    padding: 2px 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 16px;
+    width: 100%;
+    height: 44px;
+}
+
+.login-button:hover{
+    background-color: #4752C4;
+
+}
+.login-input{
+    background-color: #202225;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    outline: none;
+}
+
+.login-links-button{
+    color: hsl(197,calc(1 * 100%),47.8%);
+    border: none;
+    cursor: pointer;
+    margin-top: 5px;
+    background: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.login-links-button:hover{
+    text-decoration: underline;
+}
+
+.login-qr-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-width: 240px;
+    height: 344px;
+    text-align: center;
+}
+
+.login-qr{
+    width: 176px;
+    height: 176px;
+    background-color: #202225;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-center-wrapper{
+    display:"flex";
+    justify-content:"center";
+    align-items:"center"
+}
+
+@media only screen and (max-width: 485px) {
+    .login{
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 0;
+    }
+    .login-header-wrapper{
+        padding-top: 15px ;
+    }
+    .login-header-wrapper::before{
+        background: url(../img/logo-2.svg) !important;
+        content: "";
+        position: absolute;
+        height: 36px;
+        top: 22px;
+        width: 130px;
+    }
+
+}
+
+@media only screen and (min-width: 486px) {
+    .login-wrapper{
+        min-height:580px
+    }
+
+}
+
+@media only screen and (max-width: 830px) {
+    .login-qr-wrapper{
+        display: none !important;
+    }
+    .login-center-wrapper{
+        display: none !important;
+    }
+    .login{
+        max-width: 480px;
+    }
 }

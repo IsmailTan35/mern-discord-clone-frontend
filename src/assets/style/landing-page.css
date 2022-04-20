@@ -41,6 +41,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 24px;
+    padding-inline: 70px;
+    justify-content: space-around;
 }
 
 .landing-navbar-login-button{
@@ -65,7 +68,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding:120px 80px;
+    padding:120px 40px;
     color: white;
 }
 
@@ -105,15 +108,14 @@
 
 .landing-01-download-button{
     background-color: #fff;
+    color:#000;
     border-radius: 40px;
     border: none;
-    font-size: 14px;
-    padding: 10px 20px;
+    font-size: 20px;
+    padding: 16px 32px;
     text-align: center;
     cursor: pointer;
-    font-size: 14px;
-    padding: 7px 16px;
-    cursor: pointer;
+    font-weight: 500;
 
 }
 
@@ -122,17 +124,28 @@
     color:#fff;
     border-radius: 40px;
     border: none;
-    font-size: 14px;
-    padding: 10px 20px;
+    font-size: 20px;
+    padding: 16px 32px;
     text-align: center;
     cursor: pointer;
-    font-size: 14px;
-    padding: 7px 16px;
-    cursor: pointer;
+    font-weight: 500;
 
 }
 
+.landing-01-header{
+    font-size: 56px;
+    font-weight: 800;
+    text-align: center;
 
+}
+
+.landing-01-subheader{
+    margin-top: 40px;
+    text-align: center;
+    line-height: 1.625;
+    font-size: clamp(16px,2vw,20px);
+    margin-bottom: 8px;
+}
 .footer-wrapper{
     background-color: #23272a;
     color: #fff;
