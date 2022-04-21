@@ -1,4 +1,4 @@
-// import controllerAuth from './controllerAuth.mjs'
+import controllerAuth from './controllerAuth.mjs'
 // import controllerSocket from './controllerSocket.mjs'
 // import verifyToken from "../helper/helperVerify.mjs"
 
@@ -10,4 +10,5 @@ export default (app,con) =>{
 		res.end(`<h1>${req.headers['x-forwarded-for']?.split(',').shift()|| req.socket?.remoteAddress}</h1>`);
     })
     
+    app.post("/api/auth/login",controllerAuth().loginPost)
 }

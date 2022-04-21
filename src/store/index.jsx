@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import logger from 'redux-logger'
 
 import { streamReducer as stream } from './stream';
 import { userReducer as user } from './user';
@@ -21,5 +20,4 @@ export { friendsActions } from './friends';
 
 export default configureStore({ 
   reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

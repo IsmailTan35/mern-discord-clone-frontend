@@ -1,11 +1,32 @@
 import "assets/style/login.css";
 import { useHistory } from "react-router-dom";
-
+import axios from "axios"
+import { useState } from "react";
 const LoginPage = () => {
+    const [form,setForm] = useState({
+        email: "",
+        password: ""
+    });
     const navigate = useHistory()
-    const handleClick = (url) => {
-        navigate.push(url)
+
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
     }
+    const handleClick = (url) => {
+        axios.post("/api/auth/login", form)
+        .then(res => {
+            if(res.data.success){
+                navigate.push(url)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
     return(
         <>
             <div className="login-wrapper">
@@ -17,11 +38,11 @@ const LoginPage = () => {
                         </div>
                         <div className="login-email-wrapper">
                             <label>E-POSTA VEYA TELEFON NUMARASI</label>
-                            <input className="login-input"/>
+                            <input name="email" className="login-input" onChange={handleChange}/>
                         </div>
                         <div className="login-password-wrapper">
                             <label>ŞİFRE</label>
-                            <input className="login-input"/>
+                            <input name="password" className="login-input" onChange={handleChange}/>
                         </div>
                         <div>
                             <button className="login-links-button">Şifreni mi Unuttun?</button>

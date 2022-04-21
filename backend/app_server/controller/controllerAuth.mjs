@@ -1,8 +1,8 @@
 
-var generateAccessToken = require("../helper/helperToken").generateAccessToken
-var generateRefreshToken = require("../helper/helperToken").generateRefreshToken
+import { generateAccessToken } from "../helper/helperToken"
+import { generateRefreshToken } from "../helper/helperToken"
 
-module.exports.loginPost = function(req,res){
+const loginPost = (req,res)=> {
   var con =req.app.db
   const { email, password } = req.body
   
@@ -29,13 +29,13 @@ module.exports.loginPost = function(req,res){
   })
 }
 
-module.exports.logoutPost = function (req,res) {
+const logoutPost = (req,res) =>{
   const refreshToken = req.body.token
     refreshTokens = refreshTokens.filter((token) => token !== refreshToken)
     res.status(200).json("You logged out successfully.")
 }
 
-module.exports.authRefresh = function (req,res) {
+const authRefresh = (req,res) => {
   const { id,userAccessToken, userRefreshToken } = req.body
   con.query(`SELECT * FROM wt_users_token WHERE userID="${id}" AND token="${userAccessToken}" AND refreshtoken="${userRefreshToken}"`, function (err, resultFirst, fields) {
     if (resultFirst){
@@ -58,4 +58,9 @@ module.exports.authRefresh = function (req,res) {
     res.status(400).json("Username or password incorrect!")
   }
   })
+}
+
+export default {
+  loginPost,
+  logoutPost,
 }
