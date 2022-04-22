@@ -1,13 +1,18 @@
-const jwt = require('jsonwebtoken')
+import  jwt from 'jsonwebtoken'
 
-module.exports.generateAccessToken = function(user) {
+const generateAccessToken = (user) =>{
     return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "10m",
     })
 }
 
-module.exports.generateRefreshToken = function(user) {
+const generateRefreshToken = (user) =>{
     return jwt.sign({ id: user.id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: "10m",
     })
+}
+
+export {
+    generateAccessToken,
+    generateRefreshToken
 }

@@ -1,32 +1,28 @@
 
-import { generateAccessToken } from "../helper/helperToken"
-import { generateRefreshToken } from "../helper/helperToken"
+import { generateAccessToken } from "../helper/helperToken.mjs"
+import { generateRefreshToken } from "../helper/helperToken.mjs"
+import userSchema from '../schema/user.mjs'
+import crypto  from 'crypto'
 
-const loginPost = (req,res)=> {
-  var con =req.app.db
-  const { email, password } = req.body
-  
-  con.query(`SELECT * FROM wt_users WHERE email="${email}" AND hashedpassword="${password}"`, function (err, resultFirst, fields) {
-    if (resultFirst.length>0){
-    const accessToken = generateAccessToken(resultFirst)
-    const refreshToken = generateRefreshToken(resultFirst)
-    con.query(`UPDATE wt_user_token SET token = "${accessToken}", refresh_token = "${refreshToken}"  WHERE user_id=${resultFirst[0].id}`, function (err, resultSecond, fields) {
-      res.setHeader('Content-Type', 'application/json')
-      res.status(200)  
-      res.json({
-          id: resultFirst[0].id,
-          name: resultFirst[0].name,
-          login: resultFirst[0].login,
-          email: resultFirst[0].email,
-          phone: resultFirst[0].phone,
-          accessToken,
-          refreshToken,
-        })  
-    } ) 
-  } else {
-    res.status(400).json("Username or password incorrect!")
+const loginPost = async (req,res)=> {
+  let data = req.body
+  var user = await userSchema.find({
+      email:data.email,
+      password:data.password,
+      googleAuth:false
+  }).exec();
+  if(user.length==1){
+      res.status(200).json([
+          {type:"name",value:user[0].name},
+          {type:"surname",value:user[0].surname},
+          {type:"email",value:user[0].email},
+          {type:"nickname",value:user[0].nickname},
+          {type:"token",value:user[0]._id},
+      ])
   }
-  })
+  else{
+      res.status(401).json("login failed")
+  }
 }
 
 const logoutPost = (req,res) =>{
@@ -60,7 +56,27 @@ const authRefresh = (req,res) => {
   })
 }
 
-export default {
+const registerPost = () => {
+  let data = req.body
+  if(Object.values(data).length<6) return res.status(400).send({error:"no data"})
+  var user = new userSchema({ 
+      firstName:data.firstName,
+      lastName:data.lastName,
+      email: data.email,
+      password: crypto.createHash('md5').update(data.confirmPassword).digest('hex'),
+      nickname: data.nickname,
+      profileType: data.profileType,
+      lookingFor: data.lookingFor,
+      token:[],
+      googleAuth:false,
+  });
+  user.save((err, user)=> {
+    err ? res.status(401).json("not registered"):res.status(200).json("registered")
+  });
+}
+
+export {
   loginPost,
   logoutPost,
+  registerPost
 }

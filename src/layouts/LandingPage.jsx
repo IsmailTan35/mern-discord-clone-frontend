@@ -34,7 +34,7 @@ const LandingPage = () => {
                     <span>Kariyerler</span>
                 </div>
                 <div className="landing-navbar-login-wrapper">
-                    <button className="landing-navbar-login-button" onClick={()=>{handleClick("/login")}}>Giriş</button>
+                    <button className="landing-navbar-login-button" onClick={()=>{handleClick("/auth/login")}}>Giriş</button>
                 </div>
 
             </div>
