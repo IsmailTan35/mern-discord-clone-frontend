@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const LoginPage = () => {
-    useEffect(() => {
-        console.log(JSON.parse(Cookies.get("accessToken")));
-    }, []);
 
     const [form,setForm] = useState({
         email: "demo@discord.com",
@@ -24,9 +21,7 @@ const LoginPage = () => {
         axios.post("/api/auth/login", form)
         .then(res => {
             localStorage.setItem("accessToken", res.data[6].value);
-            console.log(res.data[6])
-            Cookies.set("accessToken", JSON.stringify(res.data[6]));
-            // navigate.push(url)
+            navigate.push(url)
         })
         .catch(err => {
             console.log(err)
