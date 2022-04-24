@@ -3,21 +3,33 @@ import { generateAccessToken } from "../helper/helperToken.mjs"
 import { generateRefreshToken } from "../helper/helperToken.mjs"
 import userSchema from '../schema/user.mjs'
 import crypto  from 'crypto'
+import {UniqueId,UniqueName} from "../helper/helperGetUniqueID.mjs";
 
 const loginPost = async (req,res)=> {
   let data = req.body
-  var user = await userSchema.find({
-      email:data.email,
-      password:data.password,
-      googleAuth:false
-  }).exec();
-  if(user.length==1){
+  const token =generateAccessToken({}) 
+
+  const filter = { 
+    email: data.email, 
+    password:crypto.createHash('md5').update(data.password).digest('hex') 
+  };
+  
+  const update = { 
+    $push: { 
+      token
+    } 
+  }
+  console.log(token)
+  var user = await userSchema.findOneAndUpdate(filter,update)
+  if(user){
       res.status(200).json([
-          {type:"name",value:user[0].name},
-          {type:"surname",value:user[0].surname},
-          {type:"email",value:user[0].email},
-          {type:"nickname",value:user[0].nickname},
-          {type:"token",value:user[0]._id},
+          {type:"username",value:user.username},
+          {type:"email",value:user.email},
+          {type:"code",value:user.code},
+          {type:"friends",value:user.friends},
+          {type:"blocked",value:user.blocked},
+          {type:"request",value:user.request},
+          {type:"token",value:token},
       ])
   }
   else{
@@ -56,19 +68,19 @@ const authRefresh = (req,res) => {
   })
 }
 
-const registerPost = () => {
+const registerPost = (req,res) => {
   let data = req.body
-  if(Object.values(data).length<6) return res.status(400).send({error:"no data"})
+  if(Object.values(data).length<3) return res.status(400).send({error:"no data"})
   var user = new userSchema({ 
-      firstName:data.firstName,
-      lastName:data.lastName,
+    username: data.username,
       email: data.email,
-      password: crypto.createHash('md5').update(data.confirmPassword).digest('hex'),
-      nickname: data.nickname,
-      profileType: data.profileType,
-      lookingFor: data.lookingFor,
+      password: crypto.createHash('md5').update(data.password).digest('hex'),
+      code:UniqueId(),
+      friends: [],
+      blocked: [],
+      request: [],
+      state: "offline",
       token:[],
-      googleAuth:false,
   });
   user.save((err, user)=> {
     err ? res.status(401).json("not registered"):res.status(200).json("registered")

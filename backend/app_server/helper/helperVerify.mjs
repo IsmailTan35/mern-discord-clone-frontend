@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken")
+import jwt from "jsonwebtoken"
 
-module.exports.verify =function (req,res,next) {
+const verifyPost = (req,res,next) => {
   const token = req.body.userAccessToken
   const refreshToken = req.body.userRefreshToken
   if (token && refreshToken) {
@@ -20,4 +20,8 @@ module.exports.verify =function (req,res,next) {
   } else {
     res.status(401).json("You are not authenticated!")
   }
+}
+
+export {
+  verifyPost
 }

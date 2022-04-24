@@ -3,8 +3,15 @@ import {
     logoutPost,
     registerPost,
 } from './controllerAuth.mjs'
+import { verifyPost } from '../helper/helperVerify.mjs'
+
+import {
+    friendsGet,
+    friendsPost,
+    friendsPut,
+    friendsDelete,
+} from './controllerFriends.mjs'
 // import controllerSocket from './controllerSocket.mjs'
-// import verifyToken from "../helper/helperVerify.mjs"
 
 export default (app,con) =>{
 
@@ -17,4 +24,10 @@ export default (app,con) =>{
     app.post("/api/auth/login",loginPost)
     app.post("/api/auth/logout",logoutPost)
     app.post("/api/auth/register",registerPost)
+    app.post("/api/auth/check",verifyPost)
+
+    app.get("/api/friend",friendsGet)
+    app.post("/api/friend",friendsPost)
+    app.put("/api/friend",friendsPut)
+    app.delete("/api/friend",friendsDelete)
 }

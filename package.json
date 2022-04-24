@@ -15,6 +15,7 @@
     "express": "^4.17.1",
     "express-router": "0.0.1",
     "fs": "0.0.1-security",
+    "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.3.1",
     "mongoose": "^6.1.8",

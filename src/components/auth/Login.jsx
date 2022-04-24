@@ -1,11 +1,16 @@
 import axios from "axios";
-import { useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
 const LoginPage = () => {
+    useEffect(() => {
+        console.log(JSON.parse(Cookies.get("accessToken")));
+    }, []);
+
     const [form,setForm] = useState({
-        email: "",
-        password: ""
+        email: "demo@discord.com",
+        password: "demo"
     });
     const navigate = useHistory()
 
@@ -18,9 +23,10 @@ const LoginPage = () => {
     const handleClick = (url) => {
         axios.post("/api/auth/login", form)
         .then(res => {
-            if(res.data.success){
-                navigate.push(url)
-            }
+            localStorage.setItem("accessToken", res.data[6].value);
+            console.log(res.data[6])
+            Cookies.set("accessToken", JSON.stringify(res.data[6]));
+            // navigate.push(url)
         })
         .catch(err => {
             console.log(err)
@@ -40,11 +46,11 @@ const LoginPage = () => {
                     </div>
                     <div className="auth-input-wrapper">
                         <label>E-POSTA VEYA TELEFON NUMARASI</label>
-                        <input name="email" className="auth-input" onChange={handleChange}/>
+                        <input name="email" className="auth-input" onChange={handleChange} value={form.email}/>
                     </div>
                     <div className="auth-input-wrapper">
                         <label>ŞİFRE</label>
-                        <input name="password" className="auth-input" onChange={handleChange}/>
+                        <input name="password" className="auth-input" onChange={handleChange} value={form.password}/>
                     </div>
                     <div>
                         <button 

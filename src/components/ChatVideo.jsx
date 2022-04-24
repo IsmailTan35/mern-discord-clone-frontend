@@ -19,12 +19,10 @@ const Video = (props) => {
     );
 }
 
-
 const videoConstraints = {
     height: window.innerHeight / 2,
     width: window.innerWidth / 2
 };
-
 
 const Room = () => {
     const myStoreStream = useSelector(state => state.stream.items);
@@ -37,6 +35,7 @@ const Room = () => {
         let isMounted = true;
         client.on("acceptedCall", data => {
             client.on("user joined", payload => {
+                console.log(isMounted)
                 if (isMounted) addPeer(payload.signal, payload.from);
             });
         })
@@ -59,15 +58,17 @@ const Room = () => {
     }
 
     const createPeer = (to)=> {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-        navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
+        navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        console.log("denek")
+        navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+        .then(stream => {
             const item = peersRef.current.find(p => p.peerID == to);  
             if(item) return;
             const peer = new Peer({
                 initiator: true,
                 trickle: false,
                 stream,
-            });
+            })
             
         peer.on("signal", signal => {
             client.emit("sending signal", { signal, to });    
@@ -76,10 +77,14 @@ const Room = () => {
         setPeers(users => [...users, peer]);
 
     })
+    .catch(err => {
+        console.log(err)
+    })
     }
 
     const addPeer = (incomingSignal, to) => {
-        navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
+        navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(stream => {
             const item = peersRef.current.find(p => p.peerID == to);  
       
             if(item) return;
@@ -92,6 +97,7 @@ const Room = () => {
 
         peer.on("signal", signal => {
             client.emit("returning signal", { signal, to })
+            console.log(signal)
         })
 
         peer.signal(incomingSignal);
@@ -109,6 +115,7 @@ const Room = () => {
         })
         setPeers([]);
     }
+
     return (
         <div style={{height:"500p",overflowY:"scroll"}} id="deneme">
             {myStoreStream.calling && <Button onClick={()=>{answer()}}>Answer</Button>}
