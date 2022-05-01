@@ -17,6 +17,7 @@ const LoginPage = () => {
             [e.target.name]: e.target.value
         })
     }
+    
     const handleClick = (url) => {
         axios.post("/api/auth/login", form)
         .then(res => {
@@ -31,6 +32,7 @@ const LoginPage = () => {
     const handleUrl = (url) => {
         navigate.push(url)
     }
+    
     return(
         <>
             <div className="login-wrapper">
