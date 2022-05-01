@@ -35,8 +35,6 @@
   },
   "scripts": {
     "frontend": "craco --openssl-legacy-provider start",
-    "build": "craco build",
-    "build_release": "PUBLIC_URL=/modern/ craco build",
     "backend": "nodemon --experimental-modules backend/server.mjs --ignore frontend",
     "start": "node --experimental-modules backend/server.mjs --ignore frontend"
   },
