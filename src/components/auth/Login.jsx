@@ -32,6 +32,7 @@ const LoginPage = () => {
     const handleUrl = (url) => {
         navigate.push(url)
     }
+    
     return(
         <>
             <div className="login-wrapper">
