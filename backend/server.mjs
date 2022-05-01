@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import express from"./app_server/helper/helperExpress.mjs"
 import { 
     // httpsServer,
-    httpsServer, 
+    httpServer, 
     webSocket
 } from'./app_server/helper/helperProtocol.mjs'
 import controllerApi from'./app_server/controller/controllerApi.mjs'
@@ -11,9 +11,9 @@ import mongoDb from"./app_server/models/mongoDb.mjs"
 
 const env = dotenv.config()
 const app = express()
-const port =  10000 || process.env.PORT
+const port = process.env.PORT || 10000 
 const db = mongoDb()
-const server = httpsServer(app,port)
+const server = httpServer(app,port)
 const socket = webSocket(server,app)
 
 controllerApi(app,"con")
