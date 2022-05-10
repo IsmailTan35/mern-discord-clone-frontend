@@ -1,11 +1,12 @@
 import {useSelector} from 'react-redux';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useNavigate } from 'react-router-dom';
 const All = () => {
-    const history = useHistory()
+    const navigate = useNavigate()
     const friends = useSelector(state => state.friends.items);
+    
     const openChat=(id)=>{
         if(!id) return;
-        history.push(`/channels/@me/${id}`)
+        navigate(`/channels/@me/${id}`)
     }
 
     return (

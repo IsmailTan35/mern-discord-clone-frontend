@@ -1,10 +1,10 @@
 import "assets/style/landing-page.css"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
-    const navigate = useHistory();
+    const navigate = useNavigate();
     const handleClick = (url) => {
-        navigate.push(url);
+        navigate(url);
     };
     return(
         <>

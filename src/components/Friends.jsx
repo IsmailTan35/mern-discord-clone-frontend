@@ -1,18 +1,18 @@
 import { useSelector } from "react-redux"
-import { useHistory, useLocation } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import EmptyFriends from "./EmptyFriends"
 
 const Friends = () => {
     const location= useLocation()
-    const history = useHistory()
+    const navigate = useNavigate()
     const friends = useSelector(state => state.friends.items)
 
     const openChat=(id)=>{
         if(!id) return;
-        history.push(`/channels/@me/${id}`)
+        navigate(`/channels/@me/${id}`)
     }
     const changeHistory = (e)=>{
-        history.push(e)
+        navigate(e)
     }
     return(
         <>

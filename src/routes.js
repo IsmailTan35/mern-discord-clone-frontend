@@ -25,7 +25,7 @@ const friendsRoutes = {
   }
 
 
-export default{
+export {
   dashboardRoutes, 
   friendsRoutes
 }

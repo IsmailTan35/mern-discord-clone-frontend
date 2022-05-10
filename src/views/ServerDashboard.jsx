@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Route, useHistory } from "react-router-dom"
+import { Route, useNavigate } from "react-router-dom"
 import routes from "routes"
 
 
@@ -8,12 +8,12 @@ import { useLocation } from "react-router-dom"
 import Avatar from "components/Avatar"
 
 const ServerDashboard =()=>{
-    const history = useHistory()
+    const navigate = useNavigate()
     const location= useLocation()
 
 
     const changeHistory = (e)=>{
-        history.push(e)
+        navigate(e)
     }
     return(
         <>

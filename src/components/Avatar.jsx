@@ -42,8 +42,7 @@ const Avatar = () => {
 
                     </div>
             </div>
-            {show && <Settings setData={handleClick}/>
-}
+            <Settings data={show} setData={handleClick}/>
         </>
     )
 }

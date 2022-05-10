@@ -1,16 +1,16 @@
 import React from "react"
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import "assets/style/sidebar.css"
 
   const Sidebar = ()=>{
-    const history = useHistory()
+    const navigate = useNavigate()
     const location = useLocation()
     
     const delay={ show: 50, hide: 0 }
     const changeHistory = (e)=>{
-        history.push(e)
+        navigate(e)
     }
 
     return(

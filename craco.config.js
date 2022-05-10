@@ -5,7 +5,7 @@ module.exports = {
           ({ constructor }) => constructor && constructor.name === 'ModuleScopePlugin'
         );
   
-        webpackConfig.resolve.plugins.splice(scopePluginIndex, 1);
+        webpackConfig.resolve.plugins.splice(-1, 1);
         return webpackConfig;
       }
     }

@@ -1,15 +1,17 @@
 import axios from "axios";
+import { SocketContext } from "controller/Context";
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+    const client = useContext(SocketContext);
 
     const [form,setForm] = useState({
         email: "demo@discord.com",
         password: "demo"
     });
-    const navigate = useHistory()
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         setForm({
@@ -22,7 +24,8 @@ const LoginPage = () => {
         axios.post("/api/auth/login", form)
         .then(res => {
             localStorage.setItem("accessToken", res.data[6].value);
-            navigate.push(url)
+            client.emit("configuration",{token: res.data[6].value});
+            navigate(url)
         })
         .catch(err => {
             console.log(err)
@@ -30,7 +33,7 @@ const LoginPage = () => {
     }
 
     const handleUrl = (url) => {
-        navigate.push(url)
+        navigate(url)
     }
     
     return(

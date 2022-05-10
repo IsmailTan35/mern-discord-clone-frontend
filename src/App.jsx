@@ -2,30 +2,32 @@ import Panel from 'layouts/Panel';
 
 import {SocketContext, client} from 'controller/Context';
 import LandingPage from 'layouts/LandingPage';
+import SocketController from 'controller/SocketController';
+import { Routes,Route, useNavigate, useLocation } from 'react-router-dom';
 import Auth from 'layouts/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SocketController from 'controller/SocketController';
-import { Route, useHistory, useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import Dashboard from 'views/Dashboard';
 import { useEffect } from 'react';
 import axios from 'axios';
+import LoginPage from 'components/auth/Login';
+import Register from 'components/auth/Register';
 
 const App = () => {
   const location = useLocation();
-  const navigate = useHistory()
+  const navigate = useNavigate()
   // useEffect(() => {
   //   axios.post('/api/auth/check',{
   //     userAccessToken:localStorage.getItem('accessToken'),
   //     userRefreshToken:localStorage.getItem('refreshToken')
   //   }).then(res => {
   //     console.log(res)
-  //       navigate.push('/channel/@me')
+  //       navigate('/channel/@me')
   //   })
   //   .catch(err => {
   //     localStorage.removeItem('accessToken');
   //     localStorage.removeItem('refreshToken');
   //     if( location.pathname !== '/' && location.pathname.search('auth')=== 0){
-  //       navigate.push('/auth/login')
+  //       navigate('/auth/login')
   //     }
   //   })
   // },[location.pathname])
@@ -33,11 +35,17 @@ const App = () => {
     <>
       <SocketContext.Provider value={client}>
         <SocketController/>
-        <Route exact path="/" component={LandingPage} />
-        <Route strict path="/auth" component={Auth} />
-        <Route path="/channels/@me" component={Panel} />
-        <Route path="/channels/Server" component={Panel} />
-        <Route path="/store" component={Panel} />
+        <Routes>
+          <Route exact path="/" element={<LandingPage/>} />
+          <Route strict path="auth/" element={<Auth/>} >
+              <Route path="login" element={<LoginPage/>}/>
+              <Route path="register" element={<Register/>}/>
+              <Route path="forgot" element={<Register/>}/>
+          </Route>
+          <Route path="channels/*" element={<Panel/>} />
+          <Route path="store" element={<Panel/>} >
+          </Route>
+        </Routes>
       </SocketContext.Provider>
     </> 
   );

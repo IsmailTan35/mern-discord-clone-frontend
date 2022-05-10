@@ -1,11 +1,41 @@
+.settings-out{
+    background:"#36393F";
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    top:0;
+    left:0;
+    z-index: -1;
+    opacity: 0;
+    transition: 0.3s ease;
+}
+
+.settings-out-active{
+    background:#36393F;
+    width: 100%;
+    height: 100%;
+    position:absolute;
+    top:0;
+    left:0;
+    opacity: 1;
+    z-index: 1;
+    transition: 0.3s ease;
+
+}
+
 .settings-wrapper{
     width:100%;
     height:100%;
-    position:absolute;
     display:flex;
-    top:0;
-    left:0;
-    z-index: 100000;
+    transition: 0.3s ease;
+
+}
+
+.settings-wrapper-active{
+    width:100%;
+    height:100%;
+    display:flex;
+    transition: ease 0.3s;
 }
 
 .settings-primary-wrapper{
@@ -17,7 +47,23 @@
     color: #b9bbbe;
     line-height: 14px;
     font-size: 16px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
 
+.settings-primary-wrapper::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2e3338;
+    border-radius: 5px;
+
+}
+.settings-primary-wrapper::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+   
+.settings-primary-wrapper::-webkit-scrollbar-thumb {
+    background: #202225; 
+    border-radius: 10px;
 }
 
 .settings-secondary-wrapper{

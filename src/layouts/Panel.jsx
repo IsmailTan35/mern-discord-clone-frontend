@@ -3,20 +3,23 @@ import Dashboard from "views/Dashboard";
 import ServerDashboard from "views/ServerDashboard";
 
 import Sidebar from "components/Sidebar";
-import { Route, useHistory, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Route, Routes,useNavigate, useLocation } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { SocketContext } from "controller/Context";
 
 const Panel = () => {
+    const client = useContext(SocketContext);
     const friends = useSelector(state => state.friends.items);
     const message = useSelector(state => state.user.message);
-    const userID=useSelector(state => state.user.id);
-    const history = useHistory()
+    const userID = useSelector(state => state.user.id);
+    const navigate = useNavigate()
     const location = useLocation()
 
     useEffect(() => {
         if(location.pathname === "/" || friends.filter(friend => friend.id==location.pathname.split("/")[3]).length === 0) {
-            // history.push("/channels/@me")
+            // navigate("/channels/@me")
+            client.emit("configuration",{token: localStorage.getItem("accessToken")});
         }
     }, [])
     useEffect(() => {
@@ -29,8 +32,7 @@ const Panel = () => {
         
         <div className="panelWrapper">
             <Sidebar/>
-            <Route strict path="/channels/" component={Dashboard} />
-            <Route path="/store" component={Dashboard} />
+            <Dashboard/>
         </div>
         
     )

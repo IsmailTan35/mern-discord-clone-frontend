@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "assets/style/settings.css"
 import { 
     IoLogoInstagram, 
@@ -8,6 +8,80 @@ import {
 } from "react-icons/io5";
 import Nitro from "assets/img/nitro.svg";
 import {RiLoginBoxFill} from "react-icons/ri";
+
+const ESCAPE_KEYS = ['27', 'Escape'];
+
+const Settings = ({data,setData}) => {
+    const [selected, setSelected] = useState(1);
+    
+    const handleClick = (key) => {
+        setSelected(key)
+    }
+    const handler=({ key }) =>{
+        if (ESCAPE_KEYS.includes(String(key))) {
+            setData()
+        }
+      }
+
+      document.addEventListener("keydown", handler);
+
+    return (
+        <>
+            <div className={`settings-out${data?"-active":""}`}>
+                <div className={`settings-wrapper${data?"-active":""}`}>
+                    <div className="settings-primary-wrapper">
+                        <div className="settings-primary">
+                            {header.map((item, index) => (
+                                <div key={index}>
+                                <div className="settings-primary-item" >
+                                    {item.head && <div className="settings-primary-item-head">
+                                        {item.head}
+                                    </div>}
+                                    <div className="settings-primary-item-items">
+                                        {item.items.map((item, index2) => (
+                                            <div className={`settings-primary-item-item${selected===item.key?"-active":""}`} key={index2} onClick={()=>{handleClick(item.key)}}>
+                                                <div className="settings-primary-item-item-value">
+                                                    {item.value}
+                                                </div>
+                                                <div className="settings-primary-item-item-icon">
+                                                    {item.icon}
+                                                </div>
+                                            </div>
+                                        )
+                                        )}
+                                    </div>
+                                </div>
+                                <div className='settings-divider'/>
+                                </div>
+                            )
+                            )}
+                            <div className='settings-social'>
+                                <IoLogoTwitter className='settings-social-icon'/>
+                                <IoLogoFacebook className='settings-social-icon'/>
+                                <IoLogoInstagram className='settings-social-icon'/>
+
+                            </div>
+                            <div >
+                                <div style={{marginBottom:10}}>Stable 126963 (8500d26)</div>
+                                <div >Windows 10 64-Bit</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="settings-secondary-wrapper">
+                        <div className="settings-secondary">
+                        </div>
+                        <div className='settings-close-button'>
+                            <IoCloseCircleOutline className='settings-close-icon' onClick={setData}/>
+                            <div>ESC</div>
+                        </div>
+                                            
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
 const header = [
     { head: 'Kullanıcı Ayarları', items: [
         { key: 1, value: 'Hesabım' },
@@ -44,68 +118,5 @@ const header = [
         { key: 23, value: 'Çıkış yap' , icon: <RiLoginBoxFill style={{borderRadius:50}}/>},
     ] },
 ]
-
-const Settings = ({setData}) => {
-    const [selected, setSelected] = useState(1);
-
-    const handleClick = (key) => {
-        setSelected(key)
-    }
-
-    return (
-        <>
-            <div className='settings-wrapper'>
-                <div className="settings-primary-wrapper">
-                    <div className="settings-primary">
-                        {header.map((item, index) => (
-                            <div key={index}>
-                            <div className="settings-primary-item" >
-                                {item.head && <div className="settings-primary-item-head">
-                                    {item.head}
-                                </div>}
-                                <div className="settings-primary-item-items">
-                                    {item.items.map((item, index2) => (
-                                        <div className={`settings-primary-item-item${selected===item.key?"-active":""}`} key={index2} onClick={()=>{handleClick(item.key)}}>
-                                            <div className="settings-primary-item-item-value">
-                                                {item.value}
-                                            </div>
-                                            <div className="settings-primary-item-item-icon">
-                                                {item.icon}
-                                            </div>
-                                        </div>
-                                    )
-                                    )}
-                                </div>
-                            </div>
-                            <div className='settings-divider'/>
-                            </div>
-                        )
-                        )}
-                        <div className='settings-social'>
-                            <IoLogoTwitter className='settings-social-icon'/>
-                            <IoLogoFacebook className='settings-social-icon'/>
-                            <IoLogoInstagram className='settings-social-icon'/>
-
-                        </div>
-                        <div>
-                            <div style={{marginBottom:10}}>Stable 126963 (8500d26)</div>
-                            <div>Windows 10 64-Bit</div>
-                        </div>
-                    </div>
-                </div>
-                <div className="settings-secondary-wrapper">
-                    <div className="settings-secondary">
-                    </div>
-                    <div className='settings-close-button'>
-                        <IoCloseCircleOutline className='settings-close-icon' onClick={setData}/>
-                        <div>ESC</div>
-                    </div>
-                                        
-                </div>
-            </div>
-        </>
-    );
-};
-
 
 export default Settings;

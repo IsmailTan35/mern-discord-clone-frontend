@@ -18,15 +18,17 @@ const SocketController = () => {
       });
 
     client.on("messages", (messages) => { 
+      console.log(messages)
       dispatch(userActions.update({name:"message",value:messages}))
      });
 
     client.on("data",(data)=>{
+      console.log(data)
       dispatch(friendsActions.refresh({name:"items",value:data.onlineUser}))
       dispatch(userActions.refresh({name:"id",value:data.id}))
       dispatch(userActions.refresh({name:"name",value:data.name}))
       dispatch(userActions.refresh({name:"code",value:data.code}))
-      dispatch(userActions.refresh({name:"message",value:data.messages}))
+      // dispatch(userActions.refresh({name:"message",value:data.messages}))
     })
     
     client.on("user left", (user) => {

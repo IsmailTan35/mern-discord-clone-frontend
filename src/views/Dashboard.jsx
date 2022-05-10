@@ -1,26 +1,26 @@
 import React, { useState } from "react"
-import { Route, useHistory } from "react-router-dom"
+import { Route, Routes, useNavigate } from "react-router-dom"
 import Active from "views/friendsViews/Active"
-import routes from "routes"
 import FriendsHeader from "components/header/FriendsHeader"
 import StoreHeader from "components/header/StoreHeader"
-
+import {friendsRoutes} from "routes"
 import "assets/style/dashboard.css"
 import { useLocation } from "react-router-dom"
 import Avatar from "components/Avatar"
 import FriendsChatHeader from "components/header/FriendsChatHeader"
 import Chat from "views/Chat"
 import Friends from "components/Friends"
+
 const Dashboard =()=>{
     const [friends, setFriends] = useState("online")
-    const history = useHistory()
+    const navigate = useNavigate()
 
     const changeFriends = (e)=>{
         setFriends(e)
     }
 
     const changeHistory = (e)=>{
-        history.push(e)
+        navigate(e)
         if(e==="/channels/@me") setFriends("online")
         else setFriends(null)
     }
@@ -43,32 +43,27 @@ const Dashboard =()=>{
                 </div>
                 <div className="dashboard-panel">
                     <div className="dashboard-panel-header-wrapper">
-                            <Route exact strict sensitive path={"/channels/@me/:id"}>
-                                <FriendsChatHeader/>
-                            </Route>
-                            <Route exact strict sensitive path={"/channels/@me"}>
-                                <FriendsHeader friends={friends} changeFriends={changeFriends}/>:
-                            </Route>
-                            <Route exact strict sensitive path={"/store"}>
-                                <StoreHeader servers={friends} changeServers={changeFriends}/>
-                            </Route>
+                        <Routes>
+                            <Route exact strict sensitive path={"@me"} element={<FriendsHeader friends={friends} changeFriends={changeFriends}/>}/>
+                            <Route exact strict sensitive path={"@me/:id"} element={<FriendsChatHeader/>}/>
+                            <Route exact strict sensitive path={"/store"} element={<StoreHeader servers={friends} changeServers={changeFriends}/>}/>
+                        </Routes>
                     </div>
                     <div className="dashboard-panel-body-wrapper">
-                        <Route exact strict sensitive path={"/channels/@me"}>
-                            {friends &&
+                        <Routes>
+                            <Route exact strict sensitive path={"@me"} element={
+                                friends &&
                                 <>
                                 <div className="friends-wrapper">
                                     <div className="friends-add-wrapper">
-                                        {routes.friendsRoutes[friends]}
+                                        {friendsRoutes[friends]}
                                     </div>
                                     <Active/>
                                 </div>
                                 </>
-                            }
-                        </Route>
-                        <Route exact strict sensitive path={"/channels/@me/:id"}>
-                            <Chat/>
-                        </Route>
+                            }/>
+                            <Route exact strict sensitive path={"@me/:id"} element={<Chat/>}/>
+                        </Routes>
                     </div>
                 </div>
             </div>

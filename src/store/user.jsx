@@ -6,6 +6,7 @@ const { reducer, actions } = createSlice({
       id:null,
       name:null,
       code:null,
+      token:null,
       message:[],
   },
   reducers: {

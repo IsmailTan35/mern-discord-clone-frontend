@@ -1,16 +1,16 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
-    const navigate = useHistory()
+    const navigate = useNavigate()
     const [ form, setForm ] =useState({
         username: '',
         email: '',
         password: '',
     })
     const handleUrl = (url) => {
-        navigate.push(url)
+        navigate(url)
     }
 
     const handleChange = (e) => {
