@@ -2,7 +2,6 @@ import {UniqueId} from "../helper/helperGetUniqueID.mjs";
 import userSchema from "../schema/user.mjs";
 
 const users = {};
-let onlineUser=[];
 let messages={};
 const socketToRoom = {};
 
@@ -10,59 +9,59 @@ export default (io,con)=>{
     io.db = con;
     io.on("connection", (socket) => {
         // messages[socket.id]=[]
-
+        
         // console.log(io.opts.app.ismail)
         // console.log(io.app.ismail)
         socket.on("configuration", async (data) => {
             var user = await userSchema.findOne({token:{"$in":[data.token]}})
             if(!user) return
-            var ids =user._id.toString()
 
+            var ids =user._id.toString()
             socket.name =user.username
             socket.code =user.code
-
-            socket.id= ids
-            socket.join(ids);
-
-            onlineUser.push({
-                id: user._id.toString(),
-                name: user.username,
-                code: user.code,
-            })
-            console.log(onlineUser.filter(items => items.id !== socket.id))
-            console.log(socket.id)
-            socket.emit("data", {
-                id: user._id.toString(),
-                name: user.username,
-                code: user.code,
+            socket.userId = ids
+            console.log(user)
+            const rawSockets =await io.fetchSockets()
+            const sockets =rawSockets.filter(items => items.id !== socket.id)
+            let onlineUsers =[]
+            sockets.map(function(elem){
+                console.log(elem)
+                onlineUsers.push({
+                        name:elem.name, 
+                        code:elem.code,
+                        id:elem.id,
+                        userId:elem.userId
+                    });
+              })
+            const datak ={
+                id: socket.userId,
+                name: socket.name,
+                code: socket.code,
                 messages:messages[socket.id],
-                onlineUser:onlineUser.filter(items => items.id !== socket.id),
+                onlineUsers,
                 users,
                 socketToRoom
-            });
+            }
+            console.log(datak)
+            socket.emit("data", datak);
 
             socket.broadcast.emit("user join", { 
-                id: user._id.toString(),
-                name: user.username,
-                code: user.code
+                id: ids,
+                name: socket.username,
+                code: socket.name
             })
 
         })
 
-        socket.on("send message",user=>{
-            console.log(onlineUser)
-            console.log(user.to)
-            console.log(socket.id)
-            // messages[socket.id].push({from:socket.id,to:user.to,message:user.message,read:false})
-            // messages[user.to].push({from:user.to,to:socket.id,message:user.message,read:false})
-            io.to(user.to).emit("messages",{from:socket.id,to:user.to,message:user.message,read:false});
-            io.to(socket.id).emit("messages",{from:socket.id,to:user.to,message:user.message,read:false});
+        socket.on("send message",async user=>{
+            let socketss =await io.fetchSockets()
+            const userTo = socketss.filter(s=>s.userId==user.to)
+            io.to(userTo.id).emit("messages",{from:socket.userId,to:user.to,message:user.message,read:false});
+            io.to(socket.id).emit("messages",{from:socket.userId,to:user.to,message:user.message,read:false});
 
         })
         
         socket.on('disconnect', () => {
-            onlineUser=onlineUser.filter(items => items.id !== socket.id)
-            console.log(onlineUser)
             const roomID = socketToRoom[socket.id];
             let room = users[roomID];
             if (room) {

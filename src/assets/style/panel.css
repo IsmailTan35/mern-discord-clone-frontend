@@ -3,11 +3,26 @@
     margin: 0;
     /* background-color: #2F3136; */
 }
-.panelWrapper{
+
+.panelWrapper,.panelWrapper-active{
     height: 100vh;
     width: 100vw;
     background-color: #ccc;
     display: flex;
     flex: auto 1;
     flex-direction: row;
+    transition: ease-in-out 0.3s;
+    position: fixed;
+
+}
+
+.panelWrapper{
+    transform: scale(.93);
+    opacity: 0;
+
+}
+
+.panelWrapper-active{
+    transform: scale(1);
+    opacity: 1;
 }

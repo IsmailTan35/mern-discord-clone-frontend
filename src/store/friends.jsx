@@ -7,6 +7,7 @@ const { reducer, actions } = createSlice({
   },
   reducers: {
     refresh(state, action) {
+      console.log(action.payload.value)
         state[action.payload.name] = [];
         state[action.payload.name] = action.payload.value
 

@@ -6,6 +6,7 @@ import store from 'store';
 import App from 'App';
 import axios from 'axios';
 import {url} from "controller/Context";
+import "assets/style/index.css";
 axios.defaults.baseURL = url;
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 console.log(url)

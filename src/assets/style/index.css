@@ -1,13 +1,6 @@
 body {
   margin: 0;
-  font-family: Whitney,"Helvetica Neue",Helvetica,Arial,sans-serif;;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  background: #202225;
 }
 
 iframe{

@@ -17,13 +17,19 @@ const Settings = ({data,setData}) => {
     const handleClick = (key) => {
         setSelected(key)
     }
-    const handler=({ key }) =>{
-        if (ESCAPE_KEYS.includes(String(key))) {
-            setData()
+    
+    useEffect(() => {
+        if(!data) return
+        function handler({ key }){
+            if (ESCAPE_KEYS.includes(String(key))) {
+                setData()
+            }
+          }
+        document.addEventListener('keydown', handler);
+        return () => {
+            document.removeEventListener('keydown', handler);
         }
-      }
-
-      document.addEventListener("keydown", handler);
+    }, [data])
 
     return (
         <>
