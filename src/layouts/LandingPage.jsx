@@ -42,6 +42,7 @@ const LandingPage = () => {
             </div>
             <div className="landing-01">
                 <div style={{paddingInline:"15%",textAlign:"center"}}>
+                    <h1>Clone Uygulamadır.</h1>
                     <h1 className="landing-01-header">ÖYLE BIR ORTAM HAYAL ET KI...</h1>
                     <div className="landing-01-subheader">{`...bir okul kulübünün, oyun grubunun veya dünya çapında bir sanat topluluğunun bir üyesi olabilirsin. Sadece sen ve arkadaşlarının vakit geçirebileceği bir yer. Her gün konuşmayı ve daha sık takılmayı kolaylaştıran bir ortam.`}</div>
                     <div className="landing-buttons-wrapper">
