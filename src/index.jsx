@@ -10,6 +10,8 @@ import "assets/style/index.css";
 import "react-toastify/dist/ReactToastify.css";
 
 axios.defaults.baseURL = url ;
+console.log(url)
+
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 ReactDOM.render(
   <BrowserRouter>
