@@ -1,12 +1,9 @@
 import { createSlice, current  } from '@reduxjs/toolkit';
 
 const { reducer, actions } = createSlice({
-  name: 'friends',
+  name: 'friendRequest',
   initialState: {
-    onlineUsers:[],
-    blocked:[],
-    requests:[],
-    all:[],
+    items:[],
   },
   reducers: {
     refresh(state, action) {
@@ -16,16 +13,14 @@ const { reducer, actions } = createSlice({
     },
     update(state, action) {
         if(action.payload.type=='remove'){
-            state[action.payload.name]=state[action.payload.name].filter(user => 
-              user.name != action.payload.value.name && user.code != action.payload.value.code
-            )
+            state.items=state.items.filter(friend => friend.id!=action.payload.value.id)
         }
         else if(action.payload.type=='add'){
-            state[action.payload.name].push(action.payload.value)
+            state.items.push(action.payload.value)
         }
     }
   }
 });
 
-export { actions as friendsActions };
-export { reducer as friendsReducer };
+export { actions as friendRequestActions };
+export { reducer as friendRequestReducer };

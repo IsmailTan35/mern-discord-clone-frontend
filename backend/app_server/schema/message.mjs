@@ -3,15 +3,24 @@ import mongoose from 'mongoose'
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    from: {
+    sender: {
         type: String,
     },
-    to:{
-        type:Number
+    receiver:{
+        type:String
     },
     message: {
         type: String,
     },
+    serverName: {
+        type: String,
+        default:null
+    },
+    timestamps: {
+        type: Date,
+        default: Date.now,
+    },
+    
 });
 
 export default mongoose.model('discordmessages', userSchema);

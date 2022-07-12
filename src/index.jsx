@@ -7,14 +7,15 @@ import App from 'App';
 import axios from 'axios';
 import {url} from "controller/Context";
 import "assets/style/index.css";
-axios.defaults.baseURL = url;
+import "react-toastify/dist/ReactToastify.css";
+
+axios.defaults.baseURL = url ;
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
-console.log(url)
 ReactDOM.render(
   <BrowserRouter>
-    <Provider store={store}>
+    <Provider store={store}> 
       <App />
-    </Provider>
+     </Provider>
   </BrowserRouter>,
   document.getElementById('root')
 );

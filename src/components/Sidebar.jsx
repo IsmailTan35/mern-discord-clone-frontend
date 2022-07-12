@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -13,6 +13,9 @@ import "assets/style/sidebar.css"
         navigate(e)
     }
 
+    const handleAddServerModal = (e)=>{
+        setAddServerModal(true)
+    }
     return(
         <>
         <div className="sidebar-wrapper">
@@ -64,7 +67,7 @@ import "assets/style/sidebar.css"
                             </Tooltip>
                           )}
                         >
-                        <div className="sidebarAddUser">
+                        <div className="sidebarAddUser" id="addServerModal">
                             <div></div>
                             <div></div>
                         </div>

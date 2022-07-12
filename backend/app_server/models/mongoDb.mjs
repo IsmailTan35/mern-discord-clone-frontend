@@ -17,6 +17,7 @@ const mongoDb = async () =>{
   })
   mongoose.connection.on('disconnected', () => {
     console.log('disconnected to mongodb')
+
   })
   await mongoose.connect(uri);
   con.on('error', console.error.bind(console, 'connection error:'))

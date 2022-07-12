@@ -1,28 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { SocketContext } from 'controller/Context';
+
 import { useLocation } from "react-router-dom"
 import { useSelector } from 'react-redux';
 import "assets/style/chat.css"
+import { SocketContext } from 'controller/Context';
 
-const ChatInput = () => {
+const ChatInput = ({user}) => {
     const friends = useSelector(state => state.friends.items)
     const client = useContext(SocketContext);
     const location = useLocation();
     const [message, setMessage] = useState("");
-    const [name, setName] = useState('')
 
-    useEffect(() => {
-        if(!location.pathname.split("/").length==3) return
-        const friend=friends.filter(friend => friend.id==location.pathname.split("/")[3])
-        if(friend.length>0){
-            setName(friend[0].name)
-        }
-    }, [location])
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && message.trim() !== "") {
             setMessage("")
-            client.emit("send message", {to:location.pathname.split("/")[3],message});
+            client.emit("sendMessage", {
+                receiver:user.userId,
+                message
+            });
         }
       }
     
@@ -40,7 +36,7 @@ const ChatInput = () => {
             </svg>
             </div>
             <div className="chat-input">
-                <input placeholder={`@${name} kanalına mesaj gönder`} value={message} onChange={onChangeText} onKeyDown={handleKeyDown}></input>
+                <input placeholder={`@${user.name} kanalına mesaj gönder`} value={message} onChange={onChangeText} onKeyDown={handleKeyDown}></input>
             </div>
             <div className="chat-input-right-button-wrapper">
             <div>

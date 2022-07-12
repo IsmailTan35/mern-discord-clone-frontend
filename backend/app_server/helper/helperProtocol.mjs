@@ -27,12 +27,11 @@ const httpsServer = (app,port) =>{
 	return httpsServer
 }
 
-const webSocket = (httpServer,app) =>{
+const webSocket = (httpServer) =>{
     const io = new Server(httpServer, { 
 		cors: {
 			origin: "*",
-		  },
-        app
+		  }
     });
     return io;
 }

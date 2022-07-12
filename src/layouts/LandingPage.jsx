@@ -8,6 +8,8 @@ const LandingPage = () => {
     };
     return(
         <>
+        <div style={{background:"white"}}>
+
         <div style={{background:"#404eed"}}>
             <div className="landing-navbar">
                 <div className="landing-navbar-logo-wrapper" style={{color:"white"}}>
@@ -158,6 +160,7 @@ const LandingPage = () => {
                     <button>{`Kaydol`}</button>
                 </div>
             </div>
+        </div>
         </div>
         </>
     )

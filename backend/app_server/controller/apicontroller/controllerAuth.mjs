@@ -1,14 +1,13 @@
 
-import { generateAccessToken } from "../helper/helperToken.mjs"
-import { generateRefreshToken } from "../helper/helperToken.mjs"
-import userSchema from '../schema/user.mjs'
+import { generateAccessToken } from "../../helper/helperToken.mjs"
+import { generateRefreshToken } from "../../helper/helperToken.mjs"
+import userSchema from '../../schema/user.mjs'
 import crypto  from 'crypto'
-import {UniqueId,UniqueName} from "../helper/helperGetUniqueID.mjs";
+import {UniqueId,UniqueName} from "../../helper/helperGetUniqueID.mjs";
 
 const loginPost = async (req,res)=> {
   let data = req.body
   const token =generateAccessToken({}) 
-
   const filter = { 
     email: data.email, 
     password:crypto.createHash('md5').update(data.password).digest('hex') 
@@ -19,7 +18,6 @@ const loginPost = async (req,res)=> {
       token
     } 
   }
-  console.log(token)
   var user = await userSchema.findOneAndUpdate(filter,update)
   if(user){
       res.status(200).json([

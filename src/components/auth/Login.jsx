@@ -3,6 +3,7 @@ import { SocketContext } from "controller/Context";
 import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
     const client = useContext(SocketContext);
@@ -21,19 +22,26 @@ const LoginPage = () => {
     }
     
     const handleClick = (url) => {
+        const id = toast.loading('Please wait...')
+
         axios.post("/api/auth/login", form)
         .then(res => {
             localStorage.setItem("accessToken", res.data[6].value);
             client.emit("configuration",{token: res.data[6].value});
             navigate(url)
+            setTimeout(() => {
+                toast.update(id, { render: "All is good", type: toast.TYPE.SUCCESS, isLoading: false, autoClose:1500});
+            }, 500);
         })
         .catch(err => {
-            console.log(err)
         })
     }
 
     const handleUrl = (url) => {
         navigate(url)
+        setTimeout(() => {
+            toast.update(id, { render: "All is good", type: toast.TYPE.ERROR, isLoading: false, autoClose:1500});
+        }, 1000);
     }
     
     return(
@@ -50,7 +58,7 @@ const LoginPage = () => {
                     </div>
                     <div className="auth-input-wrapper">
                         <label>ŞİFRE</label>
-                        <input name="password" className="auth-input" onChange={handleChange} value={form.password}/>
+                        <input name="password" type={"password"} className="auth-input" onChange={handleChange} value={form.password}/>
                     </div>
                     <div>
                         <button 

@@ -3,28 +3,27 @@ import Dashboard from "views/Dashboard";
 import ServerDashboard from "views/ServerDashboard";
 
 import Sidebar from "components/Sidebar";
-import { Route, Routes,useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { SocketContext } from "controller/Context";
 import Settings from "views/settings";
+import AddServerModal from "components/modal/AddServerModal";
 
 const ESCAPE_KEYS = ['27', 'Escape'];
 
 const Panel = () => {
     const client = useContext(SocketContext);
-    const friends = useSelector(state => state.friends.items);
+    const friends = useSelector(state => state.friends.onlineUsers);
     const message = useSelector(state => state.user.message);
     const userID = useSelector(state => state.user.id);
     const navigate = useNavigate()
     const location = useLocation()
     const [show,setShow] = useState(false)
+    const [showAddServerModal,setShowAddServerModal] = useState(false)
 
     useEffect(() => {
-        if(location.pathname === "/" || friends.filter(friend => friend.id==location.pathname.split("/")[3]).length === 0) {
-            // navigate("/channels/@me")
             client.emit("configuration",{token: localStorage.getItem("accessToken")});
-        }
     }, [])
 
     useEffect(() => {
@@ -38,26 +37,39 @@ const Panel = () => {
         setShow(true)
     }
 
+    function handleAddServerModal(){
+        setShowAddServerModal(true)
+    }
     function handler2({ key }){
         if (ESCAPE_KEYS.includes(String(key))) {
             setShow(false)
+            setShowAddServerModal(false)
         }
     }
 
     function handleClick(e) {
         setShow(false)
+        setShowAddServerModal(false)
     }
+
     useEffect(() => {
+        if(!document.getElementById("settings-button")) return
         document.getElementById("settings-button").addEventListener("mousedown", handler);
+        document.getElementById("addServerModal").addEventListener("mousedown", handleAddServerModal);
+
         document.addEventListener("keydown", handler2);
 
         return () => {
+        if(!document.getElementById("settings-button")) return
+        
             document.getElementById("settings-button").removeEventListener("mousedown", handler);
+            document.getElementById("addServerModal").addEventListener("mousedown", handleAddServerModal);
+
             document.removeEventListener("keydown", handler2);
 
         }
     }, [])
-    console.log(show)
+
     return(
         <>
             <div className={`panelWrapper${!show?"-active":""}`}>
@@ -65,6 +77,7 @@ const Panel = () => {
                 <Dashboard/>
             </div>
             <Settings data={show} setData={handleClick} />
+            <AddServerModal show={showAddServerModal} setShow={handleClick} />
         </>
         
     )

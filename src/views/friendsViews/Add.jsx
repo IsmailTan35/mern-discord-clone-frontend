@@ -2,7 +2,7 @@ import "assets/style/friends.css";
 import axios from "axios";
 import { useState } from "react";
 const Add = () => {
-    const [name,setName]=useState()
+    const [name,setName]=useState("demo2#6846")
 
     const handleAdd = (e) => {
         e.preventDefault();
@@ -11,10 +11,8 @@ const Add = () => {
             token: localStorage.getItem("accessToken")
         })
         .then(res => {
-            console.log(res)
         })
         .catch(err => {
-            console.log(err)
         })
     }
     return (
@@ -26,7 +24,7 @@ const Add = () => {
                     className="friends-add-input" 
                     type="text" 
                     placeholder="Bir kullanıcı adı#0000 gir"
-                    value={name}
+                    value={name }
                     onChange={(e)=>{setName(e.target.value)}} 
                     />
                 <button className="friends-add-input-button" onClick={handleAdd}>{`Arkadaşlık isteği gönder`}</button>

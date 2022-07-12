@@ -11,9 +11,11 @@ const Friends = () => {
         if(!id) return;
         navigate(`/channels/@me/${id}`)
     }
+
     const changeHistory = (e)=>{
         navigate(e)
     }
+    
     return(
         <>
         <div className="dashboard-sidebar-chat-wrapper">
@@ -40,7 +42,7 @@ const Friends = () => {
                     </svg>
                 </div>
                 <div className="dashboard-sidebar-chat">
-                    {friends.length==0 ? <EmptyFriends/>:
+                    {!friends || friends.length==0 ? <EmptyFriends/>:
                     friends.map((friend,index)=>{
                         return(
                             <div className="dashboard-sidebar-chat-item-wrapper" 

@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import LoginPage from 'components/auth/Login';
 import Register from 'components/auth/Register';
+import { ToastContainer } from 'react-toastify';
 
 const App = () => {
   const location = useLocation();
@@ -20,7 +21,6 @@ const App = () => {
   //     userAccessToken:localStorage.getItem('accessToken'),
   //     userRefreshToken:localStorage.getItem('refreshToken')
   //   }).then(res => {
-  //     console.log(res)
   //       navigate('/channel/@me')
   //   })
   //   .catch(err => {
@@ -47,6 +47,15 @@ const App = () => {
           </Route>
         </Routes>
       </SocketContext.Provider>
+      <ToastContainer
+        position="bottom-right"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        draggable
+        theme='colored'
+        limit={2}
+        />
     </> 
   );
 }

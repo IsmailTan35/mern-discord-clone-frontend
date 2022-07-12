@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const navigate = useNavigate()
@@ -19,8 +20,19 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(form)
+        const id = toast.loading('Please wait...')
+
         axios.post('/api/auth/register', form)
+        .then(res => {
+            setTimeout(() => {
+                toast.update(id, { render: "All is good", type: toast.TYPE.SUCCESS, isLoading: false, autoClose:1500});
+            }, 500);
+        })
+        .catch(err => {
+            setTimeout(() => {
+                toast.update(id, { render: "All is good", type: toast.TYPE.ERROR, isLoading: false, autoClose:1500});
+            }, 500);
+        })
     }
 
     return (

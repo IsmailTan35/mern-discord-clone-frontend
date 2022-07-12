@@ -5,8 +5,8 @@ import {
     httpServer, 
     webSocket
 } from'./app_server/helper/helperProtocol.mjs'
-import controllerApi from'./app_server/controller/controllerApi.mjs'
-import controlleWebsocket from'./app_server/controller/controllerWebsocket.mjs'
+import controllerApi from'./app_server/controller/apicontroller/index.mjs'
+import controlleWebsocket from'./app_server/controller/socketcontroller/index.mjs'
 import mongoDb from"./app_server/models/mongoDb.mjs"
 
 const env = dotenv.config()
@@ -14,7 +14,7 @@ const app = express()
 const port = process.env.PORT || 10000 
 const db = mongoDb()
 const server = httpServer(app,port)
-const socket = webSocket(server,app)
-
+const socket = webSocket(server)
+app.io=socket
 controllerApi(app,"con")
 controlleWebsocket(socket,"con")

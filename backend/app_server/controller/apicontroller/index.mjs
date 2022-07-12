@@ -3,15 +3,16 @@ import {
     logoutPost,
     registerPost,
 } from './controllerAuth.mjs'
-import { verifyPost } from '../helper/helperVerify.mjs'
+import { verifyPost } from '../../helper/helperVerify.mjs'
 
 import {
     friendsGet,
     friendsPost,
     friendsPut,
     friendsDelete,
-} from './controllerFriends.mjs'
+} from './friend/controllerFriends.mjs'
 // import controllerSocket from './controllerSocket.mjs'
+import userSchema from "../../schema/user.mjs";
 
 export default (app,con) =>{
 
@@ -30,4 +31,28 @@ export default (app,con) =>{
     app.post("/api/friend",friendsPost)
     app.put("/api/friend",friendsPut)
     app.delete("/api/friend",friendsDelete)
+
+    app.get("/api/user/getName",async (req,res) => {
+        const user = await userSchema.findById(req.query.id)
+        res.status(200).json({
+            userId:user._id,
+            name:user.username,
+            code:user.code,
+        })
+    })
+
+    app.get("/api/user/getMessages",async (req,res) => {
+        const user = await userSchema.find({
+            $or:[
+                {sender:req.query.id,receiver:req.query.id2},
+                {sender:req.query.id,receiver:req.query.id}
+            ]
+
+        })
+        res.status(200).json({
+            userId:user._id,
+            name:user.username,
+            code:user.code,
+        })
+    })
 }

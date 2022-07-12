@@ -1,12 +1,9 @@
 import { createSlice, current  } from '@reduxjs/toolkit';
 
 const { reducer, actions } = createSlice({
-  name: 'friends',
+  name: 'message',
   initialState: {
-    onlineUsers:[],
-    blocked:[],
-    requests:[],
-    all:[],
+    items:[],
   },
   reducers: {
     refresh(state, action) {
@@ -23,9 +20,14 @@ const { reducer, actions } = createSlice({
         else if(action.payload.type=='add'){
             state[action.payload.name].push(action.payload.value)
         }
+    },
+    overWrite(state, action) {
+        state[action.payload.name] = [...state[action.payload.name], ...action.payload.value]
+        state[action.payload.name] = [...new Map(state[action.payload.name].map(item=> [item.timestamps,item])).values()]
     }
+
   }
 });
 
-export { actions as friendsActions };
-export { reducer as friendsReducer };
+export { actions as messageActions };
+export { reducer as messageReducer };
