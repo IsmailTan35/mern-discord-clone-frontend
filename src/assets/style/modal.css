@@ -25,6 +25,7 @@
 	transition: all 0.2s ease-in-out;
 	transform: scale(0);
 	opacity: 0;
+	overflow-x: hidden;
 
 }
 

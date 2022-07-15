@@ -1,12 +1,9 @@
 import React from 'react';
-import "assets/style/modal.css";
-const AddServerModal = ({show,setShow}) => {
+
+const First = ({setStep}) => {
 	return (
 		<>
-			<div style={{pointerEvents:"none",position:"fixed",display:"flex",justifyContent:"center",alignItems:"center",height:"100%",width:"100%"}}>
-				<div className={`modal-wrapper${show?" active":""}`} onClick={setShow}>
-				</div>
-				<div className={`mymodal${show?" active":""}`} onClick={(e)=>{e.preventDefault();e.stopPropagation()}}>
+			<div style={{minWidth:"100%"}}>
 					<div className='modal-firstRow'>
 						<div className='mymodal-header'>
 							<h3>
@@ -21,8 +18,9 @@ const AddServerModal = ({show,setShow}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
+									<img src="/assets/img/createserver/createserver-1.svg" alt=""/>
 								</div>
-								<div>
+								<div onClick={()=>{setStep(1)}}>
 									Kendim Oluşturayım
 								</div>
 								<div>
@@ -33,6 +31,8 @@ const AddServerModal = ({show,setShow}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
+								<img src="/assets/img/createserver/createserver-2.svg" alt=""/>
+
 								</div>
 								<div>
 									Oyun
@@ -45,6 +45,8 @@ const AddServerModal = ({show,setShow}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
+								<img src="/assets/img/createserver/createserver-3.svg" alt=""/>
+
 								</div>
 								<div>
 									Okul Kulübü
@@ -56,6 +58,8 @@ const AddServerModal = ({show,setShow}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
+								<img src="/assets/img/createserver/createserver-4.svg" alt=""/>
+
 								</div>
 								<div>
 									Çalışma Grubu
@@ -67,6 +71,8 @@ const AddServerModal = ({show,setShow}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
+								<img src="/assets/img/createserver/createserver-5.svg" alt=""/>
+
 								</div>
 								<div>
 									Arkadaşlar
@@ -78,6 +84,8 @@ const AddServerModal = ({show,setShow}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
+								<img src="/assets/img/createserver/createserver-6.svg" alt=""/>
+
 								</div>
 								<div>
 									Sanatçılar ve Zanatkârlar
@@ -89,6 +97,8 @@ const AddServerModal = ({show,setShow}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
+								<img src="/assets/img/createserver/createserver-7.svg" alt=""/>
+
 								</div>
 								<div>
 									Yerel Topluluklar
@@ -100,22 +110,21 @@ const AddServerModal = ({show,setShow}) => {
 
 					</div>
 					
-					<div className='modal-secondRow'>
+					<div className='modal-secondRow' style={{background:"#f2f3f5"}}>
 						<div className='modal-secondRow-header'>
 							<h3>
 								Zaten davetin var mı?
 							</h3>
 						</div>
 						<div className='modal-secondRow-button-wrapper'>
-							<button className='modal-secondRow-button'>
+							<button className='modal-secondRow-button' onClick={()=>{setStep(1)}}>
 								Bir Sunucuya Katıl
 							</button>
 						</div>
 					</div>
 				</div>
-			</div>
 		</>
 	);
 };
 
-export default AddServerModal;
+export default First;

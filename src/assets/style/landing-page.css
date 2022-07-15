@@ -1,9 +1,17 @@
-.landing-navbar{
+.landing-navbar-wrapper{
     padding: 0 85px;
     width: 100%;
-    z-index: 1030;
     height: 80px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.landing-navbar{
+    display: flex;
+    width: 100%;
+    max-width: 1260px;
 }
 
 .landing-navbar-logo-wrapper{
@@ -43,7 +51,7 @@
     justify-content: center;
     padding-top: 24px;
     padding-inline: 70px;
-    justify-content: space-around;
+    column-gap: 24px;
 }
 
 .landing-navbar-login-button{
@@ -63,7 +71,6 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height:calc(100vh - 80px);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -73,7 +80,6 @@
 }
 
 .landing-wrapper{
-    height: 100vh; 
     width: 100%;
     padding: 120px 40px;
     display: flex;
@@ -116,6 +122,7 @@
     text-align: center;
     cursor: pointer;
     font-weight: 500;
+    width: max-content;
 
 }
 
@@ -129,14 +136,15 @@
     text-align: center;
     cursor: pointer;
     font-weight: 500;
+    width: max-content;
 
 }
 
 .landing-01-header{
-    font-size: 56px;
+    font-size: 64px;
     font-weight: 800;
     text-align: center;
-
+    line-height: 95%;
 }
 
 .landing-01-subheader{
@@ -149,11 +157,13 @@
 .footer-wrapper{
     background-color: #23272a;
     color: #fff;
-    padding: 10px;
     text-align: center;
     font-size: 12px;
     width: 100%;
     padding: 80px 0 64px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .footer-first-wrapper{
@@ -165,12 +175,15 @@
 }
 
 .footer-links-01{
+    width: 250px;
 }
 
 .footer-links{
+    width: 175px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 10px;
 }
 .footer-links-01-media{
     display: flex;
@@ -219,3 +232,98 @@
     font-weight: 600;
     cursor: pointer;
 }
+
+.landing-content-picture{
+
+}
+
+@media only screen and (max-width: 1050px){
+    .landing-navbar-wrapper{
+        padding: 24px;
+    }
+    .landing-navbar{
+        justify-content: space-between;
+        
+    }
+    .landing-navbar-center-wrapper{
+        display: none;
+    }
+
+    .landing{
+        flex-direction: column;
+    }
+    .landing-buttons-wrapper{
+        flex-direction: column;
+        row-gap: 10px;
+    }
+}
+
+.landing{
+    text-align: left;
+    max-width: 1260px;
+    display: flex;
+    column-gap: 50px;
+}
+
+.landing-content{
+    width: 380px;
+}
+
+.landing-content h2{
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.landing-content span{
+    font-size: clamp(16px,2vw,20px);
+}
+
+
+@media only screen and (max-width: 610px){
+
+}
+
+@media only screen and (max-width: 900px){
+    .landing-content{
+        width: 500px;
+    }
+    .landing-content-picture{
+        width: 100%;
+        height: auto;
+    }
+    .footer-first-wrapper{
+        flex-wrap: wrap;
+    }
+    .footer-links-01{
+        width: 40vw;
+        margin-right: 60px;
+    }
+    .landing-wrapper-01{
+        padding: 10px 40px 60px 40px;
+    }
+
+}
+
+@media only screen and (max-width: 500px){
+    .landing-content{
+        width: 100%;
+    }
+    .landing-01-header{
+        padding: 0 10px;
+    }
+    .landing-01-subheader{
+        padding: 0 20px;
+        width: 100%;
+    }
+    .footer-first-wrapper{
+        row-gap: 24px;
+        column-gap: 24px;
+    }
+    .footer-links-01{
+        width: 100vw;
+        margin:0;
+        margin-bottom: 10px;
+    }
+
+}
+
