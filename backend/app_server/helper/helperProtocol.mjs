@@ -12,14 +12,7 @@ const httpServer = (app,port) =>{
 	return httpServer
 }
 
-const httpsServer = (app,port) =>{
-	const privateKey = null
-	const certificate = null
-	const ca = null
-	
-	const credentials = {
-		
-	};
+const httpsServer = (app,port,credentials) =>{
 	const httpsServer = httpsCreate(credentials,app)
 	httpsServer.listen(port, () =>{
 		console.log((new Date()) + ' Server is listening on port ' + port);
@@ -36,8 +29,33 @@ const webSocket = (httpServer) =>{
     return io;
 }
 
+const CreateServer= (app,port) => {
+	const checkPrivateKey = fs.existsSync('/root/projects/private.key')
+	const checkCertificate = fs.existsSync('/root/projects/certificate.crt')
+	const checkCa = fs.existsSync('/root/projects/ca_bundle.crt')
+	
+	if(checkPrivateKey && checkCertificate && checkCa){
+		const privateKey = fs.readFileSync('/root/projects/private.key', 'utf8')
+		const certificate = fs.readFileSync('/root/projects/certificate.crt', 'utf8')
+		const ca = fs.readFileSync('/root/projects/ca_bundle.crt', 'utf8')
+		
+		const credentials = {
+			key: privateKey,
+			cert: certificate,
+			ca: ca
+		}
+	
+		return httpsServer(app,port,credentials)
+	}
+	else{
+
+		return httpServer(app,port)
+	}
+}
+
 export {
     httpServer,
     httpsServer,
-    webSocket
+    webSocket,
+	CreateServer
 }
