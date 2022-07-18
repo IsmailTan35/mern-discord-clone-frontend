@@ -13,6 +13,8 @@ import {
 } from './friend/controllerFriends.mjs'
 // import controllerSocket from './controllerSocket.mjs'
 import userSchema from "../../schema/user.mjs";
+import serverSchema from "../../schema/server.mjs";
+
 
 export default (app,con) =>{
 
@@ -53,6 +55,37 @@ export default (app,con) =>{
             userId:user._id,
             name:user.username,
             code:user.code,
+        })
+    })
+
+    app.post("/api/server" ,async (req,res) => {
+        const token = req.headers.authorization
+        const { serverName }= req.body
+        console.log(serverName)
+
+        if(!serverName || !token) return res.status(400)
+
+        const user = await userSchema.aggregate([
+            {$match:{
+                token:{"$in":[token]
+            }}
+        }])
+
+        if(!user.length) return res.sendStatus(401)
+
+        const server = await serverSchema.model('discordserver').create({
+            servername:serverName,
+            // serverpicture:req.body.serverpicture,
+            userIDs:[user[0]._id]
+        })
+
+        if(!server) return res.status(401)
+
+        res.status(200).json({
+            serverId:server._id,
+            servername:server.servername,
+            serverpicture:server.serverpicture,
+            userIDs:server.userIDs,
         })
     })
 }

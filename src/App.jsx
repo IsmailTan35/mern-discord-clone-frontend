@@ -12,10 +12,18 @@ import axios from 'axios';
 import LoginPage from 'components/auth/Login';
 import Register from 'components/auth/Register';
 import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { userActions } from 'store';
 
 const App = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(userActions.refresh({name:"token",value:localStorage.getItem("accessToken")}))
+  }, [])
+  
   // useEffect(() => {
   //   axios.post('/api/auth/check',{
   //     userAccessToken:localStorage.getItem('accessToken'),

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import "assets/style/modal.css";
 import First from './First';
 import Second from './Second';
@@ -13,28 +13,27 @@ const AddServerModal = ({show,setShow}) => {
 	useEffect(()=>{
 		if(!show) setStep(0)
 	},[show])
-	console.log(step)
-	useEffect(()=>{
+
+	useLayoutEffect(()=>{
 		if(!ref) return
 		if(ref.current.children[step].getBoundingClientRect().height<=0) return
 
 		setModalHeight(ref.current.children[step].getBoundingClientRect().height)
 	},[ref,step])
+
 	return (
 		<>
 			<div style={{pointerEvents:"none",position:"fixed",display:"flex",justifyContent:"center",alignItems:"center",height:"100%",width:"100%"}}>
-				<div className={`modal-wrapper${show?" active":""}`} onClick={setShow}>
-				</div>
+				<div className={`modal-wrapper${show?" active":""}`} onClick={setShow}/>
 				<div 
 					className={`mymodal${show?" active":""}`} 
-					onClick={(e)=>{e.preventDefault();e.stopPropagation()}}
+					// onClick={(e)=>{e.preventDefault();e.stopPropagation()}}
 					style={{overflow:"hidden"}}
 					
 					>
 					<div ref={ref} 
 						style={{background:"white",display:"flex",transform:`translate(${step*-100}%,0)`,transition:"all .3s ease-in-out",maxHeight:modalHeight,alignItems:"center"}}>
 						<First setStep={setStep}/>
-
 						<Second setStep={setStep}/>
 						<Third setStep={setStep}/>
 					</div>

@@ -1,4 +1,4 @@
-import {UniqueId} from "../../helper/helperGetUniqueID.mjs";
+import { UniqueId } from "../../helper/helperGetUniqueID.mjs";
 import configuration from "./configs/configuration.mjs";
 import { acceptFriendRequest, cancelFriendRequest, getFriendRequests, rejectFriendRequest } from "./friend/request.mjs";
 import { getFriendBlockeds } from "./friend/blocked.mjs";
@@ -7,6 +7,7 @@ import unfriend from "./friend/unfriend.mjs";
 import sendMessage from "./message/sendMessage.mjs";
 import getMessages from "./message/getMessages.mjs";
 import disconnect from "./configs/disconnect.mjs";
+import userSchema from "../../schema/user.mjs";
 
 global.users = {};
 global.messages={};
@@ -112,8 +113,51 @@ export default (io,con)=>{
                     })
                 }
             }
+        })
 
+        socket.on('getServerList',async ()=>{
+            return
+            const token = socket.handshake.auth.token
+            console.log(token)
+            if(!token) return
+            const res = await userSchema.aggregate([
+                {
+                    $match:{  
+                        token:{
+                            $elemMatch:{
+                                $eq:token
+                            }
+                        },
+                    },
+                },
+                {
+                    $lookup:{
+                        from:"discordservers",
+				        let:{req:"$servers"},
+                        pipeline:[
+                            {
+                                $match:{
+                                    $expr:{
+                                        $in:["$_id","$$req"],
+                                    },
+                                    
+                                }
+                            }
+                        ],
+                        as:"myservers"
+                    }
+                },
+                {
+                    $unwind:"$myservers"
+                },
+                {
+                    $replaceRoot:{
+                        newRoot:"$myservers"
+                    }
+                }
+            ])
 
+            socket.emit("serverList",res)
         })
     })
 

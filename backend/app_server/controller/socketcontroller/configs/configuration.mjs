@@ -1,7 +1,7 @@
 import userSchema from "../../../schema/user.mjs";
 
 export default async(io,socket,data)=>{
-	console.log("girdi")
+	console.log("girdi2")
 	var user = await userSchema.findOne({token:{"$in":[data.token]}})
 	if(!user) return
 	
@@ -17,6 +17,7 @@ export default async(io,socket,data)=>{
 	const sockets = rawSockets.filter(items => items.handshake.auth.userId && socket.handshake.auth.userId !== items.handshake.auth.userId)
 	let onlineUsers =[]
 	if(!sockets) return
+
 	sockets.map(function(elem){
 		onlineUsers.push({
 				name:elem.handshake.auth.name, 
@@ -25,6 +26,7 @@ export default async(io,socket,data)=>{
 				userId:elem.handshake.auth.userId,
 			});
 	  })
+	  
 	const datak ={
 		userId: socket.handshake.auth.userId,
 		name: socket.handshake.auth.name,

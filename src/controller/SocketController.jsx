@@ -1,12 +1,15 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useLayoutEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { messageActions } from 'store';
 import { userActions } from 'store';
 import { friendsActions, streamActions, friendRequestActions } from 'store';
 import {SocketContext} from "./Context"
 import { useLocation } from 'react-router-dom';
+import { serversActions } from 'store';
+
 const SocketController = () => {
   const client = useContext(SocketContext);
+  const token = useSelector(state => state.user.token);
   const location = useLocation();
   const dispatch = useDispatch()
 
@@ -94,11 +97,16 @@ const SocketController = () => {
     client.on('deneme',(data)=>{
       console.log(data)
     })
+
+    client.on('serverList',(data)=>{
+      // dispatch(serversActions.refresh({type:"add",name:"items",value:data}))
+    })
   }
 
   useEffect( () => {
-    connectSocket()
-  }, [])
+      if(!token) return
+      connectSocket()
+  }, [token])
 
   return null
 }

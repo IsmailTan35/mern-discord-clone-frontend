@@ -1,10 +1,16 @@
-import React, { useState } from "react"
+import React, { useState,useEffect, useContext, useLayoutEffect } from "react"
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { SocketContext } from "controller/Context";
 
 import "assets/style/sidebar.css"
+import axios from "axios";
 
-  const Sidebar = ()=>{
+const Sidebar = ()=>{
+    const socket = useContext(SocketContext);
+    const token = useSelector(state=>state.user.token)
+    const serverList = useSelector(state=>state.server.items)
     const navigate = useNavigate()
     const location = useLocation()
     
@@ -16,6 +22,12 @@ import "assets/style/sidebar.css"
     const handleAddServerModal = (e)=>{
         setAddServerModal(true)
     }
+
+    useEffect(()=>{
+        if(!token) return
+        socket.emit("getServerList")
+    },[token])
+
     return(
         <>
         <div className="sidebar-wrapper">
@@ -41,22 +53,30 @@ import "assets/style/sidebar.css"
                 <div className="sidebarLine">
                     <span></span>
                 </div>
-                <div className="sidebar-list-item">
-                    <OverlayTrigger
-                        placement="right"
-                        delay={delay}
-                        overlay={(props) => (
-                            <Tooltip {...props}>
-                              {`Server`}
-                            </Tooltip>
-                          )}
-                        >
-                        <div className={`sidebarCircle${location.pathname.replace("/channels","")==="/Server"?"-active":""}`} onClick={()=>{changeHistory("/channels/Server")}}>
-                            {"Server".slice(0,2).toLocaleUpperCase()}
+                {
+                    serverList.map((e,i)=>{
+                        return(
+                            <div className="sidebar-list-item" key={i}>
+                            <OverlayTrigger
+                                placement="right"
+                                delay={delay}
+                                overlay={(props) => (
+                                    <Tooltip {...props}>
+                                      {e.servername}
+                                    </Tooltip>
+                                  )}
+                                >
+                                <div className={`sidebarCircle${location.pathname.replace("/channels","")==="/Server"?"-active":""}`} 
+                                    onClick={()=>{changeHistory("/channels/Server")}}>
+                                    {e.servername.slice(0,2).toLocaleUpperCase()}
+                                </div>
+                            </OverlayTrigger>
+                            <span></span>
                         </div>
-                    </OverlayTrigger>
-                    <span></span>
-                </div>
+                        )
+                        })
+                }
+
                 <div className="sidebar-list-item">
                     <OverlayTrigger
                         placement="right"

@@ -18,6 +18,7 @@ var userSchema = new Schema({
     state: {
         type: String,
     },
+    servers:Array,
     friends:Array,
     blocked:Array,
     request:Array,

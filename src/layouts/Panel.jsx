@@ -77,6 +77,7 @@ const Panel = () => {
                 <Dashboard/>
             </div>
             <Settings data={show} setData={handleClick} />
+
             <AddServerModal show={showAddServerModal} setShow={handleClick} />
         </>
         

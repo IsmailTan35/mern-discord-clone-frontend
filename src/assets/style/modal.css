@@ -50,7 +50,7 @@
 	align-items: center;
 	font-weight: 700;
 	color: #060607;
-	font-size: 25px;
+	font-size: 30px;
 }
 
 .modal-subheader{
@@ -146,7 +146,81 @@
 	flex: 1 1;
 }
 
+.modal-back-button{
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: transparent;
+	
+}
 
+.modal-upload-button-wrapper{
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: transparent;
+	position: relative;
+	height: 80px;
+	
+}
+
+.modal-upload-button{
+	width: 80px;
+	height: 100%;
+	background: transparent;
+	cursor: pointer;
+	opacity: 0;
+	
+}
+
+.modal-input-wrapper{
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+	border: none;
+	background: transparent;
+	padding: 0 20px;
+
+	
+}
+
+.modal-input-label{
+	font-size: 14px;
+	font-weight: 700;
+	color: #4f5660;
+	margin-bottom: 8px;
+	line-height: 16px;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+
+.modal-input{
+	border: none;
+	outline: none;
+	width: 100%;
+	height: 40px;
+	border: none;
+	background: transparent;
+	color: #2e3338;
+	background-color: #e3e3e8;
+	padding: 10px;
+	border-radius: 3px;
+}
+
+.modal-term{
+	color: #060607;
+	font-size: 12px;
+	font-weight: 500;
+	margin-top: 10px;
+	color: #5e6772;
+	font-size: 11px;
+	line-height: 16px;
+	margin-top: 8px;
+	padding: 5px 20px 15px 20px;
+}
 @media only screen and (max-width: 440px) {
 	.mymodal{
 		height: 100%;

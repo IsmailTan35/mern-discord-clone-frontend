@@ -15,12 +15,12 @@ const First = ({setStep}) => {
 						</div>
 					</div>
 					<div className='modal-create-buttons'>
-						<button className='modal-create-button'>
+						<button className='modal-create-button' onClick={()=>{setStep(1)}}>
 							<div className='modal-create-button-content'>
 								<div>
 									<img src="/assets/img/createserver/createserver-1.svg" alt=""/>
 								</div>
-								<div onClick={()=>{setStep(1)}}>
+								<div >
 									Kendim Oluşturayım
 								</div>
 								<div>
@@ -84,8 +84,7 @@ const First = ({setStep}) => {
 						<button className='modal-create-button'>
 							<div className='modal-create-button-content'>
 								<div>
-								<img src="/assets/img/createserver/createserver-6.svg" alt=""/>
-
+									<img src="/assets/img/createserver/createserver-6.svg" alt=""/>
 								</div>
 								<div>
 									Sanatçılar ve Zanatkârlar
