@@ -99,7 +99,7 @@ const SocketController = () => {
     })
 
     client.on('serverList',(data)=>{
-      // dispatch(serversActions.refresh({type:"add",name:"items",value:data}))
+      dispatch(serversActions.refresh({type:"add",name:"items",value:data}))
     })
   }
 

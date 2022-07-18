@@ -116,7 +116,6 @@ export default (io,con)=>{
         })
 
         socket.on('getServerList',async ()=>{
-            return
             const token = socket.handshake.auth.token
             console.log(token)
             if(!token) return

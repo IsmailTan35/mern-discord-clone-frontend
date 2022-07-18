@@ -125,6 +125,7 @@ const Room = () => {
     const handleHangup = () => {
         
         peers.map(peer => {
+            if(peer.streams.length <= 0) return
             peer.streams[0].getTracks().forEach(track => track.stop())
             peer.destroy()
         })
