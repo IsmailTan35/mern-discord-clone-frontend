@@ -15,24 +15,20 @@ const Chat = () => {
     const location = useLocation()
 
     useLayoutEffect(() => {
-        const userId = location.pathname.split("/")[3]
-        if(location.pathname.split("/").length!=4) return
+        const rawLocation = location.pathname.split("/")
+        const messageType = rawLocation.includes("@me")
 
-        axios.get('/api/user/getName',{params:{
-            id:userId,
-            token:localStorage.getItem("token")
-        }}).then(res => {
-            setUser(res.data)
-
-        })
-        
+        const userId = rawLocation[2]
+        const serverID = rawLocation[2]
+        const channelID = rawLocation[3]
+        console.log(messageType)
         setTimeout(() => {
-        socket.emit("getMessages",{
-            receiver:userId,
+            socket.emit("getMessages",{
+                receiver:messageType ? userId : null,
+                serverName: messageType ? null : serverID,
+                channelName: messageType ? null : channelID,
         })}, 500);
-            
     }, [location])
-
     return(
         <>
             <ChatVideo user={user} />

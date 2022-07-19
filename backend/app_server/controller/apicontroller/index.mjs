@@ -14,6 +14,7 @@ import {
 // import controllerSocket from './controllerSocket.mjs'
 import userSchema from "../../schema/user.mjs";
 import serverSchema from "../../schema/server.mjs";
+import mongoose from 'mongoose';
 
 
 export default (app,con) =>{
@@ -36,10 +37,22 @@ export default (app,con) =>{
 
     app.get("/api/user/getName",async (req,res) => {
         const user = await userSchema.findById(req.query.id)
+        if(!user) return res.status(404).json({"error":"server not found"})
+
         res.status(200).json({
             userId:user._id,
             name:user.username,
             code:user.code,
+        })
+    })
+
+    app.get("/api/server/getName",async (req,res) => {
+        const server = await serverSchema.findById(req.query.id)
+        if(!server) return res.status(404).json({"error":"server not found"})
+        res.status(200).json({
+            userId:server._id,
+            name:server.servername,
+            channels:server.channels,
         })
     })
 
@@ -60,9 +73,8 @@ export default (app,con) =>{
 
     app.post("/api/server" ,async (req,res) => {
         const token = req.headers.authorization
-        const { serverName }= req.body
-        console.log(serverName)
-
+        // console.log(req.files)
+        const { serverName } = req.fields
         if(!serverName || !token) return res.status(400)
 
         const user = await userSchema.aggregate([
@@ -72,15 +84,44 @@ export default (app,con) =>{
         }])
 
         if(!user.length) return res.sendStatus(401)
+        return
+        const id= mongoose.Types.ObjectId()
+        const id2= mongoose.Types.ObjectId()
 
         const server = await serverSchema.model('discordserver').create({
             servername:serverName,
             // serverpicture:req.body.serverpicture,
-            userIDs:[user[0]._id]
+            userIDs:[user[0]._id],
+            channels:[{
+                channelName:"general",
+                _id: id,
+                type:"text",
+                locked:false,
+                group:"Text Channels",
+            },
+            {
+                channelName:"general",
+                _id: id2,
+                type:"voice",
+                locked:false,
+                group:"Voice Channels",
+            },
+        ]
         })
 
         if(!server) return res.status(401)
 
+        const data = await userSchema.findOneAndUpdate({
+            _id:user[0]._id
+        },{
+            $push:{
+                servers:server._id
+            }
+        },{
+            new:true
+        }
+        )
+        
         res.status(200).json({
             serverId:server._id,
             servername:server.servername,

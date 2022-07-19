@@ -27,7 +27,7 @@ const AddServerModal = ({show,setShow}) => {
 				<div className={`modal-wrapper${show?" active":""}`} onClick={setShow}/>
 				<div 
 					className={`mymodal${show?" active":""}`} 
-					// onClick={(e)=>{e.preventDefault();e.stopPropagation()}}
+					// onClick={(e)=>{e.preventDefault()}}
 					style={{overflow:"hidden"}}
 					
 					>
@@ -35,7 +35,7 @@ const AddServerModal = ({show,setShow}) => {
 						style={{background:"white",display:"flex",transform:`translate(${step*-100}%,0)`,transition:"all .3s ease-in-out",maxHeight:modalHeight,alignItems:"center"}}>
 						<First setStep={setStep}/>
 						<Second setStep={setStep}/>
-						<Third setStep={setStep}/>
+						<Third setStep={setStep} setShow={setShow}/>
 					</div>
 				</div>
 			</div>

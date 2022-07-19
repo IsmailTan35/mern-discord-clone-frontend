@@ -10,11 +10,13 @@ const delay={ show: 50, hide: 0 }
 
 const ChatBody = ({user}) => {
     const ref = useRef(null);
-    const client = useContext(SocketContext)
-    const messages = useSelector(state => state.message.items)
+    const socket = useContext(SocketContext)
+    const rawMessages = useSelector(state => state.message.items)
     const [friendName,setFriendName]=useState('')
     const location = useLocation()
-    const myName = useSelector(state => state.user.name)
+    const myUser = useSelector(state => state.user)
+    const [messages,setMessages]=useState([])
+
     useEffect(() => {
         ref.current.scrollTop = ref.current.scrollHeight;
     }, [messages])
@@ -25,6 +27,26 @@ const ChatBody = ({user}) => {
         setFriendName(userId)
     }, [location])
         
+    useEffect(() => {
+        const parsedLocation = location.pathname.split("/")
+        if(parsedLocation.includes("@me")){
+            const data = rawMessages.filter(message => 
+                message.sender === parsedLocation[3] || 
+                message.receiver === parsedLocation[3] ||
+                message.sender === myUser.id ||
+                message.receiver === myUser.id
+                )
+            setMessages(data)
+        }
+        else{
+            const data = rawMessages.filter(message => 
+                message.serverName == parsedLocation[2] &&
+                message.channelName == parsedLocation[3]
+            )
+            console.log(data)
+            setMessages(data)
+        }
+    }, [rawMessages,location])
     return(
         <>
             <div className="chat-body-wrapper" ref={ref}>
@@ -36,7 +58,7 @@ const ChatBody = ({user}) => {
                         <div className="chat-body-message-text">
                             <div style={{display:"flex",flexDirection:"row",columnGap:"10px"}}>
                                 <div className="chat-body-message-text-name">
-                                    {friendName && message.sender===friendName ? user.name:myName}
+                                    {friendName && message.sender===friendName ? user.name:myUser.name}
                                 </div>
                                 <div>
                                 <OverlayTrigger

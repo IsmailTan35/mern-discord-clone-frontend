@@ -1,25 +1,31 @@
 import axios from 'axios';
 import React from 'react';
 
-const Third = ({setStep}) => {
+const Third = ({setStep,setShow}) => {
 
 	const handleBack = (e) => {
 		e.preventDefault();
 		setStep(step=>step-1);
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(e.target.serverName.value);
-		axios.post('/api/server',{
-			serverName:e.target.serverName.value
+		const formData = new FormData();
+		formData.append('serverName',e.target.serverName.value);
+		formData.set('serverPhoto',e.target.serverPhoto.files[0]);
+		
+		await axios.post('/api/server',formData,{
+			headers:{
+				'content-type':'multipart/form-data'
+			}
 		}).then(res => {
 			console.log(res);
 		}
 		).catch(err => {
 			console.log(err);
-		}
-		)
+		})
+
+		setShow(false);
 	}
 	
 	const handleChange = (e) => {
@@ -46,6 +52,7 @@ const Third = ({setStep}) => {
 					<img src="/assets/img/upload.svg" alt="" style={{position:"absolute"}}/>
 					<input 
 						type="file" 
+						name="serverPhoto"
 						className='modal-upload-button'
 
 						style={{position:"absolute"}}/>

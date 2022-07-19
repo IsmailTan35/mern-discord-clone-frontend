@@ -1,20 +1,28 @@
 import React, { useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
-import Active from "views/friendsViews/Active"
-import FriendsHeader from "components/header/FriendsHeader"
-import StoreHeader from "components/header/StoreHeader"
-import {friendsRoutes} from "routes"
-import "assets/style/dashboard.css"
 import { useLocation } from "react-router-dom"
+import { friendsRoutes } from "routes"
+
 import Avatar from "components/Avatar"
+import Store from "components/Store"
+import ServerChat from "components/ServerChat"
+import SidebarFriends from "components/SidebarFriends"
+import StoreHeader from "components/header/StoreHeader"
+import ServerHeader from "components/header/ServerHeader"
+import FriendsHeader from "components/header/FriendsHeader"
 import FriendsChatHeader from "components/header/FriendsChatHeader"
+import SidebarServerChannels from "components/SidebarServerChannels"
+
+import Active from "views/friendsViews/Active"
 import Chat from "views/Chat"
-import Friends from "components/Friends"
+
+import "assets/style/dashboard.css"
 
 const Dashboard =()=>{
     const [friends, setFriends] = useState("online")
     const navigate = useNavigate()
-
+    const location = useLocation()
+    
     const changeFriends = (e)=>{
         setFriends(e)
     }
@@ -31,12 +39,23 @@ const Dashboard =()=>{
                 <div className="dashboard-sidebar">
                     <div id="container" >
                         <nav className="dashboard-side-navbar">
-                            <div className="dashboard-sidebar-search-button-wrapper">
-                                <button className="dashboard-sidebar-search-button">
+                            <div className="dashboard-navbar-search-button-wrapper">
+                                <button className="dashboard-navbar-search-button">
                                     {"Sohbet bul ya da başlat"}
                                 </button>
                             </div>
-                            <Friends/>
+                            <Routes>
+                                <Route path="@me"
+                                    element={<SidebarFriends friends={friends} 
+                                    changeFriends={changeFriends}/>}/>
+                                <Route exact strict sensitive path={"@me/:id"} 
+                                    element={<SidebarFriends/>}/>
+                                <Route path={":serverID/:channelID"} element={<SidebarServerChannels/>}/>
+                                <Route index 
+                                    element={<SidebarFriends servers={friends} 
+                                        changeServers={changeFriends}/>}
+                                    />
+                            </Routes>
                         </nav>
                         <Avatar/>
                     </div>
@@ -44,14 +63,21 @@ const Dashboard =()=>{
                 <div className="dashboard-panel">
                     <div className="dashboard-panel-header-wrapper">
                         <Routes>
-                            <Route exact strict sensitive path={"@me"} element={<FriendsHeader friends={friends} changeFriends={changeFriends}/>}/>
-                            <Route exact strict sensitive path={"@me/:id"} element={<FriendsChatHeader/>}/>
-                            <Route exact strict sensitive path={"/store"} element={<StoreHeader servers={friends} changeServers={changeFriends}/>}/>
+                            <Route path="@me"
+                                element={<FriendsHeader friends={friends} 
+                                changeFriends={changeFriends}/>}/>
+                            <Route exact strict sensitive path={"@me/:id"} 
+                                element={<FriendsChatHeader/>}/>
+                            <Route path={":serverID/:channelID"} element={<ServerHeader/>}/>
+                            <Route index 
+                                element={<StoreHeader servers={friends} 
+                                    changeServers={changeFriends}/>}
+                                />
                         </Routes>
                     </div>
                     <div className="dashboard-panel-body-wrapper">
                         <Routes>
-                            <Route exact strict sensitive path={"@me"} element={
+                            <Route path="@me" element={
                                 friends &&
                                 <>
                                 <div className="friends-wrapper">
@@ -62,7 +88,9 @@ const Dashboard =()=>{
                                 </div>
                                 </>
                             }/>
-                            <Route exact strict sensitive path={"@me/:id"} element={<Chat/>}/>
+                            <Route path={"@me/:id"} element={<Chat/>}/>
+                            <Route path={":serverID/:channelID"} element={<ServerChat/>}/>
+                            <Route index element={<Store/>}/>
                         </Routes>
                     </div>
                 </div>

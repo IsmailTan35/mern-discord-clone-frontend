@@ -117,7 +117,6 @@ export default (io,con)=>{
 
         socket.on('getServerList',async ()=>{
             const token = socket.handshake.auth.token
-            console.log(token)
             if(!token) return
             const res = await userSchema.aggregate([
                 {
@@ -155,7 +154,6 @@ export default (io,con)=>{
                     }
                 }
             ])
-
             socket.emit("serverList",res)
         })
     })

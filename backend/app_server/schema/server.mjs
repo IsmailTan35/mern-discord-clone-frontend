@@ -12,6 +12,9 @@ var serverSchema = new Schema({
     userIDs:{
         type:Array
     },
+    channels:{
+        type:Array
+    }
 });
 
 export default mongoose.model('discordserver', serverSchema);

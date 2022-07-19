@@ -16,6 +16,10 @@ var userSchema = new Schema({
         type: String,
         default:null
     },
+    channelName: {
+        type: String,
+        default:null
+    },
     timestamps: {
         type: Date,
         default: Date.now,

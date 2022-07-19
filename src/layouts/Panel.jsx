@@ -1,9 +1,8 @@
 import "assets/style/panel.css"
 import Dashboard from "views/Dashboard";
-import ServerDashboard from "views/ServerDashboard";
 
-import Sidebar from "components/Sidebar";
-import { useNavigate, useLocation } from "react-router-dom";
+import Navbar from "components/Navbar";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { SocketContext } from "controller/Context";
@@ -73,8 +72,8 @@ const Panel = () => {
     return(
         <>
             <div className={`panelWrapper${!show?"-active":""}`}>
-                <Sidebar/>
-                <Dashboard/>
+                <Navbar/>
+                <Outlet/>
             </div>
             <Settings data={show} setData={handleClick} />
 

@@ -7,6 +7,8 @@ export default async (io,socket,data)=>{
 		sender:socket.handshake.auth.userId,
 		receiver:data.receiver,
 		message:data.message,
+		serverName:data.serverName,
+		channelName:data.channelName
 	})
 
 	const msg = await messageSch.save()
@@ -16,6 +18,8 @@ export default async (io,socket,data)=>{
 			receiver:msg.receiver,
 			sender:msg.sender,
 			message:msg.message,
+			serverName:msg.serverName,
+			channelName:msg.channelName,
 			messageId:msg._id.toString(),
 			timestamps:msg.timestamps,
 		}])

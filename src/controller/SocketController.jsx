@@ -40,7 +40,7 @@ const SocketController = () => {
 
     client.on("data",(data)=>{
       dispatch(friendsActions.refresh({name:"onlineUsers",value:data.onlineUsers}))
-      dispatch(userActions.refresh({name:"id",value:data.id}))
+      dispatch(userActions.refresh({name:"id",value:data.userId}))
       dispatch(userActions.refresh({name:"name",value:data.name}))
       dispatch(userActions.refresh({name:"code",value:data.code}))
       // dispatch(userActions.refresh({name:"message",value:data.messages}))
@@ -92,10 +92,6 @@ const SocketController = () => {
 
     client.on('friendAll',(data)=>{
       dispatch(friendsActions.refresh({type:"add",name:"all",value:data}))
-    })
-
-    client.on('deneme',(data)=>{
-      console.log(data)
     })
 
     client.on('serverList',(data)=>{

@@ -1,4 +1,4 @@
-.sidebar-wrapper{
+.navbar-wrapper{
     width: 72px;
     background-color: #202225;
     overflow-y: scroll;
@@ -8,10 +8,10 @@
     display: flex;
     flex-direction: column;
 }
-.sidebar-wrapper::-webkit-scrollbar {
+.navbar-wrapper::-webkit-scrollbar {
     display: none;
 }
-.sidebar-list-item{
+.navbar-list-item{
     width: 72px;
     height: 48px;
     padding: 0;
@@ -22,12 +22,12 @@
     align-items: center;
     position: relative;
 }
-.sidebar-list-item span{
+.navbar-list-item span{
     width: 0px;
     height: 0px;
     position: absolute;
 }
-.sidebarCircle{
+.navbarCircle{
     width:48px;
     height:48px;
     border-radius: 24px;
@@ -39,8 +39,9 @@
     cursor: pointer;
     color: #dcddde;
     font-weight: 500;
+    transition: all 0.1s;
 }
-.sidebarCircle:hover{
+.navbarCircle:hover{
     border-radius: 17px;
     background-color: #5865F2;
     transition: all 0.1s;
@@ -48,21 +49,22 @@
 
 }
 
-.sidebarCircle-active{
-    width:48px;
-    height:48px;
-    border-radius: 24px;
-    background-color: #36393F;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 17px;
-    background-color: #5865F2;
-    transition: all 0.1s;
-    cursor: pointer;
+.navbarCircle:hover ~ span{
+    width: 8px;
+    height: 20px;
+    border-radius: 0 4px 4px 0;
+    margin-left: -4px;
+    background-color: #dcddde;
+    margin-right: 10px;
+    transition: all 0.3s;
 }
-.sidebarCircle-active ~ span{
+
+.navbarCircle.active{
+    color: #fff;
+    background-color: #5865F2;
+    border-radius: 17px;
+}
+.navbarCircle.active ~ span{
     width: 8px;
     height: 40px;
     border-radius: 0 4px 4px 0;
@@ -71,17 +73,8 @@
     margin-right: 10px;
     transition: all 0.3s;
 }
-.sidebarCircle:hover ~ span{
-    width: 8px;
-    height: 20px;
-    border-radius: 0 4px 4px 0;
-    margin-left: -4px;
-    background-color: #dcddde;
-    margin-right: 10px;
-    transition: all 0.3s;
-}
 
-.sidebarLine{
+.navbarLine{
     width:30px;
     height:2px;
     margin: 0 auto;
@@ -90,14 +83,14 @@
     display: flex;
 }
 
-.sidebarLine span{
+.navbarLine span{
     width:48px;
     height:2px;
     background-color: hsla(0,0%,100%,0.06);
 
 }
 
-.sidebarUserCircle{
+.navbarUserCircle{
     width:48px;
     height:48px;
     border-radius: 24px;
@@ -105,13 +98,13 @@
     margin-top: 10px;
     cursor: pointer;
 }
-.sidebarUserCircle:hover{
+.navbarUserCircle:hover{
     border-radius: 17px;
     transition: all 0.5s ease-in-out;
 
 }
 
-.sidebarAddUser{
+.navbarAddUser{
     width:48px;
     height:48px;
     border-radius: 24px;
@@ -124,14 +117,14 @@
     cursor: pointer;
 }
 
-.sidebarAddUser:hover {
+.navbarAddUser:hover {
     border-radius: 17px;
     background-color: #3ba55d;
     transition: all 0.1s ease-in-out;
 
 }
 
-.sidebarAddUser:hover ~ span{
+.navbarAddUser:hover ~ span{
     width: 8px;
     height: 20px;
     border-radius: 0 4px 4px 0;
@@ -140,34 +133,34 @@
     margin-right: 10px;
     transition: all 0.3s;
 }
-.sidebarAddUser div{
+.navbarAddUser div{
     width:15px;
     height:2px;
     background-color: #3ba55d;
     position: absolute;
 }
-.sidebarAddUser:hover div{
+.navbarAddUser:hover div{
     background-color: #fff;
     transition: all 0.5s ease-in-out;
 
 
 }
-.sidebarAddUser:hover svg{
+.navbarAddUser:hover svg{
     fill: #fff;
     transition: all 0.5s ease-in-out;
 
 }
 
-.sidebarAddUser div:first-child{
+.navbarAddUser div:first-child{
     height: 15px;
     width: 2px;
 }
 
-.sidebarAddUser svg{
+.navbarAddUser svg{
     fill: #3ba55d;
 }
 
-.dashboard-sidebar-search-button-wrapper{
+.dashboard-navbar-search-button-wrapper{
     display: flex;
     justify-content: center;
     box-shadow:0 1px 0 rgba(4,4,5,0.2),0 1.5px 0 rgba(6,6,7,0.05),0 2px 0 rgba(4,4,5,0.05);
@@ -182,7 +175,7 @@
     align-items: center;
 }
 
-.dashboard-sidebar-search-button{
+.dashboard-navbar-search-button{
     width:100%;
     height: 28px;
     overflow: hidden;

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux"
 import { useNavigate, useLocation } from "react-router-dom"
 import EmptyFriends from "./EmptyFriends"
 
-const Friends = () => {
+const SidebarFriends = () => {
     const location= useLocation()
     const navigate = useNavigate()
     const friends = useSelector(state => state.friends.items)
@@ -18,7 +18,7 @@ const Friends = () => {
     
     return(
         <>
-        <div className="dashboard-sidebar-chat-wrapper">
+            <div className="dashboard-sidebar-chat-wrapper">
                 <div className="dashboard-sidebar-chat-buttons-wrapper">
                     <div className={`dashboard-sidebar-chat-button${location.pathname==="/channels/@me" ? "-active":""}`} onClick={()=>{changeHistory("/channels/@me")}}>
                         <svg  aria-hidden="false" width="16" height="16" viewBox="0 0 24 24">
@@ -62,4 +62,4 @@ const Friends = () => {
     )
 }
 
-export default Friends
+export default SidebarFriends

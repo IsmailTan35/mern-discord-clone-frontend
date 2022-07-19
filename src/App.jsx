@@ -3,7 +3,7 @@ import Panel from 'layouts/Panel';
 import {SocketContext, client} from 'controller/Context';
 import LandingPage from 'layouts/LandingPage';
 import SocketController from 'controller/SocketController';
-import { Routes,Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes,Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import Auth from 'layouts/Auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard from 'views/Dashboard';
@@ -50,8 +50,10 @@ const App = () => {
               <Route path="register" element={<Register/>}/>
               <Route path="forgot" element={<Register/>}/>
           </Route>
-          <Route path="channels/*" element={<Panel/>} />
-          <Route path="store" element={<Panel/>} >
+          <Route path="/" element={<Panel/>} >
+            <Route path="store" element={<Dashboard/>}/>
+            <Route path="channels/*" exact element={<Dashboard/>}/>
+            <Route path="channels" exact element={<Navigate to={"/channels/@me"}/>}/>
           </Route>
         </Routes>
       </SocketContext.Provider>
