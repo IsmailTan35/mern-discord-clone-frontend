@@ -15,6 +15,7 @@ import {
 import userSchema from "../../schema/user.mjs";
 import serverSchema from "../../schema/server.mjs";
 import mongoose from 'mongoose';
+import formidable from 'formidable';
 
 
 export default (app,con) =>{
@@ -74,59 +75,62 @@ export default (app,con) =>{
     app.post("/api/server" ,async (req,res) => {
         const token = req.headers.authorization
         // console.log(req.files)
-        const { serverName } = req.fields
-        if(!serverName || !token) return res.status(400)
-
-        const user = await userSchema.aggregate([
-            {$match:{
-                token:{"$in":[token]
-            }}
-        }])
-
-        if(!user.length) return res.sendStatus(401)
-        return
-        const id= mongoose.Types.ObjectId()
-        const id2= mongoose.Types.ObjectId()
-
-        const server = await serverSchema.model('discordserver').create({
-            servername:serverName,
-            // serverpicture:req.body.serverpicture,
-            userIDs:[user[0]._id],
-            channels:[{
-                channelName:"general",
-                _id: id,
-                type:"text",
-                locked:false,
-                group:"Text Channels",
-            },
-            {
-                channelName:"general",
-                _id: id2,
-                type:"voice",
-                locked:false,
-                group:"Voice Channels",
-            },
-        ]
-        })
-
-        if(!server) return res.status(401)
-
-        const data = await userSchema.findOneAndUpdate({
-            _id:user[0]._id
-        },{
-            $push:{
-                servers:server._id
+        const form = formidable({ multiples: true })
+        form.parse(req, async (err, fields, files) => {
+            if(err) return res.status(500).json({"error":"server not found"})
+            const { serverName } = fields
+            if(!serverName || !token) return res.status(400)
+    
+            const user = await userSchema.aggregate([
+                {$match:{
+                    token:{"$in":[token]
+                }}
+            }])
+    
+            if(!user.length) return res.sendStatus(401)
+            const id= mongoose.Types.ObjectId()
+            const id2= mongoose.Types.ObjectId()
+    
+            const server = await serverSchema.model('discordserver').create({
+                servername:serverName,
+                // serverpicture:req.body.serverpicture,
+                userIDs:[user[0]._id],
+                channels:[{
+                    channelName:"general",
+                    _id: id,
+                    type:"text",
+                    locked:false,
+                    group:"Text Channels",
+                },
+                {
+                    channelName:"general",
+                    _id: id2,
+                    type:"voice",
+                    locked:false,
+                    group:"Voice Channels",
+                },
+            ]
+            })
+    
+            if(!server) return res.status(401)
+    
+            const data = await userSchema.findOneAndUpdate({
+                _id:user[0]._id
+            },{
+                $push:{
+                    servers:server._id
+                }
+            },{
+                new:true
             }
-        },{
-            new:true
-        }
-        )
-        
-        res.status(200).json({
-            serverId:server._id,
-            servername:server.servername,
-            serverpicture:server.serverpicture,
-            userIDs:server.userIDs,
+            )
+            
+            res.status(200).json({
+                serverId:server._id,
+                servername:server.servername,
+                serverpicture:server.serverpicture,
+                userIDs:server.userIDs,
+            })
         })
     })
 }

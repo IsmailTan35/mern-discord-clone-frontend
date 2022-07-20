@@ -1,6 +1,5 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import formidable from 'express-formidable'
 // import cors from "./helperCors"
 // import rateLimit from'express-rate-limit'
 import cors from 'cors'
@@ -18,7 +17,6 @@ const App = () =>{
     // })
 
     // app.use(cors)
-    app.use(formidable())
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(express.json())
