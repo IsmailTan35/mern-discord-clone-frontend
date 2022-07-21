@@ -84,7 +84,6 @@ const acceptFriendRequest = async (io,socket, data) => {
 		]
 	}
 	const check = await userSchema.find(checkMe)
-	console.log(check.length)
 	if(check.length!=2) return
 	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
 	const update = await userSchema.findOneAndUpdate({

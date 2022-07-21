@@ -39,36 +39,60 @@ const Room = () => {
     const [peers, setPeers] = useState([]);
     const myStoreStream = useSelector(state => state.stream.items);
 
+    const removePeer = (id) => {
+        const item = peers.map(p => {
+            if(p.peerID == id){
+                p.peer.destroy();
+                return p
+            }
+            else {
+
+            }
+        });
+        if(!item) return
+        setPeers(item);
+    }
+
     useEffect(() => {
         let isMounted = true;
         socket.on("acceptedCall", data => {
             socket.on("user joined", payload => {
                 if (isMounted) addPeer(payload.signal, payload.from);
             });
-            socket.on("hangup", payload => {
-                if (isMounted) removePeer(payload.id);
-            }
-            );
         })
+
         return () => { isMounted = false };
     }, [])
 
     useEffect(() => {
+        let isMounted = true;
+
         socket.on("receiving returned signal", payload => {
             const item = peers.find(p => p.peerID == payload.from);   
             if(!item) return 
             item.peer.signal(payload.signal);
         });
+        socket.on("hangup", payload => {
+           removePeer(payload.from);
+        })
+        
+        if(peers.length===0 && !isMounted) {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+            stream.getTracks().map(track => track.stop())
+        })
+        return () => {
+            isMounted = false
+        }}
     }, [peers])
 
     const answer = () => {
         socket.on("all users", users => {
-            socket.on("hangup", payload => {
-                removePeer(payload.id);
-            })
             users.map(userID => {
                 createPeer(userID);
             })
+        })
+        socket.on("hangup", payload => {
+            removePeer(payload.from);
         })
         socket.emit("answerCall", {receiver: myStoreStream.callerId})
         dispatch(streamActions.update({name:"calling",value:false}))
@@ -87,6 +111,9 @@ const Room = () => {
                 peer.on("signal", signal => {
                     socket.emit("sending signal", { signal, receiver });    
                 })
+                peer.on("close", (e) => {
+                    stream.getTracks().map(track => track.stop())
+                })
                 setPeers(users => [...users, { peerID: receiver, peer: peer }]);
             })
     }
@@ -94,7 +121,6 @@ const Room = () => {
     const addPeer = (incomingSignal, receiver) => {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         .then(stream => {
-            console.log(incomingSignal)
             const item = peers.find(p => p.peerID == receiver);  
             if(item) return;
 
@@ -108,32 +134,23 @@ const Room = () => {
             peer.on("signal", signal => {
                 socket.emit("returning signal", { signal:signal, receiver:receiver })
             })
+            peer.on("close", () => {
+                // stream.getTracks().map(track => track.stop())
+            })
+            
             setPeers(users => [...users, { peerID: receiver, peer: peer }]);
 
         })
     }
 
-    const removePeer = (id) => {
-        // const item = peersRef.current.find(p => p.peerID == id);
-        // if(!item) return
-        // item.peer.destroy();
-        const count = peers.filter(p => p.peerID != id)
-        if(count){}
-        setPeers(users => users.filter(p => p.peerID != id));
-    }
-
     const handleHangup = () => {
-        
-        peers.map(peer => {
-            if(peer.streams.length <= 0) return
-            peer.streams[0].getTracks().forEach(track => track.stop())
-            peer.destroy()
-        })
-        
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-            stream.getTracks().forEach(track => track.stop())
-        })
         socket.emit("hangupCall")
+        peers.map(item => {
+            if(!item.peer || !item.peer.streams || item.peer.streams.length <= 0) return
+            item.peer.destroy()
+            item.peer.streams[0].getTracks().forEach(track => track.stop())
+        })
+        
         setPeers([]);
     }
     

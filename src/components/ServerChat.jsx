@@ -6,7 +6,6 @@ import Chat from 'views/Chat';
 
 const ServerChat = () => {
 	const location = useLocation();
-	const [server,setServer] = useState({});
 
     useLayoutEffect(() => {
         const userId = location.pathname.split("/")[2]
@@ -23,7 +22,7 @@ const ServerChat = () => {
 			<div style={{display:"flex",height:"100%"}}>
 				<div style={{display:"flex",flex:"1 1",flexDirection:"column"}}>
 					<div className="dashboard-panel-body-wrapper">
-						<Chat user={server}/>
+						<Chat/>
 					</div>
 				</div>
 				<div style={{display:"flex",height:"100%",width:"240px",background:"#2f3136",flexDirection:"column"}}>

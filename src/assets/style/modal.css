@@ -1,3 +1,25 @@
+.modal-close-icon{
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	color:#4f5660;
+	cursor: pointer;
+}
+
+.modal-close-icon:hover{
+	color: #2e3338;
+}
+
+.modal-container{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events:none;
+}
+
 .modal-wrapper{
 	position: absolute;
 	top: 0;
@@ -25,7 +47,7 @@
 	transition: all 0.2s ease-in-out;
 	transform: scale(0);
 	opacity: 0;
-	overflow-x: hidden;
+	overflow: hidden;
 
 }
 
@@ -47,26 +69,29 @@
 	height: 75px;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-end;
 	font-weight: 700;
 	color: #060607;
 	font-size: 30px;
 }
 
 .modal-subheader{
-	height: 75px;
+	height: auto;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 	text-align: center;
+	padding: 0 15px;
+	font-size: 15.5px;
+	font-weight: 300;
 }
 
 .modal-secondRow-header{
-	height: 75px;
+	height: 50px;
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	font-weight: 700;
+	align-items: flex-end;
+	font-weight: 400;
 	color: #060607;
 	font-size: 25px;
 }
@@ -87,10 +112,12 @@
 	align-items: center;
 	color: #fff;
 	height: 45px;
-	
+	padding: 20px;
 }
 
 .modal-create-buttons{
+	margin-top: 15px;
+	margin-bottom: 10px;
 	padding: 0 8px 8px 16px;
 	overflow-y: scroll;
 	height: 330px;
@@ -126,10 +153,20 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 40px;
 	border: 1px solid rgba(106, 116,128,0.24);
 	background: transparent;
+	padding: 10px;
 	
+}
+
+.modal-create-button-icon{
+	display: flex;
+	flex:1 1;
+	justify-content: flex-end;
+}
+
+.modal-create-button-icon svg{
+	transform: rotate(-90deg);
 }
 
 .modal-create-button:hover{
@@ -144,6 +181,13 @@
 	color: #060607;
 	height: 50px;
 	flex: 1 1;
+	column-gap: 10px;
+}
+
+.modal-create-button-content-text{
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 20px;
 }
 
 .modal-back-button{
@@ -176,6 +220,7 @@
 }
 
 .modal-input-wrapper{
+	margin-top: 15px;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -211,6 +256,8 @@
 }
 
 .modal-term{
+	display: flex;
+	justify-content: center;
 	color: #060607;
 	font-size: 12px;
 	font-weight: 500;

@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 
 const AddServerModal = ({show,setShow}) => {
 	const [step,setStep] = useState(0);
+	const [type,setType] = useState("create");
 	const ref= useRef(null);
 	const [modalHeight,setModalHeight] = useState("100%");
 
@@ -15,26 +16,20 @@ const AddServerModal = ({show,setShow}) => {
 	},[show])
 
 	useLayoutEffect(()=>{
-		if(!ref) return
-		if(ref.current.children[step].getBoundingClientRect().height<=0) return
-
+		if(!ref || ref.current.children[step].getBoundingClientRect().height<=0) return
+		
 		setModalHeight(ref.current.children[step].getBoundingClientRect().height)
 	},[ref,step])
 
 	return (
 		<>
-			<div style={{pointerEvents:"none",position:"fixed",display:"flex",justifyContent:"center",alignItems:"center",height:"100%",width:"100%"}}>
+			<div className='modal-container' >
 				<div className={`modal-wrapper${show?" active":""}`} onClick={setShow}/>
-				<div 
-					className={`mymodal${show?" active":""}`} 
-					// onClick={(e)=>{e.preventDefault()}}
-					style={{overflow:"hidden"}}
-					
-					>
+				<div className={`mymodal${show?" active":""}`} >
 					<div ref={ref} 
 						style={{background:"white",display:"flex",transform:`translate(${step*-100}%,0)`,transition:"all .3s ease-in-out",maxHeight:modalHeight,alignItems:"center"}}>
-						<First setStep={setStep}/>
-						<Second setStep={setStep}/>
+						<First setStep={setStep} setType={setType}/>
+						<Second setStep={setStep} type={type} />
 						<Third setStep={setStep} setShow={setShow}/>
 					</div>
 				</div>

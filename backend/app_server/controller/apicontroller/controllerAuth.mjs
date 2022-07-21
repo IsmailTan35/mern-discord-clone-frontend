@@ -6,7 +6,6 @@ import crypto  from 'crypto'
 import {UniqueId,UniqueName} from "../../helper/helperGetUniqueID.mjs";
 
 const loginPost = async (req,res)=> {
-  console.log(req)
   let data = req.body
   const token =generateAccessToken({}) 
   const filter = { 

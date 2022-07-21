@@ -14,6 +14,9 @@ var serverSchema = new Schema({
     },
     channels:{
         type:Array
+    },
+    inviteCode:{
+        type:String
     }
 });
 

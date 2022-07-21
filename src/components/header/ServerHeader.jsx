@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useContext } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { OverlayTrigger, Tooltip } from "react-bootstrap"
 import { SocketContext } from "controller/Context"
@@ -10,13 +10,16 @@ const delay={ show: 50, hide: 0 }
 
 const ServerHeader = () => {
 	const location = useLocation()
+  const navigate = useNavigate()
 	const [server, setServer] = useState({})
 	const serverList = useSelector(state => state.server.items)
 
 	useEffect(() => {
 		if(serverList.length===0) return
 		const server = serverList.filter(server => server._id === location.pathname.split("/")[2])
+    if(server.length===0) return navigate("/channels/@me")
     const channel = server[0].channels.filter(channel => channel._id === location.pathname.split("/")[3])
+    if(channel.length===0) return navigate("/channels/@me")
 		setServer(channel[0])
     
 	}, [serverList,location])

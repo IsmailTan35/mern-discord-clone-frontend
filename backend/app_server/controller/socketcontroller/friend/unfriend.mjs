@@ -2,7 +2,6 @@ import userSchema from "../../../schema/user.mjs";
 
 export default async (io,socket,data)=>{
 	const token = socket.handshake.auth.token
-	console.log(token)
 	if(!token) return
 	const checkMe = {
 		$or:[

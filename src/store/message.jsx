@@ -22,7 +22,6 @@ const { reducer, actions } = createSlice({
         }
     },
     overWrite(state, action) {
-      console.log(action.payload.value)
         state[action.payload.name] = [...state[action.payload.name], ...action.payload.value]
         state[action.payload.name] = [...new Map(state[action.payload.name].map(item=> [item.timestamps,item])).values()]
     }

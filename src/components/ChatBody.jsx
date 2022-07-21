@@ -43,7 +43,6 @@ const ChatBody = ({user}) => {
                 message.serverName == parsedLocation[2] &&
                 message.channelName == parsedLocation[3]
             )
-            console.log(data)
             setMessages(data)
         }
     }, [rawMessages,location])
@@ -58,7 +57,7 @@ const ChatBody = ({user}) => {
                         <div className="chat-body-message-text">
                             <div style={{display:"flex",flexDirection:"row",columnGap:"10px"}}>
                                 <div className="chat-body-message-text-name">
-                                    {friendName && message.sender===friendName ? user.name:myUser.name}
+                                    {friendName && message.sender===friendName ? user.sender:myUser.name}
                                 </div>
                                 <div>
                                 <OverlayTrigger
@@ -80,7 +79,9 @@ const ChatBody = ({user}) => {
 
                             </div>
 
-                            <div className="chat-body-message-text-msg" style={{['--deneme']: "#dcddde"}}>{message.message}</div>
+                            <div className="chat-body-message-text-msg" style={{['--deneme']: "#dcddde"}}>
+                                {message.message}
+                            </div>
                         </div>
                     </div>
                 ))}

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import { ReactComponent as CloseIcon } from 'assets/img/closeIcon.svg';
 
 const Third = ({setStep,setShow}) => {
 
@@ -19,29 +20,29 @@ const Third = ({setStep,setShow}) => {
 				'content-type':'multipart/form-data'
 			}
 		}).then(res => {
-			console.log(res);
 		}
 		).catch(err => {
-			console.log(err);
 		})
 
 		setShow(false);
+		e.target.reset();
+
 	}
 	
 	const handleChange = (e) => {
 		e.preventDefault();
-		console.log(e.target.value);
 	}
 
 	return (
 		<>
-			<div style={{minWidth:"100%"}}>
+			<div style={{minWidth:"100%",position:"relative"}}>
+				<CloseIcon className='modal-close-icon' />
 				<form onSubmit={handleSubmit}>
 
 				<div className='modal-firstRow'>
 					<div className='mymodal-header'>
 						<div>
-							Sunucunu özelleştir
+							Sunucunu özelleştir.
 						</div>
 					</div>
 					<div className='modal-subheader'>

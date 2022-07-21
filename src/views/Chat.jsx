@@ -1,13 +1,13 @@
+import { useState, useContext, useLayoutEffect} from "react"
+
+import { useLocation } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { SocketContext } from "controller/Context"
+
 import ChatBody from "components/ChatBody"
 import ChatInput from "components/ChatInput"
 import ChatVideo from "components/ChatVideo"
-import { useLocation } from "react-router-dom"
-import { useState , useEffect, useContext, useLayoutEffect} from "react"
-import axios from "axios"
-import { messageActions } from "store"
-import { useDispatch, useSelector } from "react-redux"
-import { socketActions } from "store/socket"
-import { SocketContext } from "controller/Context"
+
 const Chat = () => {
     const socket = useContext(SocketContext)
     const dispatch = useDispatch()
@@ -21,7 +21,7 @@ const Chat = () => {
         const userId = rawLocation[2]
         const serverID = rawLocation[2]
         const channelID = rawLocation[3]
-        console.log(messageType)
+
         setTimeout(() => {
             socket.emit("getMessages",{
                 receiver:messageType ? userId : null,
