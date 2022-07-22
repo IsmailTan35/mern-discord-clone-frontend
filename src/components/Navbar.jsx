@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { SocketContext } from "controller/Context";
 
-import "assets/style/navbar.css"
+import "assets/css/navbar.css"
 import axios from "axios";
 
 const Navbar = ()=>{

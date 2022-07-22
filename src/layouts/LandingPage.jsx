@@ -1,4 +1,4 @@
-import "assets/style/landing-page.css"
+import "assets/css/landing-page.css"
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {

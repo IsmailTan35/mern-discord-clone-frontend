@@ -16,7 +16,7 @@ import SidebarServerChannels from "components/SidebarServerChannels"
 import Active from "views/friendsViews/Active"
 import Chat from "views/Chat"
 
-import "assets/style/dashboard.css"
+import "assets/css/dashboard.css"
 
 const Dashboard =()=>{
     const [friends, setFriends] = useState("online")

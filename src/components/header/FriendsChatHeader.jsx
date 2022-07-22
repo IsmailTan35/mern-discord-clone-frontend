@@ -1,4 +1,4 @@
-import "assets/style/headers.css"
+import "assets/css/headers.css"
 import React, { useState, useEffect,useContext } from "react"
 import { useLocation } from "react-router-dom"
 import { useSelector } from "react-redux"

@@ -1,4 +1,4 @@
-import "assets/style/friends.css";
+import "assets/css/friends.css";
 const Active = () => {
     return (
         <>

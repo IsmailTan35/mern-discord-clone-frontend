@@ -1,4 +1,4 @@
-import "assets/style/panel.css"
+import "assets/css/panel.css"
 import Dashboard from "views/Dashboard";
 
 import Navbar from "components/Navbar";

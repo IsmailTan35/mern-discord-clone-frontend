@@ -2,7 +2,7 @@ import axios from "axios"
 import { useState } from "react";
 
 
-import "assets/style/auth.css";
+import "assets/css/auth.css";
 import { Outlet } from "react-router-dom";
 
 const Auth = () => {

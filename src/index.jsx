@@ -6,7 +6,7 @@ import store from 'store';
 import App from 'App';
 import axios from 'axios';
 import {url} from "controller/Context";
-import "assets/style/index.css";
+import "assets/css/index.css";
 import "react-toastify/dist/ReactToastify.css";
 
 axios.defaults.baseURL = url ;

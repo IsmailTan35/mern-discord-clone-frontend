@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import "assets/style/settings.css"
+import "assets/css/settings.css"
 import { 
     IoLogoInstagram, 
     IoLogoTwitter,

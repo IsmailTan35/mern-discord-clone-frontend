@@ -6,7 +6,7 @@ import { ReactComponent as VoiceIcon } from 'assets/img/voiceIcon.svg';
 import { ReactComponent as AddIcon } from 'assets/img/addIcon.svg';
 import { ReactComponent as ArrowIcon } from 'assets/img/arrowIcon.svg';
 
-import "assets/style/channels.css"
+import "assets/css/channels.css"
 
 const SidebarServerChannels = () => {
 	const location = useLocation()

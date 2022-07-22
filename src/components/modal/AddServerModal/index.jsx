@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import "assets/style/modal.css";
+import "assets/css/modal.css";
 import First from './First';
 import Second from './Second';
 import Third from './Third';

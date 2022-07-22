@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom"
 import { useSelector } from 'react-redux';
 import { SocketContext } from 'controller/Context';
 
-import "assets/style/chat.css"
+import "assets/css/chat.css"
 
 const ChatInput = ({user}) => {
     const client = useContext(SocketContext);

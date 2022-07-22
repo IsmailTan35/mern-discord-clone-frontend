@@ -3,7 +3,7 @@ import { Route, useNavigate } from "react-router-dom"
 import routes from "routes"
 
 
-import "assets/style/dashboard.css"
+import "assets/css/dashboard.css"
 import { useLocation } from "react-router-dom"
 import Avatar from "components/Avatar"
 

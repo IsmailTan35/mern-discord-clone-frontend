@@ -1,4 +1,4 @@
-import "assets/style/friends.css";
+import "assets/css/friends.css";
 import axios from "axios";
 import { useState } from "react";
 const Add = () => {
