@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import ChatInput from './ChatInput';
 import axios from 'axios';
 import Chat from 'views/Chat';
+import ServerUsers from './ServerUsers';
 
 const ServerChat = () => {
 	const location = useLocation();
@@ -25,9 +26,7 @@ const ServerChat = () => {
 						<Chat/>
 					</div>
 				</div>
-				<div style={{display:"flex",height:"100%",width:"240px",background:"#2f3136",flexDirection:"column"}}>
-					s
-				</div>
+				<ServerUsers user={[{name:"ali",online:true}]}/>
 			</div>
 		</>
 	);

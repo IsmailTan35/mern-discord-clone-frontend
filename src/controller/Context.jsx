@@ -1,8 +1,8 @@
 import React from "react";
 import { io } from "socket.io-client";
-const host = window.location.hostname
+const parsed = window.location.hostname.split(".")
 const protocol = window.location.protocol
-export const url = host == "clonediscord.vercel.app" ? process.env.REACT_APP_URL_PRODUCTION: `${protocol}//${host}:10000`
+export const url = parsed.includes("vercel") ? process.env.REACT_APP_URL_PRODUCTION: `${protocol}//localhost:10000`
 
 export const client = io.connect(url.replace("http://","").replace("https://","").replace("/",""),{
     'reconnection': true,

@@ -8,6 +8,9 @@ import sendMessage from "./message/sendMessage.mjs";
 import getMessages from "./message/getMessages.mjs";
 import disconnect from "./configs/disconnect.mjs";
 import userSchema from "../../schema/user.mjs";
+import serverSchema from "../../schema/server.mjs";
+import { ObjectId } from "mongodb";
+import mongoose from 'mongoose';
 
 global.users = {};
 global.messages={};
@@ -155,6 +158,69 @@ export default (io,con)=>{
                 }
             ])
             socket.emit("serverList",res)
+        })
+
+        socket.on('getServerUsers',async (data)=>{
+            const { serverId } = data
+            const token = socket.handshake.auth.token
+            if(!token) return
+            console.log("first")
+            const res = await userSchema.aggregate([
+                {
+                    $match:{
+                        token:{
+                            $elemMatch:{
+                                $eq:token
+                            }
+                        },
+                        servers:{
+                            $elemMatch:{$eq:serverId}
+                        }
+                    },
+                },
+            ])
+            const users = await serverSchema.aggregate([
+                {
+                    $match:{
+                        _id:ObjectId(serverId)
+                    }
+                },
+                {
+                    $lookup:{
+                        from:"discordusers",
+                        let:{req:"$userIDs"},
+                        pipeline:[
+                            {
+                                $match:{
+                                    $expr:{
+                                        $in:["$_id","$$req"],
+                                    },
+                                }
+                            }
+                        ],
+                        as:"users"
+                    }
+                },
+                {
+                    $unwind:"$users"
+                },
+                {
+                    $replaceRoot:{
+                        newRoot:"$users"
+                    }
+                },
+                {
+                    $project:{
+                        _id:0,
+                        id:"$_id",
+                        name:"$username",
+                        code:"$code"
+                    }
+                }
+
+            ])
+            // const usersInServer = users.filter(item=>item.servers.find(items=>items.toString()===serverId))
+            socket.emit("serverUsers",users)
         })
     })
 

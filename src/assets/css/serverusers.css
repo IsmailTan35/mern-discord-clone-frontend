@@ -1,0 +1,24 @@
+.serverusers-wrapper{
+	display:flex;
+	height:100%;
+	width:240px;
+	background:#2f3136;
+	flex-direction:column;
+	padding:20px 10px;
+	row-gap:20px
+}
+
+.serveruser{
+	cursor: pointer;
+	display:flex;
+	opacity: .5;
+	border-radius: 6px;
+	padding: 8px 10px;
+	color:#96989d
+}
+
+.serveruser:hover{
+	opacity: 1;
+	background-color: rgba(79,84,92,0.4);
+	color: #dcddde;
+}
