@@ -1,6 +1,5 @@
 import React from 'react';
 import { ReactComponent as ArrowIcon } from 'assets/img/arrowIcon.svg';
-import { ReactComponent as CloseIcon } from 'assets/img/closeIcon.svg';
 import axios from 'axios';
 
 const JoinServer = ({setStep}) => {
@@ -20,17 +19,16 @@ const JoinServer = ({setStep}) => {
 		axios.post('/api/server/join',{
 			inviteCode:e.target.inviteCode.value
 		}).then(res => {
+			e.target.reset();
 		}
 		).catch(err => {
-		}
-		)
-		e.target.reset();
+		
+		})
 	}
 
 	return (
 		<>
-			<div style={{minWidth:"100%",position:"relative"}}>
-				<CloseIcon className='modal-close-icon'  />
+			<div style={{minWidth:"100%"}}>
 				<form onSubmit={handleSubmit}>
 				<div className='modal-firstRow'>
 					<div className='mymodal-header'>

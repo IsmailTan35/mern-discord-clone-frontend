@@ -14,7 +14,10 @@ export default async(io,socket,data)=>{
 	if(!socket.handshake.auth.token || !socket.handshake.auth.name)  return
 
 	const rawSockets = await io.fetchSockets()
-	const sockets = rawSockets.filter(items => items.handshake.auth.userId && socket.handshake.auth.userId !== items.handshake.auth.userId)
+	console.log(user.friends)
+	const sockets = rawSockets.filter(items => items.handshake.auth.userId && 
+		socket.handshake.auth.userId !== items.handshake.auth.userId &&
+		user.friends.includes(items.handshake.auth.userId))
 	let onlineUsers =[]
 	if(!sockets) return
 

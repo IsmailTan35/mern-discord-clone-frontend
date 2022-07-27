@@ -7,23 +7,29 @@ import { SocketContext } from 'controller/Context';
 import "assets/css/chat.css"
 
 const ChatInput = ({user}) => {
-    const client = useContext(SocketContext);
+    const socket = useContext(SocketContext);
     const location = useLocation();
     const [message, setMessage] = useState("");
+    const [writing, setWriting] = useState(true);
+    useEffect(() => {
+        socket.on("writing", data => {
 
+        })
+    }, [])
 
     const handleKeyDown = (event) => {
+        socket.emit("writing",{})
         if (event.key === 'Enter' && message.trim() !== "" && user) {
             setMessage("")
 
             const parsedLocation = location.pathname.split("/")
             const messageType = parsedLocation.includes("@me")
     
-            const userId = parsedLocation[2]
+            const userId = parsedLocation[3]
             const serverID = parsedLocation[2]
             const channelID = parsedLocation[3]
 
-            client.emit("sendMessage", {
+            socket.emit("sendMessage", {
                 receiver: messageType ? userId : null,
                 serverName: messageType ? null : serverID,
                 channelName: messageType ? null : channelID,
@@ -39,8 +45,8 @@ const ChatInput = ({user}) => {
 
     return(
         <>
-            <div className="chat-input-wrapper">
-                <div className="chat-input-second-wrapper">
+            <div className="chat-input-wrapper" style={{flexDirection:"column"}}>
+                <div className="chat-input-second-wrapper" >
                     <div className="chat-input-right-button-wrapper">
                         <svg width="24" height="24" viewBox="0 0 24 24">
                             <path  fill="currentColor" d="M12 2.00098C6.486 2.00098 2 6.48698 2 12.001C2 17.515 6.486 22.001 12 22.001C17.514 22.001 22 17.515 22 12.001C22 6.48698 17.514 2.00098 12 2.00098ZM17 13.001H13V17.001H11V13.001H7V11.001H11V7.00098H13V11.001H17V13.001Z"></path>

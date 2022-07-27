@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { SocketContext } from "controller/Context";
 import Settings from "views/settings";
 import AddServerModal from "components/modal/AddServerModal";
+import CallRequest from "components/modal/callrequest";
 
 const ESCAPE_KEYS = ['27', 'Escape'];
 
@@ -76,8 +77,8 @@ const Panel = () => {
                 <Outlet/>
             </div>
             <Settings data={show} setData={handleClick} />
-
             <AddServerModal show={showAddServerModal} setShow={handleClick} />
+            <CallRequest/>
         </>
         
     )

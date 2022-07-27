@@ -10,7 +10,6 @@ import disconnect from "./configs/disconnect.mjs";
 import userSchema from "../../schema/user.mjs";
 import serverSchema from "../../schema/server.mjs";
 import { ObjectId } from "mongodb";
-import mongoose from 'mongoose';
 
 global.users = {};
 global.messages={};
@@ -62,16 +61,24 @@ export default (io,con)=>{
         
         socket.on("getMessages",async user=>{
             getMessages(io,socket,user)
-
         })
 
         socket.on("call video chat", async user => {
             let roomID = "webRTC-"+UniqueId()
             socket.join(roomID)
 	        const rawSockets = await io.fetchSockets()
-            const rcvID = rawSockets.find(items => items.handshake.auth.userId === user.receiver)
-            if(!rcvID) return
-            io.to(rcvID.id).emit('calling', { from: socket.id,name:socket.handshake.auth.name });
+            const rcvSockets = rawSockets.filter(items => items.handshake.auth.userId === user.receiver)
+       
+            if(rcvSockets.length===0) return
+
+            rcvSockets.map(rcvSocket=>{
+                rcvSocket.emit('calling', { 
+                    from: socket.id,
+                    name:socket.handshake.auth.name,
+                    id:socket.handshake.auth.userId,
+                });
+
+            })
         })
         
         socket.on("answerCall", async data=> {
@@ -79,18 +86,21 @@ export default (io,con)=>{
             
             if(!rawSockets) return
             const rcvID = rawSockets.find(items => items.id === data.receiver)
-
+            
             for(const [key,value] of rcvID.rooms.entries()){
                 if(value.includes("webRTC-")){
+                    let roomID = value
+                    
                     io.to(rcvID.id).emit('acceptedCall', {from:socket.id});
-                    const usersInThisRoom = await io.in(value).fetchSockets()
+                    const usersInThisRoom = await io.in(roomID).fetchSockets()
                     const rawData = usersInThisRoom.map(items=>{
                         return (items.id)
                         
                     })
+                    console.log(rawData)
                     if(!usersInThisRoom) return
                     socket.emit("all users", rawData);
-                    socket.join(value)
+                    socket.join(roomID)
                     break;
                 }
             }
@@ -107,13 +117,23 @@ export default (io,con)=>{
         socket.on("hangupCall", async payload => {
             for(const [key,value] of socket.rooms.entries()){
                 if(value.includes("webRTC-")){
-                    const usersInThisRoom = await io.in(value).fetchSockets()
-                    if(usersInThisRoom.length<=0) return
+                    let roomID = value
+                    socket.leave(roomID)
+                    const usersInThisRoom = await io.in(roomID).fetchSockets()
+                    if(usersInThisRoom.length<=0) {
+                        io.in(roomID).socketsLeave(roomID) 
+                        return
+                    }
                     usersInThisRoom.map(item => {
                         if(item.id !== socket.id){
+                            if(usersInThisRoom.length<=1){
+                                io.in(roomID).socketsLeave(roomID) 
+                            }
                             io.to(item.id).emit('hangup', { from: socket.id });
                         }
                     })
+                    const usersInThisRooms = await io.in(roomID).fetchSockets()
+                    console.log(usersInThisRooms.length)
                 }
             }
         })
@@ -164,7 +184,6 @@ export default (io,con)=>{
             const { serverId } = data
             const token = socket.handshake.auth.token
             if(!token) return
-            console.log("first")
             const res = await userSchema.aggregate([
                 {
                     $match:{
@@ -222,9 +241,18 @@ export default (io,con)=>{
             // const usersInServer = users.filter(item=>item.servers.find(items=>items.toString()===serverId))
             socket.emit("serverUsers",users)
         })
+        socket.on('getUserInfo',async(data)=>{
+            const { userId } = data
+            const res = await userSchema.findOne({_id:ObjectId(userId)})
+            socket.emit("newUserInfo",{
+                id:res._id,
+                name:res.username,
+                code:res.code,
+            })
+        })
     })
 
     io.on('reconnect',(data)=>{
-        console.log("first")
+        
     })
 }

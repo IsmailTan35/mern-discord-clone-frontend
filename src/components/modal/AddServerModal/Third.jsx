@@ -36,7 +36,9 @@ const Third = ({setStep,setShow}) => {
 	return (
 		<>
 			<div style={{minWidth:"100%",position:"relative"}}>
-				<CloseIcon className='modal-close-icon' />
+				<div className='modal-close-icon'>
+					<CloseIcon style={{pointerEvents:"none"}} />
+				</div>
 				<form onSubmit={handleSubmit}>
 
 				<div className='modal-firstRow'>

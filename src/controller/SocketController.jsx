@@ -6,6 +6,7 @@ import { friendsActions, streamActions, friendRequestActions } from 'store';
 import { SocketContext } from "./Context"
 import { useLocation } from 'react-router-dom';
 import { serversActions } from 'store';
+import { userListActions } from 'store';
 
 const SocketController = () => {
   const socket = useContext(SocketContext);
@@ -22,6 +23,7 @@ const SocketController = () => {
     });
     
     socket.on("disconnect", () => {
+
     });
 
     socket.on("reconnect", () => {
@@ -43,7 +45,6 @@ const SocketController = () => {
       dispatch(userActions.refresh({name:"id",value:data.userId}))
       dispatch(userActions.refresh({name:"name",value:data.name}))
       dispatch(userActions.refresh({name:"code",value:data.code}))
-      // dispatch(userActions.refresh({name:"message",value:data.messages}))
     })
     
     socket.on("friendLeft", (user) => {
@@ -53,13 +54,13 @@ const SocketController = () => {
     socket.on("friendJoin", (user) => {
       if(!user.userId) return
       dispatch(friendsActions.update({type:"add",name:"onlineUsers",value:user}))
-
     });
     
     socket.on("calling", (user) => {
       dispatch(streamActions.update({name:"calling",value:true}))
       dispatch(streamActions.update({name:"callerId",value:user.from}))
       dispatch(streamActions.update({name:"callerName",value:user.name}))
+      dispatch(streamActions.update({name:"userId",value:user.id}))
     })
 
     socket.on('friendRequests',(data)=>{
@@ -100,6 +101,10 @@ const SocketController = () => {
 
     socket.on('newServer',(data)=>{
       dispatch(serversActions.update({type:"add",name:"items",value:data}))
+    })
+
+    socket.on('newUserInfo',(data)=>{
+      dispatch(userListActions.update({type:"add",name:"items",value:data}))
     })
   }
 

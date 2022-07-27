@@ -1,5 +1,5 @@
 import {useSelector} from 'react-redux';
-import AvataPicture from './AvatarPicture';
+import AvatarPicture from './AvatarPicture';
 const Avatar = () => {
     const name = useSelector(state => state.user.name);
     const code = useSelector(state => state.user.code);
@@ -7,7 +7,7 @@ const Avatar = () => {
     return(
         <>
             <div className="dashboard-sidebar-section-wrapper">
-                    <AvataPicture state={true}/>
+                    <AvatarPicture state={true}/>
                     <div className="dashboard-sidebar-section-user">
                     <div className="dashboard-sidebar-section-user-name">
                         {name}

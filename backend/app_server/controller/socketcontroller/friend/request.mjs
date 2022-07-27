@@ -113,10 +113,8 @@ const acceptFriendRequest = async (io,socket, data) => {
 		}
 	},
 	{new:true})
-	console.log("first")
 	const rawSockets = await io.fetchSockets()
 	rawSockets.map((socket)=>{
-		console.log(socket.handshake.auth.userId,check[0]._id.toString())
 		if(socket.handshake.auth.userId===check[0]._id.toString()){
 			socket.emit("newFriend",check[1]._id)
 			socket.emit("friendRequestsRemove",{

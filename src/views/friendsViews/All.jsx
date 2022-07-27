@@ -3,7 +3,7 @@ import {useContext,useEffect} from "react";
 import {useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {SocketContext} from 'controller/Context';
-import AvataPicture from "components/AvatarPicture";
+import AvatarPicture from "components/AvatarPicture";
 
 const All = () => {
     const friends = useSelector(state => state.friends.all)
@@ -44,7 +44,7 @@ const All = () => {
                             key={index} 
                             onClick={(e)=>{openChat(e,friend)}}>
                             <div className='friends-users-list-item'>
-                                <AvataPicture/>
+                                <AvatarPicture/>
                                 <div className="friends-users-list-item-user">
                                     <div className="friends-users-list-item-user-name">
                                         <div>

@@ -1,11 +1,10 @@
 import React, { useState } from "react"
 import { Route, useNavigate } from "react-router-dom"
-import routes from "routes"
-
-
-import "assets/css/dashboard.css"
 import { useLocation } from "react-router-dom"
 import Avatar from "components/Avatar"
+import routes from "routes"
+
+import "assets/css/dashboard.css"
 
 const ServerDashboard =()=>{
     const navigate = useNavigate()

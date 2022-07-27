@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactComponent as Logo } from 'assets/img/discordLogo.svg';
-const AvataPicture = ({picture,state}) => {
+const AvatarPicture = ({picture,state}) => {
 	return (
 		<>
 			{
@@ -20,4 +20,4 @@ const AvataPicture = ({picture,state}) => {
 	);
 };
 
-export default AvataPicture;
+export default AvatarPicture;

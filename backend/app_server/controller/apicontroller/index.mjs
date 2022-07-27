@@ -17,6 +17,7 @@ import serverSchema from "../../schema/server.mjs";
 
 import joinServer from './server/join.mjs';
 import createServer from './server/create.mjs';
+import { ObjectId } from 'mongodb';
 
 
 export default (app,con) =>{
@@ -40,14 +41,19 @@ export default (app,con) =>{
     app.post("/api/server/join",joinServer)
 
     app.get("/api/user/getName",async (req,res) => {
-        const user = await userSchema.findById(req.query.id)
-        if(!user) return res.status(404).json({"error":"server not found"})
+        if(!req.query.id) return res.status(400).send("id is required")
+        const userId = req.query.id.trim()
+        if(!userId) return res.status(400).send("id is not valid")
+        const user = await userSchema.aggregate([
+            {$match:{_id:userId}},
+        ])
 
-        res.status(200).json({
-            userId:user._id,
-            name:user.username,
-            code:user.code,
-        })
+        if(!user) return res.status(404).json({"error":"server not found"})
+        // res.status(200).json({
+        //     userId:user._id,
+        //     name:user.username,
+        //     code:user.code,
+        // })
     })
 
     app.get("/api/server/getName",async (req,res) => {

@@ -2,9 +2,9 @@ import { useContext, useRef, useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { useLocation } from "react-router-dom"
 import { SocketContext } from 'controller/Context';
-import AvataPicture from "./AvatarPicture";
 import { format } from "date-fns"
 import { Tooltip,OverlayTrigger } from "react-bootstrap";
+import AvatarPicture from "components/AvatarPicture";
 
 const delay={ show: 50, hide: 0 }
 
@@ -46,20 +46,21 @@ const ChatBody = ({user}) => {
             setMessages(data)
         }
     }, [rawMessages,location])
+    
     return(
         <>
             <div className="chat-body-wrapper" ref={ref}>
                 {messages.map((message,index) => (
                     <div className="chat-body-message" key={index}>
                         <div className="chat-body-message-avatar">
-                            <AvataPicture/>
+                            <AvatarPicture/>
                         </div>
                         <div className="chat-body-message-text">
                             <div style={{display:"flex",flexDirection:"row",columnGap:"10px"}}>
                                 <div className="chat-body-message-text-name">
-                                    {friendName && message.sender===friendName ? user.sender:myUser.name}
+                                    {friendName && message.sender===friendName ? user.name:myUser.name}
                                 </div>
-                                <div>
+                                <div style={{color:"hsl(214,calc( 1*4%),65.3%)"}}>
                                 <OverlayTrigger
                                     placement="top"
                                     delay={delay}

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext } from 'controller/Context';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import AvataPicture from './AvatarPicture';
+import AvatarPicture from './AvatarPicture';
 
 import "assets/css/serverusers.css";
 
@@ -16,11 +16,14 @@ const ServerUsers = () => {
 		if(!token) return;
 		socket.emit("getServerUsers",{serverId:location.pathname.split("/")[2]});
 
+
+	}, [token,socket.connected,location.pathname]);
+
+	useEffect(() => {
 		socket.on("serverUsers",(data)=>{
 			setUsers(data);
 		})
-	}, [token,socket.connected,location.pathname]);
-
+	}, []);
 	return (
 		<>
 			<div className="serverusers-wrapper" >
@@ -28,7 +31,7 @@ const ServerUsers = () => {
 					return (
 						<div className="serveruser" key={index}>
 							<div>
-								<AvataPicture state={true}/>
+								<AvatarPicture state={true}/>
 							</div>
 							<div>{user.name}</div>
 						</div>

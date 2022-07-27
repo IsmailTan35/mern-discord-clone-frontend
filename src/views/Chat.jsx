@@ -1,18 +1,31 @@
-import { useState, useContext, useLayoutEffect} from "react"
+import { useState, useContext, useLayoutEffect, useEffect} from "react"
 
 import { useLocation } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { SocketContext } from "controller/Context"
 
-import ChatBody from "components/ChatBody"
-import ChatInput from "components/ChatInput"
-import ChatVideo from "components/ChatVideo"
+import ChatBody from "components/chat/ChatBody"
+import ChatInput from "components/chat/ChatInput"
+import ChatVideo from "components/chat/ChatVideo"
 
 const Chat = () => {
-    const socket = useContext(SocketContext)
     const dispatch = useDispatch()
-    const [user, setUser] = useState({})
     const location = useLocation()
+    const socket = useContext(SocketContext)
+
+    const [user, setUser] = useState({})
+    const userList = useSelector(state => state.userList.items)
+
+    useEffect(() => {
+        const userId = location.pathname.split("/")[2]
+
+        if(location.pathname.split("/").length!=4) return 
+        const data = userList.filter(user => user.id !== userId )
+
+        if(!data || data.length===0) return
+        setUser(data[0])
+            
+    }, [location,userList])
 
     useLayoutEffect(() => {
         const rawLocation = location.pathname.split("/")
@@ -29,6 +42,7 @@ const Chat = () => {
                 channelName: messageType ? null : channelID,
         })}, 500);
     }, [location])
+
     return(
         <>
             <ChatVideo user={user} />

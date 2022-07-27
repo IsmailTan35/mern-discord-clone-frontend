@@ -10,19 +10,22 @@ const { reducer, actions } = createSlice({
   },
   reducers: {
     refresh(state, action) {
-        state[action.payload.name] = [];
-        state[action.payload.name] = action.payload.value
-
+      const { name, value } = action.payload;
+      state[name] = [];
+      state[name] = value
     },
+    
     update(state, action) {
-        if(action.payload.type=='remove'){
-            state[action.payload.name]=state[action.payload.name].filter(user => 
-              user.name != action.payload.value.name && user.code != action.payload.value.code
+      const { name, value ,type} = action.payload;
+        if(type=='remove'){
+            state[name]=state[name].filter(user => 
+              user.name != value.name && user.code != value.code
             )
         }
-        else if(action.payload.type=='add'){
-            state[action.payload.name].push(action.payload.value)
+        else if(type=='add'){
+            state[name].push(value)
         }
+        state[name] = [...new Map(state[name].map(item=> [item.name,item])).values()]
     }
   }
 });

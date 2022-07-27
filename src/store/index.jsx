@@ -8,7 +8,7 @@ import { friendsReducer as friends } from './friends';
 import { friendRequestReducer as friendRequest } from './friendRequest';
 import { messageReducer as message } from './message';
 import { serversReducer as server } from './server';
-import { usersReducer as users } from './users';
+import { userListReducer as userList } from './userlist';
 
 
 const reducer = combineReducers({
@@ -20,8 +20,9 @@ const reducer = combineReducers({
   friendRequest,
   message,
   server,
-  users
+  userList
 });
+
 export { streamActions } from './stream';
 export { userActions } from './user';
 export { peersActions } from './peers';
@@ -29,7 +30,7 @@ export { friendsActions } from './friends';
 export { friendRequestActions } from './friendRequest'
 export { messageActions } from './message'
 export { serversActions } from './server'
-export { usersActions } from './users';
+export { userListActions } from './userlist';
 
 
 export default configureStore({ 

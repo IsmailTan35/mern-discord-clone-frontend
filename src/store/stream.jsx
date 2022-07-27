@@ -7,12 +7,14 @@ const { reducer, actions } = createSlice({
       calling: false,
       callerId: null,
       callerName: null,
+      userId: null,
     }
     
   },
   reducers: {
     update(state, action) {
-      state.items[action.payload.name]=action.payload.value
+      const {name, value } = action.payload;
+      state.items[name]=value
     },
   }
 });

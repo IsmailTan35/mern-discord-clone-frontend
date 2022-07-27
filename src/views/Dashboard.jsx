@@ -1,15 +1,15 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Route, Routes, useNavigate } from "react-router-dom"
 import { useLocation } from "react-router-dom"
 import { friendsRoutes } from "routes"
 
+import Store from "views/Store"
 import Avatar from "components/Avatar"
-import Store from "components/Store"
 import ServerChat from "components/ServerChat"
-import SidebarFriends from "components/SidebarFriends"
 import StoreHeader from "components/header/StoreHeader"
 import ServerHeader from "components/header/ServerHeader"
 import FriendsHeader from "components/header/FriendsHeader"
+import SidebarFriends from "components/SidebarFriends"
 import FriendsChatHeader from "components/header/FriendsChatHeader"
 import SidebarServerChannels from "components/SidebarServerChannels"
 
@@ -17,12 +17,34 @@ import Active from "views/friendsViews/Active"
 import Chat from "views/Chat"
 
 import "assets/css/dashboard.css"
+import { useSelector } from "react-redux"
 
 const Dashboard =()=>{
     const [friends, setFriends] = useState("online")
     const navigate = useNavigate()
     const location = useLocation()
+    const [server, setServer] = useState({})
+    const serverList = useSelector(state => state.server.items)
+    const [stream, setStream] = useState(false)
+    useEffect(async () => { 
+        window.addEventListener("streamStart", () => {
+            setStream(true)
+        })
+        window.addEventListener("streamEnd", () => {
+            setStream(false)
+
+        })
+    },[])
+
+	useEffect(() => {
+		if(serverList.length===0 ) return
+		const server = serverList.find(server => server._id === location.pathname.split("/")[2])
+        if(!server ) return 
+        setServer(server)
+
     
+	}, [serverList,location])
+
     const changeFriends = (e)=>{
         setFriends(e)
     }
@@ -32,6 +54,7 @@ const Dashboard =()=>{
         if(e==="/channels/@me") setFriends("online")
         else setFriends(null)
     }
+
     return(
         <>
         <div className="dashboard-wrapper">
@@ -39,10 +62,39 @@ const Dashboard =()=>{
                 <div className="dashboard-sidebar">
                     <div id="container" >
                         <nav className="dashboard-side-navbar">
-                            <div className="dashboard-navbar-search-button-wrapper">
-                                <button className="dashboard-navbar-search-button">
-                                    {"Sohbet bul ya da başlat"}
-                                </button>
+                            <div className="dashboard-navbar-search-button-wrapper" style={{padding:0}}>
+                            <Routes>
+                                <Route path="@me"
+                                    element={        
+
+                                        <button className="dashboard-navbar-search-button">
+                                            {"Sohbet bul ya da başlat"}
+                                        </button>
+                                    }/>
+                                <Route exact strict sensitive path={"@me/:id"} 
+                                    element={   
+                                        <div className="dashboard-navbar-search-button-wrapper">
+
+                                        <button className="dashboard-navbar-search-button">
+                                            {"Sohbet bul ya da başlat"}
+                                        </button>
+                                        </div>
+                                    }/>
+                                <Route path={":serverID/:channelID"} element={
+                                    <h1 className="dashboard-navbar-server-name">
+                                        {server.servername}
+                                    </h1>}/>
+                                <Route index 
+                                    element={    
+                                        <div className="dashboard-navbar-search-button-wrapper">
+
+                                        <button className="dashboard-navbar-search-button">
+                                            {"Sohbet bul ya da başlat"}
+                                        </button>
+                                        </div>
+                                    }/>
+                            </Routes>
+
                             </div>
                             <Routes>
                                 <Route path="@me"
@@ -61,7 +113,7 @@ const Dashboard =()=>{
                     </div>
                 </div>
                 <div className="dashboard-panel">
-                    <div className="dashboard-panel-header-wrapper">
+                    <div className="dashboard-panel-header-wrapper" style={{background:stream ? "rgba(0,0,0,0.8)":"inherit"}}>
                         <Routes>
                             <Route path="@me"
                                 element={<FriendsHeader friends={friends} 
@@ -99,4 +151,4 @@ const Dashboard =()=>{
         </>
     )
 }
-export default Dashboard;
+export default React.memo(Dashboard);

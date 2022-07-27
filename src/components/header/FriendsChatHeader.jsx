@@ -10,16 +10,34 @@ const FriendsChatHeader = () => {
     const socket =useContext(SocketContext)
     const location = useLocation();
     const friends= useSelector(state => state.friends.items)
-    const [name, setName] = useState('')
+    const userList = useSelector(state => state.userList.items)
+    const [user, setUser] = useState({})
     const delay={ show: 50, hide: 0 }
 
     useEffect(() => {
-        const userId = location.pathname.split("/")[3]
+        const userId = location.pathname.split("/")[2]
+
         if(location.pathname.split("/").length!=4) return console.log("hata")
-        axios.get('/api/user/getName',{params:{id:userId}}).then(res => {
-            setName(res.data.name)
-        })
+        const data = userList.filter(user => user.id !== userId )
+
+        if(!data || data.length===0) return console.log("hata")
+        setUser(data[0])
             
+    }, [location,userList])
+
+    useEffect(() => {
+        const rawLocation = location.pathname.split("/")
+        const messageType = rawLocation.includes("@me")
+        const hasUser = userList.filter(user => user.id !== rawLocation[2])
+
+        if(!messageType) return
+        if(!hasUser || hasUser.length!==0) return setUser(hasUser[0])
+    
+        const userId = rawLocation[3]
+
+        socket.emit("getUserInfo",{
+            userId: userId,
+        })
     }, [location])
 
     const videoChat=()=>{
@@ -35,8 +53,9 @@ const FriendsChatHeader = () => {
         // const friend=friends.filter(friend => friend.id==location.pathname.split("/")[3])
         // if(friend.length>0){
         // }
-        socket.emit("call video chat",{receiver:location.pathname.split("/")[3]})
+        socket.emit("call voice chat",{receiver:location.pathname.split("/")[3]})
     }
+
     return(
         <>
         <div className="header-friend-wrapper">
@@ -45,7 +64,7 @@ const FriendsChatHeader = () => {
             </svg>
         </div>
         <div className="header-friend-name" >
-            {`${name}`}
+            {`${user && user.name ? user.name: ""}`}
         </div>
         <div className="header-friend-right-wrapper">
             <OverlayTrigger

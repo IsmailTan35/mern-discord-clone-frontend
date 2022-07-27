@@ -9,18 +9,28 @@ const AddServerModal = ({show,setShow}) => {
 	const [step,setStep] = useState(0);
 	const [type,setType] = useState("create");
 	const ref= useRef(null);
-	const [modalHeight,setModalHeight] = useState("100%");
+	const [modalHeight,setModalHeight] = useState("auto");
 
 	useEffect(()=>{
 		if(!show) setStep(0)
 	},[show])
 
 	useLayoutEffect(()=>{
-		if(!ref || ref.current.children[step].getBoundingClientRect().height<=0) return
 		
+		if(!ref || ref.current.children[step].getBoundingClientRect().height<=0) return
 		setModalHeight(ref.current.children[step].getBoundingClientRect().height)
+
+		return ()=>{
+			setModalHeight(ref.current.children[step].getBoundingClientRect().height)
+		}
 	},[ref,step])
 
+	useEffect(()=>{
+		if(!ref) return 
+		ref.current.addEventListener("click",(e)=>{
+			if(e.target.className==="modal-close-icon") setShow(false)
+		})
+	},[ref])
 	return (
 		<>
 			<div className='modal-container' >

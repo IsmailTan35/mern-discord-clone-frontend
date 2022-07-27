@@ -11,11 +11,12 @@ const { reducer, actions } = createSlice({
   },
   reducers: {
     refresh(state, action) {
-        state[action.payload.name]=action.payload.value
+      const {name, value } = action.payload;
+      state[name]=value
     },
     update(state, action) {
-      state[action.payload.name].push(action.payload.value)
-
+      const {name, value } = action.payload;
+      state[name].push(value)
     }
   }
 });

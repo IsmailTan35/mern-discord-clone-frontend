@@ -6,8 +6,9 @@ const First = ({setStep,setType}) => {
 	return (
 		<>
 			<div style={{minWidth:"100%",position:"relative"}}>
-				<CloseIcon className='modal-close-icon'/>
-
+					<div className='modal-close-icon'>
+						<CloseIcon  style={{pointerEvents:"none"}}/>
+					</div>
 					<div className='modal-firstRow'>
 						<div className='mymodal-header'>
 							<h3>

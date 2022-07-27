@@ -1,7 +1,7 @@
 const EmptyFriends = () => {
     return(
         <>
-            <svg width="184" height="428" viewBox="0 0 184 428" fill="red">
+            <svg width="184" height="428" viewBox="0 0 184 428">
                 <rect x="40" y="6" width="144" height="20" rx="10"></rect>
                 <circle cx="16" cy="16"  r="16" opacity="1.0"></circle><rect x="40" y="50"  width="144" height="20" rx="10" opacity="0.9"></rect>
                 <circle cx="16" cy="60"  r="16" opacity="0.9"></circle><rect x="40" y="94"  width="144" height="20" rx="10" opacity="0.8"></rect>

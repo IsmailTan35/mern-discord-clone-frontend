@@ -1,0 +1,74 @@
+.stream-wrapper{
+	max-height:500px;
+	min-height: 500px;
+	overflow-y:scroll;
+	background-color:rgba(0,0,0,0.8);
+	flex-direction:column;
+	padding: 20px;
+}
+
+.stream{
+	flex: 1 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.stream-buttons-wrapper{
+	display:flex;
+	justify-content: space-between;
+}
+
+.stream-buttons{
+	display: flex;
+	column-gap: 10px;
+
+}
+
+.stream-button-camera,.stream-button-microphone,.stream-button-screen-share,.stream-button-hangup{
+	height: 50px;
+	width: 50px;
+	border-radius: 100%;
+	background:#303136;
+	color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.stream-button-hangup{
+	background: hsl(359, calc(1 * 82.6%), 59.4%);
+}
+
+.stream-button-hangup{
+	background: hsl(359, calc(1 * 82.6%), 59.4%);
+}
+
+.stream-button-hangup{
+	background: hsl(359, calc(1 * 82.6%), 59.4%);
+}
+
+.stream-button-hangup{
+	background: hsl(359, calc(1 * 82.6%), 59.4%);
+}
+
+.stream-button-hangup{
+	background: hsl(359, calc(1 * 82.6%), 59.4%);
+}
+
+.stream-button-camera:hover,
+.stream-button-microphone:hover,
+.stream-button-screen-share:hover,
+.stream-button-hangup:hover{
+	background:#18191c;
+}
+
+.stream-webRTC{
+	border-radius: 20px;
+	object-fit: fill;
+}
+
+.stream-webRTC.active{
+	/* discord green */
+	border:2px solid hsl(120, calc(1 * 82.6%), 59.4%);
+}

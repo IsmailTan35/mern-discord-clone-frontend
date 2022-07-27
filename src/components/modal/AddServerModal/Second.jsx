@@ -16,7 +16,9 @@ const Second = ({setStep,type}) => {
 	return (
 		<>
 			<div style={{minWidth:"100%",position:"relative"}}>
-				<CloseIcon className='modal-close-icon' />
+				<div className='modal-close-icon'>
+					<CloseIcon style={{pointerEvents:"none"}} />
+				</div>
 				{type==="create"?<CreateServer setStep={setStep}/>:<JoinServer setStep={setStep}/>}
 			</div>
 		</>

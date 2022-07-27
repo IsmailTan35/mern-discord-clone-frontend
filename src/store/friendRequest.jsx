@@ -1,4 +1,4 @@
-import { createSlice, current  } from '@reduxjs/toolkit';
+import { createSlice  } from '@reduxjs/toolkit';
 
 const { reducer, actions } = createSlice({
   name: 'friendRequest',
@@ -7,17 +7,21 @@ const { reducer, actions } = createSlice({
   },
   reducers: {
     refresh(state, action) {
-        state[action.payload.name] = [];
-        state[action.payload.name] = action.payload.value
+      const { name, value } = action.payload;
+        state[name] = [];
+        state[name] = value
 
     },
     update(state, action) {
-        if(action.payload.type=='remove'){
-            state.items=state.items.filter(friend => friend.id!=action.payload.value.id)
+      const {type, name, value } = action.payload;
+        if(type=='remove'){
+            state.items=state.items.filter(friend => friend.id!=value.id)
         }
-        else if(action.payload.type=='add'){
-            state.items.push(action.payload.value)
+        else if(type=='add'){
+            state.items.push(value)
         }
+        state[name] = [...new Map(state[name].map(item=> [item.id,item])).values()]
+
     }
   }
 });
