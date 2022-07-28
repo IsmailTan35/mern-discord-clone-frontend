@@ -70,19 +70,27 @@ const Room = () => {
     const [headphone, setHeadphone] = useState(false);
     const myStoreStream = useSelector(state => state.stream.items);
 
-
     const removePeer = (id) => {
-        setPeers(item =>item.map(p => {
-            if(p.peerID == id){
-                p.peer.destroy();
+        setPeers(items =>items.map(item => {
+            if(item.peerID == id){
+                item.peer.destroy();
+                item.stream.getTracks().map(track => track.stop())
+
             }
-            return p
+            return item;
+
         }).filter(p => p.peerID != id));
     }
 
     useEffect(() => {
+        if(!peers) return
+
         if(peers.length==0) window.dispatchEvent(streamEndEvent);
-        else if(peers.length>0) window.dispatchEvent(streamStartEvent);
+        else if(!peers || peers.length>0) {
+            window.dispatchEvent(streamStartEvent)
+            // close all media stream
+                
+        }
     },[peers])
     useEffect(() => {
         let isMounted = true;
@@ -90,14 +98,17 @@ const Room = () => {
         socket.on("acceptedCall", data => {
 
         })
+
         socket.on("user joined", payload => {
              if(isMounted) addPeer(payload.signal, payload.from);
         });
+
         socket.on("all users", users => {
             users.map(userID => {
                 if(isMounted) createPeer(userID);
             })
         })
+        
         socket.on("hangup", payload => {
             if(isMounted) removePeer(payload.from);
         })
@@ -106,29 +117,21 @@ const Room = () => {
             setPeers(items => items.map(item => {
                 if(item.peerID == payload.from){
                     item.peer.signal(payload.signal);
+
                 }
-                return item
+                return item;
+
             }))
         });
-
-        socket.on("hangup", payload => {
-            if(isMounted) removePeer(payload.from);
-        })
 
         return () => {
             isMounted = false
         }
     }, [])
 
-    const answer = () => {
-        socket.emit("answerCall", {receiver: myStoreStream.callerId})
-        dispatch(streamActions.update({name:"calling",value:false}))
-    }
-
     const createPeer = (receiver)=> {
         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
             .then(stream => {
-                // window.localStream = stream;
                 const item = peers.find(p => p.peerID == receiver);  
                 if(item) return;
                 const peer = new Peer({
@@ -141,6 +144,7 @@ const Room = () => {
                 })
                 peer.on("close", (e) => {
                     stream.getTracks().map(track => track.stop())
+                    setPeers(items => items.filter(item => item.peerID != receiver))
                 })
                 setPeers(users => [...users, { peerID: receiver, peer: peer ,stream:stream}]);
             })
@@ -164,6 +168,7 @@ const Room = () => {
             })
             peer.on("close", () => {
                 stream.getTracks().map(track => track.stop())
+                setPeers(users => users.filter(user => user.peerID != receiver))
             })
             
             setPeers(users => [...users, { peerID: receiver, peer: peer ,stream:stream}]);
@@ -172,13 +177,16 @@ const Room = () => {
     }
 
     const handleHangup = () => {
+        if(!peers) return
+
         socket.emit("hangupCall")
         peers.map(item => {
             if(!item.peer || !item.peer.streams || item.peer.streams.length <= 0) return
             item.peer.destroy()
             item.peer.streams[0].getTracks().forEach(track => track.stop())
+            item.stream.getTracks().map(track => track.stop())
+
         })
-        // window.localStream.getTracks().forEach(track => track.stop())
         setPeers([]);
     }
     
@@ -187,6 +195,8 @@ const Room = () => {
     }
 
     const handleDisableMicrophone = () => {
+        if(!peers) return
+
         peers.map(item => {
             if(!item.peer || !item.peer.streams || item.peer.streams.length <= 0) return
             item.peer.streams[0].getTracks().forEach(track => {
@@ -200,6 +210,7 @@ const Room = () => {
     }
 
     const handleDisableCamera = () => {
+        if(!peers) return
         peers.map(item => {
             if(!item.peer || !item.peer.streams || item.peer.streams.length <= 0) return
             item.peer.streams[0].getTracks().forEach(track => {
@@ -220,25 +231,28 @@ const Room = () => {
             videoTrack.onended = () => {
                 console.log("first")
             }
-            setPeers(items=>{
-                items.map(item => {
-                item.peer.replaceTrack(item.stream.getVideoTracks()[0], stream.getVideoTracks()[0], item.stream)
+            setPeers(items=>items.map(item => {
+                    item.peer.replaceTrack(item.stream.getVideoTracks()[0], screenStream.getVideoTracks()[0], item.stream)
+                    item.stream = screenStream
+                    return item;
                 }
             )
-        })
+        )
 
         })
     }
+
+    console.log(peers)
     return (
-        <div className="stream-wrapper" style={{display: peers.length>0?"flex":"none"}} id="deneme">
+        <div className="stream-wrapper" style={{display: peers && peers.length>0?"flex":"none"}} id="deneme">
             <div className="stream">
-                {peers.filter(item=> item.peerID != socket.id).map((item, index) => {
+                {peers && peers.filter(item=> item.peerID != socket.id).map((item, index) => {
                     return (
                         <Video key={index} peer={item.peer} mute={mute}/>
                         );
                     })}
             </div>
-            { peers.length>0?<>
+            {peers && peers.length>0?<>
                 <div className="stream-buttons-wrapper">
                     <div>
                         <div></div>

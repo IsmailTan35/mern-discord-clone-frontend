@@ -1,16 +1,40 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import AvatarPicture from 'components/AvatarPicture';
 import { useDispatch, useSelector } from 'react-redux';
 import { streamActions } from 'store';
 import { useNavigate } from 'react-router-dom';
 import { SocketContext } from 'controller/Context';
+import callingAudio from 'assets/audio/Dubstep_call_tone.mp3.mpeg';
 
-const CallRequest = () => {
+const useAudio = url => {
+	const [audio] = useState(new Audio(url));
+	const [playing, setPlaying] = useState(false);
+  
+	const toggle = (e) => setPlaying(e);
+  
+	useEffect(() => {
+		playing ? audio.play() : audio.pause();
+	  },
+	  [playing]
+	);
+  
+	useEffect(() => {
+	  audio.addEventListener('ended', () => setPlaying(false));
+	  return () => {
+		audio.removeEventListener('ended', () => setPlaying(false));
+	  };
+	}, []);
+  
+	return [playing, toggle];
+  };
+  
+  const CallRequest = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-    const myStoreStream = useSelector(state => state.stream.items);
+	const myStoreStream = useSelector(state => state.stream.items);
 	const socket = useContext(SocketContext);
-	
+	const [playing, setToggle] = useAudio(callingAudio);
+
 	const rejectCall = () => {
 		dispatch(streamActions.update({name:"calling",value:false}))
 	}
@@ -21,6 +45,16 @@ const CallRequest = () => {
         socket.emit("answerCall", {receiver: myStoreStream.callerId})
 
 	}
+
+	useEffect(() => {
+		if(myStoreStream.calling) {
+			setToggle(true);
+		}
+		else {
+			setToggle(false);
+		}
+	}, [myStoreStream.calling]);
+
 
 	return (
 		<>

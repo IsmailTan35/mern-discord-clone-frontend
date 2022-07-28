@@ -45,7 +45,9 @@ const LandingPage = () => {
                 <div style={{textAlign:"center",maxWidth:780}}>
                     <h1>Clone Uygulamadır.</h1>
                     <h1 className="landing-01-header">ÖYLE BIR ORTAM HAYAL ET KI...</h1>
-                    <div className="landing-01-subheader">{`...bir okul kulübünün, oyun grubunun veya dünya çapında bir sanat topluluğunun bir üyesi olabilirsin. Sadece sen ve arkadaşlarının vakit geçirebileceği bir yer. Her gün konuşmayı ve daha sık takılmayı kolaylaştıran bir ortam.`}</div>
+                     <div className="landing-01-subheader" >
+                        {`...bir okul kulübünün, oyun grubunun veya dünya çapında bir sanat topluluğunun bir üyesi olabilirsin. Sadece sen ve arkadaşlarının vakit geçirebileceği bir yer. Her gün konuşmayı ve daha sık takılmayı kolaylaştıran bir ortam.`}
+                    </div> 
                     <div className="landing-buttons-wrapper">
                         <a href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86">
                             <button className="landing-01-download-button">Windows İçin İndir</button>
@@ -57,7 +59,7 @@ const LandingPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
         <div className="landing-wrapper">
             <div className="landing">
                 <img src="/assets/img/landing-2.svg" alt="landing02" className="landing-content-picture"/>
@@ -75,18 +77,18 @@ const LandingPage = () => {
                 </div>
                 <img src="/assets/img/landing-3.svg" alt="landing03" className="landing-content-picture"/>
             </div>
-        </div>
+        </div> 
         <div className="landing-wrapper">
-        <div className="landing">
-            <img src="/assets/img/landing-4.svg" alt="landing04" className="landing-content-picture"/>
-            <div className="landing-content" >
-                <h2>{`Birkaç kişiden hayran kitlelerine`}</h2>
-                <span>{`Moderasyon araçları ve özelleştirilebilir üye erişimleriyle istediğin bir topluluk kur. Üyelere çeşitli yetkiler verebilir, özel kanallar kurabilir ve daha fazlasını yapabilirsin.`}</span>
-            </div>
-        </div>  
+            <div className="landing">
+                <img src="/assets/img/landing-4.svg" alt="landing04" className="landing-content-picture"/>
+                <div className="landing-content" >
+                    <h2>{`Birkaç kişiden hayran kitlelerine`}</h2>
+                    <span>{`Moderasyon araçları ve özelleştirilebilir üye erişimleriyle istediğin bir topluluk kur. Üyelere çeşitli yetkiler verebilir, özel kanallar kurabilir ve daha fazlasını yapabilirsin.`}</span>
+                </div>
+            </div>  
 
         </div>
-        <div className="landing-wrapper" style={{background:"#f6f6f6",flexDirection:"column"}}>
+         <div className="landing-wrapper" style={{background:"#f6f6f6",flexDirection:"column"}}>
             <div className="landing"  style={{flexDirection:"column"}}>
                 <div className="landing-content" style={{width:"100%"}}>
                     <h2 style={{textAlign:"center"}}>{`HER ZAMAN YAKIN OLMAK IÇIN GÜVENILIR TEKNOLOJI`}</h2>
@@ -94,19 +96,19 @@ const LandingPage = () => {
                 </div>
                 <img src="/assets/img/landing-5.svg" alt="landing-wrapper-01" className="landing-content-picture"/>
             </div>
-        <div className="landing-wrapper-01" style={{background:"#f6f6f6"}}>
-            <div className="landing" style={{flexDirection:"column",textAlign:"center"}}>
-                <h4>{`Yolculuğuna başlamaya hazır mısın?`}</h4>
-                <a href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86">
-                    <button>{`Windows için indir`}</button>
-                </a>
+            <div className="landing-wrapper-01" style={{background:"#f6f6f6"}}>
+                <div className="landing" style={{flexDirection:"column",textAlign:"center"}}>
+                    <h4>{`Yolculuğuna başlamaya hazır mısın?`}</h4>
+                    <a href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86">
+                        <button>{`Windows için indir`}</button>
+                    </a>
+                </div>
             </div>
-        </div>
         </div>
         <div className="footer-wrapper">
             <div className="landing" style={{flexDirection:"column",width:1260}}>
                 <div className="footer-first-wrapper">
-                    <div className="footer-links-01">
+                     <div className="footer-links-01">
                         <h4 style={{color:"#5865F2"}}>{`BIR ORTAM HAYAL ET`}</h4>
                         <div>{`Türkçe`}</div>
                         <div className="footer-links-01-media">
@@ -178,7 +180,7 @@ const LandingPage = () => {
                         </svg>
                         <button>{`Kaydol`}</button>
                     </div>
-                </div>
+                </div> 
             </div>
 
         </div>

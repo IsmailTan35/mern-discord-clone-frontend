@@ -14,12 +14,15 @@ import Register from 'components/auth/Register';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { userActions } from 'store';
+import { useSelector } from 'react-redux';
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate()
-
+  
+  const user = useSelector(state => state.user);
+  console.log(user)
   useEffect(() => {
     dispatch(userActions.refresh({name:"token",value:localStorage.getItem("accessToken")}))
   }, [])

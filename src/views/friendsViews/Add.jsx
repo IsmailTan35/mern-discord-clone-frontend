@@ -1,6 +1,7 @@
 import "assets/css/friends.css";
 import axios from "axios";
 import { useState } from "react";
+import { ReactComponent as AddFriend } from "assets/img/addFriend.svg";
 const Add = () => {
     const [name,setName]=useState("demo2#6846")
 
@@ -16,7 +17,7 @@ const Add = () => {
         })
     }
     return (
-        <div>
+        <div style={{display:"flex",flex:"1 1",flexDirection:"column"}}>
             <div className="friends-add-header">{`Arkadaş Ekle`}</div>
             <div className="friends-add-subheader">{`Bir arkadaşını Discord Etiketi ile ekleyebilirsin. BüYüK kÜçÜk HaRfLeRe DuYaRlIdIr!`}</div>
             <div className="friends-add-input-wrapper">
@@ -29,8 +30,10 @@ const Add = () => {
                     />
                 <button className="friends-add-input-button" onClick={handleAdd}>{`Arkadaşlık isteği gönder`}</button>
             </div>
-            <div>
-                <div className="friends-add-image"/>
+            <div style={{display:"flex",flex:"1 1"}}>
+                <div className="friends-add-image">
+                    <AddFriend  />
+                </div>
             </div>
         </div>
     )

@@ -17,6 +17,9 @@ const { reducer, actions } = createSlice({
     update(state, action) {
       const {name, value } = action.payload;
       state[name].push(value)
+    },
+    delete(state, action) {
+      // delete state.items[action.payload];
     }
   }
 });

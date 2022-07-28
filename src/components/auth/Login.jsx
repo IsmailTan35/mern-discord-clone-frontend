@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import discordo from "assets/audio/discordo.mpeg";
 const LoginPage = () => {
     const client = useContext(SocketContext);
 
@@ -31,6 +31,8 @@ const LoginPage = () => {
             navigate(url)
             setTimeout(() => {
                 toast.update(id, { render: "All is good", type: toast.TYPE.SUCCESS, isLoading: false, autoClose:1500});
+                const audio = new Audio(discordo);
+                audio.play();
             }, 500);
         })
         .catch(err => {
