@@ -31,8 +31,11 @@ const Add = () => {
                 <button className="friends-add-input-button" onClick={handleAdd}>{`Arkadaşlık isteği gönder`}</button>
             </div>
             <div style={{display:"flex",flex:"1 1"}}>
-                <div className="friends-add-image">
+                <div className="friends-add-image" style={{flexDirection:"column",rowGap:30}}>
                     <AddFriend  />
+                    <div>
+                        Wumpus arkadaş bekliyor. Mecbur degilsin ama!
+                    </div>
                 </div>
             </div>
         </div>

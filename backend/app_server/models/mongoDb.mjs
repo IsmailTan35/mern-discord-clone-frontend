@@ -6,21 +6,41 @@ const uri = `mongodb+srv://${email}:${password}@${cluster}.xlfsl.mongodb.net/myF
 
 const mongoDb = async () =>{
   const con = mongoose.connection
-  mongoose.connection.on('connection', () => {
-    console.log('connection to mongodb')
+
+  mongoose.connection.on('connecting', () => {
+    console.log('connecting to mongodb')
   })
+
   mongoose.connection.on('connected', () => {
     console.log('connected to mongodb')
   })
+
   mongoose.connection.on('disconnecting', () => {
-      console.log('disconnecting to mongodb')
+    console.log('disconnecting to mongodb')
   })
+
   mongoose.connection.on('disconnected', () => {
     console.log('disconnected to mongodb')
-
   })
-  await mongoose.connect(uri);
-  con.on('error', console.error.bind(console, 'connection error:'))
+  
+  mongoose.connection.on('error', ()=>{
+    console.error('connection error:')
+    
+    mongoose.disconnect()
+
+    setTimeout(()=>{
+      mongoose.connect(uri)
+        .catch(err => console.log("hata"));;
+    },5000)
+  })
+
+  mongoose.connection.on('reconnected',()=>{
+    console.log('reconnected to Mongodb')
+  })
+
+  mongoose.connect(uri)
+    .catch(err => console.log("hata"));;
+
   return con
 }
 export default mongoDb;

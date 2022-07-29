@@ -35,7 +35,6 @@ const Video = ({peer,mute}) => {
             })
         })
         peer.on("data", stream => {
-            console.log(stream)
             ref.current.srcObject = new HTMLMediaElement(stream);
             var speechEvents = hark(stream,{})
             speechEvents.on('speaking', () => {
@@ -108,7 +107,7 @@ const Room = () => {
                 if(isMounted) createPeer(userID);
             })
         })
-        
+
         socket.on("hangup", payload => {
             if(isMounted) removePeer(payload.from);
         })
@@ -242,7 +241,6 @@ const Room = () => {
         })
     }
 
-    console.log(peers)
     return (
         <div className="stream-wrapper" style={{display: peers && peers.length>0?"flex":"none"}} id="deneme">
             <div className="stream">

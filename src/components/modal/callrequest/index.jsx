@@ -59,7 +59,8 @@ const useAudio = url => {
 	return (
 		<>
 			<div className='modal-container' >
-				<div className={`mymodal${myStoreStream.calling ? " active":""}`} style={{background:"transparent",width:200}}>
+				<div className={`mymodal${myStoreStream.calling ? " active":""}`} 
+					style={{background:"transparent",width:200}}>
 					<div style={{}}>
 						<div style={{padding:20,background:"#18191d",display:"flex",flexDirection:"column",justifyContent:"center",borderRadius:9}}>
 							<div style={{height:50,margin:"auto"}}>

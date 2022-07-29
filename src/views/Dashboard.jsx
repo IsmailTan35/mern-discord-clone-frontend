@@ -41,7 +41,6 @@ const Dashboard =()=>{
 		const server = serverList.find(server => server._id === location.pathname.split("/")[2])
         if(!server ) return 
         setServer(server)
-
     
 	}, [serverList,location])
 

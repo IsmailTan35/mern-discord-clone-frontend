@@ -1,47 +1,54 @@
-import Panel from 'layouts/Panel';
-
-import {SocketContext, client} from 'controller/Context';
-import LandingPage from 'layouts/LandingPage';
-import SocketController from 'controller/SocketController';
-import { Routes,Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
-import Auth from 'layouts/Auth';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Dashboard from 'views/Dashboard';
 import { useEffect } from 'react';
-import axios from 'axios';
+import { Routes,Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+import LandingPage from 'layouts/LandingPage';
+import Panel from 'layouts/Panel';
+import Auth from 'layouts/Auth';
+import Dashboard from 'views/Dashboard';
 import LoginPage from 'components/auth/Login';
 import Register from 'components/auth/Register';
+import SocketController from 'controller/SocketController';
+import {SocketContext, client} from 'controller/Context';
 import { ToastContainer } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import { userActions } from 'store';
-import { useSelector } from 'react-redux';
+
+import axios from 'axios';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate()
-  
+
   const user = useSelector(state => state.user);
-  console.log(user)
+  
   useEffect(() => {
     dispatch(userActions.refresh({name:"token",value:localStorage.getItem("accessToken")}))
   }, [])
   
-  // useEffect(() => {
-  //   axios.post('/api/auth/check',{
-  //     userAccessToken:localStorage.getItem('accessToken'),
-  //     userRefreshToken:localStorage.getItem('refreshToken')
-  //   }).then(res => {
-  //       navigate('/channel/@me')
-  //   })
-  //   .catch(err => {
-  //     localStorage.removeItem('accessToken');
-  //     localStorage.removeItem('refreshToken');
-  //     if( location.pathname !== '/' && location.pathname.search('auth')=== 0){
-  //       navigate('/auth/login')
-  //     }
-  //   })
-  // },[location.pathname])
+  useEffect(() => {
+    axios.post('/api/auth/check',{
+      userAccessToken:localStorage.getItem('accessToken'),
+    }).then(res => {
+    })
+    .catch(err => {
+      if(location.pathname !== '/' && !location.pathname.includes('auth')){
+      switch(err.response.status){
+        case 401:
+          navigate('/auth/login')
+          break;
+        case 403:
+          navigate('/auth/login')
+          break;
+        default:
+          break;
+      }
+    }
+
+    })
+  },[location.pathname])
   return (
     <>
       <SocketContext.Provider value={client}>

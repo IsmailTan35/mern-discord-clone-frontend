@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import discordo from "assets/audio/discordo.mpeg";
 const LoginPage = () => {
-    const client = useContext(SocketContext);
+    const socket = useContext(SocketContext);
 
     const [form,setForm] = useState({
         email: "demo@discord.com",
@@ -27,9 +27,9 @@ const LoginPage = () => {
         axios.post("/api/auth/login", form)
         .then(res => {
             localStorage.setItem("accessToken", res.data[6].value);
-            client.emit("configuration",{token: res.data[6].value});
-            navigate(url)
+            socket.emit("configuration",{token: res.data[6].value});
             setTimeout(() => {
+                navigate(url)
                 toast.update(id, { render: "All is good", type: toast.TYPE.SUCCESS, isLoading: false, autoClose:1500});
                 const audio = new Audio(discordo);
                 audio.play();
