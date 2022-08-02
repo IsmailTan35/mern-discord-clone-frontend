@@ -17,9 +17,8 @@ const SocketController = () => {
   const connectSocket = () => {
     socket.on("connect", () => {
       if(location.pathname !== "/" ) {
-        // navigate("/channels/@me")
         socket.emit("configuration",{token: localStorage.getItem("accessToken")});
-    }
+      }
     });
     
     socket.on("disconnect", () => {
@@ -27,18 +26,17 @@ const SocketController = () => {
     });
 
     socket.on("reconnect", () => {
-        if(location.pathname !== "/" ) {
-            // navigate("/channels/@me")
-            socket.emit("configuration",{token: localStorage.getItem("accessToken")});
-        }
+      if(location.pathname !== "/" ) {
+          socket.emit("configuration",{token: localStorage.getItem("accessToken")});
+      }
     });
 
     socket.on("reconnect_attempt", () => {
     })
     
     socket.on("newMessage", (message) => { 
-        dispatch(messageActions.overWrite({name:"items",value:message}))
-     });
+      dispatch(messageActions.overWrite({name:"items",value:message}))
+    });
 
     socket.on("data",(data)=>{
       dispatch(friendsActions.refresh({name:"onlineUsers",value:data.onlineUsers}))

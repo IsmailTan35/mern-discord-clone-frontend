@@ -5,7 +5,10 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import discordo from "assets/audio/discordo.mpeg";
+import { useDispatch } from "react-redux";
+import { userActions } from "store";
 const LoginPage = () => {
+    const dispatch = useDispatch();
     const socket = useContext(SocketContext);
 
     const [form,setForm] = useState({
@@ -27,6 +30,7 @@ const LoginPage = () => {
         axios.post("/api/auth/login", form)
         .then(res => {
             localStorage.setItem("accessToken", res.data[6].value);
+            dispatch(userActions.refresh({name:"token",value:res.data[6].value}))
             socket.emit("configuration",{token: res.data[6].value});
             setTimeout(() => {
                 navigate(url)

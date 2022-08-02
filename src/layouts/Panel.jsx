@@ -13,7 +13,7 @@ import CallRequest from "components/modal/callrequest";
 const ESCAPE_KEYS = ['27', 'Escape'];
 
 const Panel = () => {
-    const client = useContext(SocketContext);
+    const socket = useContext(SocketContext);
     const friends = useSelector(state => state.friends.onlineUsers);
     const message = useSelector(state => state.user.message);
     const userID = useSelector(state => state.user.id);
@@ -23,7 +23,7 @@ const Panel = () => {
     const [showAddServerModal,setShowAddServerModal] = useState(false)
 
     useEffect(() => {
-            client.emit("configuration",{token: localStorage.getItem("accessToken")});
+        socket.emit("configuration",{token: localStorage.getItem("accessToken")});
     }, [])
 
     useEffect(() => {
