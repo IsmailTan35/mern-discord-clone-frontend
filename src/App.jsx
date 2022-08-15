@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes,Route, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,7 +21,7 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate()
-
+  const [deneme, setDeneme] = useState("");
   const user = useSelector(state => state.user);
   
   useEffect(() => {
@@ -49,6 +49,7 @@ const App = () => {
 
     })
   },[location.pathname])
+  
   return (
     <>
       <SocketContext.Provider value={client}>

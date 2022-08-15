@@ -62,7 +62,7 @@ const friendsPost = async (req,res) => {
                     $elemMatch:{
                         $eq:{
                             type: "outgoing",
-                            id:check[1]._id
+                            _id:check[1]._id
                         }
                     }
                 }
@@ -91,7 +91,7 @@ const friendsPost = async (req,res) => {
                     $elemMatch:{
                         $eq:{
                             type: "outgoing",
-                            id:check[0]._id
+                            _id:check[0]._id
                         }
                     }
                 }
@@ -100,8 +100,8 @@ const friendsPost = async (req,res) => {
     const fromUpdated = await user.findOneAndUpdate(filter,{
         $push:{
             request:{
-                type:"incoming",
-                id:check[1]._id
+                type:"outgoing",
+                _id:check[1]._id
             }
         }
     })
@@ -111,8 +111,8 @@ const friendsPost = async (req,res) => {
     const toUpdated = await user.findOneAndUpdate(filter2,{
         $push:{
             request:{
-                type:"outgoing",
-                id:check[0]._id
+                type:"incoming",
+                _id:check[0]._id
             }
         }
     })

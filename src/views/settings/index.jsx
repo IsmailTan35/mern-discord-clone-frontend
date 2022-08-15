@@ -7,7 +7,7 @@ import {
     IoCloseCircleOutline
 } from "react-icons/io5";
 import Nitro from "assets/img/nitro.svg";
-import {RiLoginBoxFill} from "react-icons/ri";
+import { RiLoginBoxFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userActions } from 'store';
@@ -94,7 +94,7 @@ const Settings = ({data,setData}) => {
                                         {item.items.map((i, index2) => (
                                             <div className={`settings-primary-item-item${selected===i.key?"-active":""}`} 
                                                 key={index2} 
-                                                onClick={()=>{i.click() || handleClick(i.key)}}>
+                                                onClick={()=>{i.click ? i.click() : handleClick(i.key)}}>
                                                 <div className="settings-primary-item-item-value">
                                                     {i.value}
                                                 </div>

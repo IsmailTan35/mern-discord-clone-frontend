@@ -197,7 +197,7 @@
 .dashboard-navbar-server-name{
     display:flex;
     align-items:center;
-    color:hsl(0,calc(1*0%),100%);
+    color:hsl(0,0%,100%);
     font-size: 15px;
     line-height: 20px;
     font-weight: 500;
@@ -212,5 +212,5 @@
 }
 
 .dashboard-navbar-server-name:hover{
-    background:hsla(217, calc(1 *7.6%),33.5%,0.4);
+    background:hsla(217,7.6%,33.5%,0.4);
 }

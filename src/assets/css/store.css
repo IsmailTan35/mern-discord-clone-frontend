@@ -1,0 +1,65 @@
+.store-cards-wrapper{
+	display: flex;
+  	flex-wrap: wrap;
+	row-gap: 20px;
+	column-gap: 20px;
+}
+
+.store-card{
+	width: 206px;
+	background: hsl(220,6.8%,17.3%);
+	list-style-type: none;
+	padding: 10px;
+	border-radius: 8px;
+}
+
+.store-card-img{
+	width: 195px;
+	height: 127px;
+	display: flex;
+	justify-content: center;
+	flex: 1 1;
+}
+
+.store-hero{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+}
+
+.heroIcon{
+    width: 149px;
+    height: 60px;
+	color: hsl(0,0%,100%);;
+}
+
+
+.wrppp{
+	position: absolute;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+	width: 100%;
+	top: 48px;
+	left: 0;
+}
+
+.store-perk-list-item-wrapper{
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+	margin-bottom: 10px;
+}
+
+.store-perk-list-item{
+	display:flex ;
+	flex-direction: row;
+	column-gap: 10px;
+}
+
+@media only screen and (max-width: 1049px) {
+	.store-cards-wrapper{
+		justify-content: center;
+	}
+}

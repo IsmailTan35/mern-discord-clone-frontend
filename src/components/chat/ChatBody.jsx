@@ -10,13 +10,16 @@ const delay={ show: 50, hide: 0 }
 
 const ChatBody = ({user}) => {
     const ref = useRef(null);
-    const socket = useContext(SocketContext)
-    const rawMessages = useSelector(state => state.message.items)
-    const [friendName,setFriendName]=useState('')
     const location = useLocation()
-    const myUser = useSelector(state => state.user)
+    const socket = useContext(SocketContext)
+
+    const [friendName,setFriendName]=useState('')
     const [messages,setMessages]=useState([])
 
+    const myUser = useSelector(state => state.user)
+    const rawMessages = useSelector(state => state.message.items)
+    const userList = useSelector(state => state.userList.items)
+    
     useEffect(() => {
         ref.current.scrollTop = ref.current.scrollHeight;
     }, [messages])
@@ -46,7 +49,6 @@ const ChatBody = ({user}) => {
             setMessages(data)
         }
     }, [rawMessages,location])
-    
     return(
         <>
             <div className="chat-body-wrapper" ref={ref}>
@@ -58,7 +60,9 @@ const ChatBody = ({user}) => {
                         <div className="chat-body-message-text">
                             <div style={{display:"flex",flexDirection:"row",columnGap:"10px"}}>
                                 <div className="chat-body-message-text-name">
-                                    {friendName && message.sender===friendName ? user.name:myUser.name}
+                                    {userList.length<0 && friendName && message.sender===friendName ? 
+                                        myUser.name: userList.find(item => item.id === message.sender) ? userList.find(item => item.id === message.sender).name: ""
+                                    }
                                 </div>
                                 <div style={{color:"hsl(214,calc( 1*4%),65.3%)"}}>
                                 <OverlayTrigger

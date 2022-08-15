@@ -39,7 +39,6 @@ export default async (io,socket,data)=>{
 	{new:true})
 	const rawSockets = await io.fetchSockets()
 	rawSockets.map((socket)=>{
-		console.log(socket.handshake.auth.userId,check[0]._id.toString())
 		if(socket.handshake.auth.userId===check[0]._id.toString()){
 			socket.emit("friendUnFriend",check[1]._id)
 

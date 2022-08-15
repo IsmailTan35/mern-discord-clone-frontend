@@ -15,5 +15,6 @@ const db = mongoDb()
 const server = CreateServer(app,port)
 const socket = webSocket(server)
 app.io=socket
+
 controllerApi(app,"con")
 controlleWebsocket(socket,"con")

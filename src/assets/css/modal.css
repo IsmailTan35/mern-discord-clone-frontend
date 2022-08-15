@@ -36,7 +36,7 @@
 .modal-wrapper.active{
 	pointer-events: all;
 	opacity: 0.85;
-	background: hsl(0,calc(1 * 0% ), 0%);
+	background: hsl(0,0% , 0%);
 }
 
 .mymodal{

@@ -4,7 +4,9 @@ import { SocketContext } from "controller/Context"
 
 const Waiting = () => {
     const friendsRequest = useSelector(state => state.friends.requests)
+
     const socket = useContext(SocketContext)
+    
     useEffect(()=>{
         socket.emit("getFriendRequests")
     },[])
@@ -17,7 +19,8 @@ const Waiting = () => {
         socket.emit("rejectFriendRequest",user)
     }
 
-    const handleCancel = (user) => {
+    const handleCancel = (e,user) => {
+        e.preventDefault();
         socket.emit("cancelFriendRequest",user)
     }
     return (
@@ -75,7 +78,7 @@ const Waiting = () => {
 
                                         </>:
                                         <>
-                                            <div onClick={()=>{handleCancel(friend)}}>
+                                            <div onClick={(e)=>{handleCancel(e,friend)}}>
                                                 <svg viewBox="0 0 20 20" fill="none" >
                                                     <path width={25} height={25} fill="hsl(218, calc(var(--saturation-factor, 1) * 4.6%), 46.9%)" d="M5.13231 6.72963L6.7233 5.13864L14.855 13.2704L13.264 14.8614L5.13231 6.72963Z">
                                                     </path>

@@ -21,6 +21,12 @@ const { reducer, actions } = createSlice({
           state.items.push(value)
       }
       state[name] = [...new Map(state[name].map(item=> [item.id,item])).values()]
+    },
+    mutation(state, action) {
+      const { name, value } = action.payload;
+      const mergeArr = [...state[name], ...value];
+      state[name] = [...new Map(mergeArr.map(item=> [item.name,item])).values()]
+
     }
   }
 });

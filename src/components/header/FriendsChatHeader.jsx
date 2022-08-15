@@ -40,20 +40,15 @@ const FriendsChatHeader = () => {
         })
     }, [location])
 
-    const videoChat=()=>{
+    const startChat = (chatType) => {
         if(!location.pathname.split("/").length==3) return
         // const friend=friends.filter(friend => friend.id==location.pathname.split("/")[3])
         // if(friend.length>0){
         // }
-        socket.emit("call video chat",{receiver:location.pathname.split("/")[3]})
-    }
-    
-    const voiceChat = () => {
-        if(!location.pathname.split("/").length==3) return
-        // const friend=friends.filter(friend => friend.id==location.pathname.split("/")[3])
-        // if(friend.length>0){
-        // }
-        socket.emit("call voice chat",{receiver:location.pathname.split("/")[3]})
+        socket.emit("call video chat",{
+            receiver:location.pathname.split("/")[3],
+            chatType
+        })
     }
 
     return(
@@ -76,7 +71,7 @@ const FriendsChatHeader = () => {
                     </Tooltip>
                   )}
                 >
-                <div onClick={()=>{voiceChat()}}>
+                <div onClick={()=>{startChat("voice")}}>
                     <svg x="0" y="0" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M11 5V3C16.515 3 21 7.486 21 13H19C19 8.589 15.411 5 11 5ZM17 13H15C15 10.795 13.206 9 11 9V7C14.309 7 17 9.691 17 13ZM11 11V13H13C13 11.896 12.105 11 11 11ZM14 16H18C18.553 16 19 16.447 19 17V21C19 21.553 18.553 22 18 22H13C6.925 22 2 17.075 2 11V6C2 5.447 2.448 5 3 5H7C7.553 5 8 5.447 8 6V10C8 10.553 7.553 11 7 11H6C6.063 14.938 9 18 13 18V17C13 16.447 13.447 16 14 16Z"></path>
                     </svg>
@@ -91,7 +86,7 @@ const FriendsChatHeader = () => {
                     </Tooltip>
                   )}
                 >
-                <div onClick={()=>{videoChat()}}>
+                <div onClick={()=>{startChat("video")}}>
                     <svg x="0" y="0" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M21.526 8.149C21.231 7.966 20.862 7.951 20.553 8.105L18 9.382V7C18 5.897 17.103 5 16 5H4C2.897 5 2 5.897 2 7V17C2 18.104 2.897 19 4 19H16C17.103 19 18 18.104 18 17V14.618L20.553 15.894C20.694 15.965 20.847 16 21 16C21.183 16 21.365 15.949 21.526 15.851C21.82 15.668 22 15.347 22 15V9C22 8.653 21.82 8.332 21.526 8.149Z"></path>
                     </svg>

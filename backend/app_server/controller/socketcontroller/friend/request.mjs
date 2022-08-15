@@ -78,8 +78,8 @@ const acceptFriendRequest = async (io,socket, data) => {
 			}}),
 			({
 				_id:data._id,
-				username:data.username,
-				code:data.code,
+				// username:data.username,
+				// code:data.code,
 			})
 		]
 	}
@@ -146,8 +146,9 @@ const rejectFriendRequest = async (io,socket, data) => {
 				}
 			}}),
 			({
-				username:data.name,
-				code:data.code,
+				_id:data._id,
+				// username:data.username,
+				// code:data.code,
 			})
 		]
 	}
@@ -160,7 +161,10 @@ const rejectFriendRequest = async (io,socket, data) => {
 		code:check[0].code,
 	},{
 		$pull:{
-			request:check[1]._id}
+			request:{
+				_id:check[1]._id
+			}
+		}
 	},
 	{new:true})
 
@@ -169,12 +173,14 @@ const rejectFriendRequest = async (io,socket, data) => {
 		code:check[1].code,
 	},{
 		$pull:{
-			request:check[0]._id}
+			request:{
+				_id:check[1]._id
+			}
+		}
 	},
 	{new:true})
 	const rawSockets = await io.fetchSockets()
 	rawSockets.map((socket)=>{
-		console.log(socket.handshake.auth.userId,check[0]._id.toString())
 		if(socket.handshake.auth.userId===check[0]._id.toString()){
 			socket.emit("friendRequestsRemove",{
 				name:check[1].username,
@@ -202,8 +208,8 @@ const cancelFriendRequest = async (io,socket, data) => {
 			}}),
 			({
 				_id:data._id,
-				username:data.username,
-				code:data.code,
+				// username:data.username,
+				// code:data.code,
 			})
 		]
 	}

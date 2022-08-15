@@ -66,7 +66,7 @@
 }
 
 .auth-button{
-    background-color: hsl(235,calc(1 * 85.6%),64.7%);
+    background-color: hsl(235, 85.6%,64.7%);
     color: white;
     padding: 2px 16px;
     border-radius: 5px;
@@ -83,7 +83,7 @@
 }
 
 .auth-links-button{
-    color: hsl(197,calc(1 * 100%),47.8%);
+    color: hsl(197,100%,47.8%);
     border: none;
     cursor: pointer;
     margin-top: 5px;
@@ -187,7 +187,7 @@
     margin-right: 10px;
     height: 24px;
     width: 24px;
-    accent-color: hsl(235,calc(var(--saturation-factor, 1)*85.6%),64.7%);
+    accent-color: hsl(235,85.6%,64.7%);
     
 }
 @media only screen and (max-width: 485px) {

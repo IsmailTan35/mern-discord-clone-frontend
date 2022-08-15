@@ -63,6 +63,10 @@ export default (io,con)=>{
             getMessages(io,socket,user)
         })
 
+        socket.on("joinVoiceChannel",async data=>{
+            socket.join(data.room);
+            socket.to(data.room).emit("joinUserVoiceChannel",data);
+        })
         socket.on("call video chat", async user => {
             let roomID = "webRTC-"+UniqueId()
             socket.join(roomID)
@@ -76,6 +80,7 @@ export default (io,con)=>{
                     from: socket.id,
                     name:socket.handshake.auth.name,
                     id:socket.handshake.auth.userId,
+                    chatType:user.chatType
                 });
 
             })
@@ -97,9 +102,8 @@ export default (io,con)=>{
                         return (items.id)
                         
                     })
-                    console.log(rawData)
                     if(!usersInThisRoom) return
-                    socket.emit("all users", rawData);
+                    socket.emit("all users", {users:rawData,chatType:data.chatType});
                     socket.join(roomID)
                     break;
                 }
@@ -107,7 +111,8 @@ export default (io,con)=>{
         })
 
         socket.on("sending signal", payload => {
-            io.to(payload.receiver).emit('user joined', { signal: payload.signal, from: socket.id });
+            console.log(payload.chatType)
+            io.to(payload.receiver).emit('user joined', { signal: payload.signal, from: socket.id ,chatType:payload.chatType});
         });
         
         socket.on("returning signal", payload => {
@@ -133,7 +138,6 @@ export default (io,con)=>{
                         }
                     })
                     const usersInThisRooms = await io.in(roomID).fetchSockets()
-                    console.log(usersInThisRooms.length)
                 }
             }
         })

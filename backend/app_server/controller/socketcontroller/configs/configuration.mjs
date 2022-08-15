@@ -1,7 +1,6 @@
 import userSchema from "../../../schema/user.mjs";
 
 export default async(io,socket,data)=>{
-	console.log("girdi2")
 	var user = await userSchema.findOne({token:{"$in":[data.token]}})
 	if(!user) return
 	
@@ -14,7 +13,6 @@ export default async(io,socket,data)=>{
 	if(!socket.handshake.auth.token || !socket.handshake.auth.name)  return
 
 	const rawSockets = await io.fetchSockets()
-	console.log(user.friends)
 	const sockets = rawSockets.filter(items => items.handshake.auth.userId && 
 		socket.handshake.auth.userId !== items.handshake.auth.userId &&
 		user.friends.includes(items.handshake.auth.userId))

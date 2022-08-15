@@ -37,23 +37,23 @@
 }
 
 .stream-button-hangup{
-	background: hsl(359, calc(1 * 82.6%), 59.4%);
+	background: hsl(359,  82.6%, 59.4%);
 }
 
 .stream-button-hangup{
-	background: hsl(359, calc(1 * 82.6%), 59.4%);
+	background: hsl(359,  82.6%, 59.4%);
 }
 
 .stream-button-hangup{
-	background: hsl(359, calc(1 * 82.6%), 59.4%);
+	background: hsl(359,  82.6%, 59.4%);
 }
 
 .stream-button-hangup{
-	background: hsl(359, calc(1 * 82.6%), 59.4%);
+	background: hsl(359,  82.6%, 59.4%);
 }
 
 .stream-button-hangup{
-	background: hsl(359, calc(1 * 82.6%), 59.4%);
+	background: hsl(359,  82.6%, 59.4%);
 }
 
 .stream-button-camera:hover,
@@ -70,5 +70,5 @@
 
 .stream-webRTC.active{
 	/* discord green */
-	border:2px solid hsl(120, calc(1 * 82.6%), 59.4%);
+	border:2px solid hsl(120,  82.6%, 59.4%);
 }

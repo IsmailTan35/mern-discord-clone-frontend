@@ -33,7 +33,7 @@ const Add = () => {
             <div style={{display:"flex",flex:"1 1"}}>
                 <div className="friends-add-image" style={{flexDirection:"column",rowGap:30}}>
                     <AddFriend  />
-                    <div>
+                    <div style={{color:"#72767D"}}>
                         Wumpus arkadaş bekliyor. Mecbur degilsin ama!
                     </div>
                 </div>
