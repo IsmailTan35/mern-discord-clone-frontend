@@ -99,7 +99,7 @@ const Room = () => {
     });
 
     socket.on("all users", data => {
-      data.users.forEach(userID => {
+      data.users.map(userID => {
         createPeer(userID, data.chatType);
       });
     });
