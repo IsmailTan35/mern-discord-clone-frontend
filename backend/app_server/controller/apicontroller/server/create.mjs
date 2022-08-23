@@ -69,7 +69,7 @@ export default async (req,res) => {
 
 		const rawSockets = await io.fetchSockets()
 		const sockets = rawSockets.filter(socket => socket.handshake.auth.token === token)
-		sockets.forEach(socket => {
+		sockets.map(socket => {
 			socket.emit('newServer',{
 				_id:server._id,
 				servername:server.servername,

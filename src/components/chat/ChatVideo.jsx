@@ -137,7 +137,7 @@ const Room = () => {
           socket.emit("sending signal", { signal, receiver, chatType });
         });
         peer.on("close", e => {
-          stream.getTracks().forEach(track => track.stop());
+          stream.getTracks().map(track => track.stop());
           setPeers(items => items.filter(item => item.peerID != receiver));
         });
         peer.on("error", err => {
@@ -172,7 +172,7 @@ const Room = () => {
           });
         });
         peer.on("close", () => {
-          stream.getTracks().forEach(track => track.stop());
+          stream.getTracks().map(track => track.stop());
           setPeers(users => users.filter(user => user.peerID != receiver));
         });
         peer.on("error", err => {
@@ -189,12 +189,12 @@ const Room = () => {
     if (!peers) return;
 
     socket.emit("hangupCall");
-    peers.forEach(item => {
+    peers.map(item => {
       if (!item.peer || !item.peer.streams || item.peer.streams.length <= 0)
         return;
       item.peer.destroy();
-      item.peer.streams[0].getTracks().forEach(track => track.stop());
-      item.stream.getTracks().forEach(track => track.stop());
+      item.peer.streams[0].getTracks().map(track => track.stop());
+      item.stream.getTracks().map(track => track.stop());
       item.peer.removeListener("stream", () => {});
     });
     setTimeout(() => {
@@ -212,7 +212,7 @@ const Room = () => {
     peers.map(item => {
       if (!item.peer || !item.peer.streams || item.peer.streams.length <= 0)
         return;
-      item.peer.streams[0].getTracks().forEach(track => {
+      item.peer.streams[0].getTracks().map(track => {
         if (track.kind === "audio") {
           track.enabled = !track.enabled;
         }
@@ -222,10 +222,10 @@ const Room = () => {
 
   const handleDisableCamera = () => {
     if (!peers) return;
-    peers.forEach(item => {
+    peers.map(item => {
       if (!item.peer || !item.peer.streams || item.peer.streams.length <= 0)
         return;
-      item.peer.streams[0].getTracks().forEach(track => {
+      item.peer.streams[0].getTracks().map(track => {
         if (track.kind === "video") {
           track.enabled = !track.enabled;
         }
