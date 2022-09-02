@@ -11,4 +11,11 @@ export default async (io,socket,data)=>{
 		name: socket.handshake.auth.name,
 		code: socket.handshake.auth.code
 	});
+	socket.broadcast.emit("leftUserVoiceChannelInChannel",{
+		_id: socket.handshake.auth.userId,
+		username: socket.handshake.auth.name,
+		code: socket.handshake.auth.code,
+		serverID:data.serverID,
+		channelID:data.channelID
+	})
 }

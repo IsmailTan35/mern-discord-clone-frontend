@@ -7,14 +7,22 @@ import { SocketContext } from "./Context";
 import { useLocation } from "react-router-dom";
 import { serversActions } from "store";
 import { userListActions } from "store";
+import messageSound from "assets/audio/discordMessage.mp3";
+import joinSound from "assets/audio/discordJoin.wav";
+import { channelsActions } from "store";
 
 const SocketController = () => {
   const socket = useContext(SocketContext);
   const token = useSelector(state => state.user.token);
+  const userID = useSelector(state => state.user.id);
+  const serverList = useSelector(state => state.server.items);
   const location = useLocation();
   const dispatch = useDispatch();
 
   const connectSocket = () => {
+    const audio = new Audio(messageSound);
+    const discordJoin = new Audio(joinSound);
+
     socket.on("connect", () => {
       if (location.pathname !== "/") {
         socket.emit("configuration", {
@@ -35,7 +43,12 @@ const SocketController = () => {
 
     socket.on("reconnect_attempt", () => {});
 
+    socket.on("allMessage", message => {
+      dispatch(messageActions.overWrite({ name: "items", value: message }));
+    });
+
     socket.on("newMessage", message => {
+      audio.play();
       dispatch(messageActions.overWrite({ name: "items", value: message }));
     });
 
@@ -46,9 +59,6 @@ const SocketController = () => {
       dispatch(userActions.refresh({ name: "id", value: data.userId }));
       dispatch(userActions.refresh({ name: "name", value: data.name }));
       dispatch(userActions.refresh({ name: "code", value: data.code }));
-      // dispatch(
-      //   friendsActions.update({ type: "add", name: "onlineUsers", value: data })
-      // );
     });
 
     socket.on("friendLeft", user => {
@@ -131,6 +141,11 @@ const SocketController = () => {
         serversActions.refresh({ type: "add", name: "items", value: data })
       );
     });
+    socket.on("channelList", data => {
+      dispatch(
+        channelsActions.refresh({ type: "add", name: "items", value: data })
+      );
+    });
 
     socket.on("newServer", data => {
       dispatch(
@@ -144,20 +159,38 @@ const SocketController = () => {
       );
     });
 
-    socket.on("serverUsers", data => {
+    socket.on("serverUsers", data => {});
+
+    socket.on("joinUserVoiceChannelInChannel", data => {
+      discordJoin.play();
+      console.log(data);
       dispatch(
-        userListActions.mutation({ type: "add", name: "items", value: data })
+        channelsActions.mutationOnlineUser({
+          type: "add",
+          name: "items",
+          value: data,
+        })
       );
     });
 
-    socket.on("joinUserVoiceChannel", data => {
-      console.log();
+    socket.on("leftUserVoiceChannelInChannel", data => {
+      dispatch(
+        channelsActions.mutationOnlineUser({
+          type: "remove",
+          name: "items",
+          value: data,
+        })
+      );
     });
   };
 
   useEffect(() => {
-    if (!token) return;
+    let mount = true;
+    if (!token || socket.connected) return;
     connectSocket();
+    return () => {
+      mount = false;
+    };
   }, [token, socket.connected]);
 
   return null;

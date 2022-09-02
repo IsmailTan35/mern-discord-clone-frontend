@@ -1,15 +1,15 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-import { streamReducer as stream } from './stream';
-import { userReducer as user } from './user';
-import { socketReducer as socket } from './socket';
-import { peersReducer as peers } from './peers';
-import { friendsReducer as friends } from './friends';
-import { friendRequestReducer as friendRequest } from './friendRequest';
-import { messageReducer as message } from './message';
-import { serversReducer as server } from './server';
-import { userListReducer as userList } from './userlist';
-
+import { userReducer as user } from "./user";
+import { peersReducer as peers } from "./peers";
+import { socketReducer as socket } from "./socket";
+import { streamReducer as stream } from "./stream";
+import { serversReducer as server } from "./server";
+import { messageReducer as message } from "./message";
+import { friendsReducer as friends } from "./friends";
+import { channelsReducer as channels } from "./channels";
+import { userListReducer as userList } from "./userlist";
+import { friendRequestReducer as friendRequest } from "./friendRequest";
 
 const reducer = combineReducers({
   stream,
@@ -20,19 +20,20 @@ const reducer = combineReducers({
   friendRequest,
   message,
   server,
-  userList
+  userList,
+  channels,
 });
 
-export { streamActions } from './stream';
-export { userActions } from './user';
-export { peersActions } from './peers';
-export { friendsActions } from './friends';
-export { friendRequestActions } from './friendRequest'
-export { messageActions } from './message'
-export { serversActions } from './server'
-export { userListActions } from './userlist';
+export { userActions } from "./user";
+export { peersActions } from "./peers";
+export { streamActions } from "./stream";
+export { serversActions } from "./server";
+export { messageActions } from "./message";
+export { friendsActions } from "./friends";
+export { userListActions } from "./userlist";
+export { channelsActions } from "./channels";
+export { friendRequestActions } from "./friendRequest";
 
-
-export default configureStore({ 
+export default configureStore({
   reducer,
 });

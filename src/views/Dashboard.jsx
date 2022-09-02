@@ -153,6 +153,59 @@ const Dashboard = () => {
                   />
                 </Routes>
               </nav>
+              <div
+                style={{
+                  background: "#292B2F",
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: 10,
+                  borderBottom: "1px solid #36393E",
+                  color: "white",
+                }}
+              >
+                <div style={{ display: "flex", color: "#96989d" }}>
+                  <div style={{ flex: "1 1" }}>
+                    <div style={{ color: "#3BA55D" }}>Voice Connected</div>
+                    <div style={{}}>General</div>
+                  </div>
+                  <div>Icon</div>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    textAlign: "center",
+                    gap: 10,
+                    height: 30,
+                  }}
+                >
+                  <div
+                    style={{
+                      flex: "1 1",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      background: "#393C43",
+                      borderRadius: 5,
+                      cursor: "pointer",
+                      display: "flex",
+                    }}
+                  >
+                    Video
+                  </div>
+                  <div
+                    style={{
+                      flex: "1 1",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      background: "#393C43",
+                      borderRadius: 5,
+                      cursor: "pointer",
+                      display: "flex",
+                    }}
+                  >
+                    Screen
+                  </div>
+                </div>
+              </div>
               <Avatar />
             </div>
           </div>

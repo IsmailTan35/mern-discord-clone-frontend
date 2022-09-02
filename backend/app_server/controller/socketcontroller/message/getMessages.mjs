@@ -43,6 +43,6 @@ export default async (io,socket,data)=>{
 	let rawSockets =await io.fetchSockets()
 	const sockets = rawSockets.filter(s=>s.handshake.auth.userId==socket.handshake.auth.userId)
 	sockets.map(s=>{
-		s.emit("newMessage",messages)
+		s.emit("allMessage",messages)
 	})
 }
