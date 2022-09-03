@@ -1,6 +1,9 @@
 import userSchema from "../../../schema/user.mjs";
 
 export default async(io,socket,data)=>{
+	try {
+		
+
 	var user = await userSchema.findOne({token:{"$in":[data.token]}})
 	if(!user) return
 	
@@ -47,4 +50,8 @@ export default async(io,socket,data)=>{
 			code: socket.handshake.auth.code
 		});
 	})
+	} catch (error) {
+		console.error(error)
+
+	}
 }

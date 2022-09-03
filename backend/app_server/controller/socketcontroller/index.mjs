@@ -2,16 +2,23 @@ import { UniqueId } from "../../helper/helperGetUniqueID.mjs";
 import configuration from "./configs/configuration.mjs";
 import { acceptFriendRequest, cancelFriendRequest, getFriendRequests, rejectFriendRequest } from "./friend/request.mjs";
 import { getFriendBlockeds } from "./friend/blocked.mjs";
-import { getFriendAll } from "./friend/all.mjs";
+import getFriendAll from "./friend/all.mjs";
 import unfriend from "./friend/unfriend.mjs";
 import sendMessage from "./message/sendMessage.mjs";
 import getMessages from "./message/getMessages.mjs";
 import disconnect from "./configs/disconnect.mjs";
+
 import userSchema from "../../schema/user.mjs";
 import serverSchema from "../../schema/server.mjs";
-import { ObjectId } from "mongodb";
-import joinVoiceChannel from "./channel/join.mjs"
 import channelSchema from "../../schema/channel.mjs";
+
+import joinVoiceChannel from "./channel/join.mjs"
+import leaveVoiceChannel from "./channel/leave.mjs"
+
+import listServer from "./server/list.mjs"
+import usersServer from "./server/users.mjs"
+
+import infoUser from "./user/info.mjs"
 
 global.users = {};
 global.messages={};
@@ -66,11 +73,16 @@ export default (io,con)=>{
 
         socket.on("joinVoiceChannel",async data=>{
             joinVoiceChannel(io,socket,data)
+        })
+
+        socket.on("leaveAllChannels",async data=>{
+            leaveVoiceChannel(io,socket,data)
 
         })
         socket.on("call video chat", async user => {
             let roomID = "webRTC-"+UniqueId()
             socket.join(roomID)
+            try {
 	        const rawSockets = await io.fetchSockets()
             const rcvSockets = rawSockets.filter(items => items.handshake.auth.userId === user.receiver)
        
@@ -85,29 +97,38 @@ export default (io,con)=>{
                 });
 
             })
+            } catch (error) {
+                console.error(error)
+        
+            }
         })
         
         socket.on("answerCall", async data=> {
-            const rawSockets = await io.fetchSockets()
-            
-            if(!rawSockets) return
-            const rcvID = rawSockets.find(items => items.id === data.receiver)
-            
-            for(const [key,value] of rcvID.rooms.entries()){
-                if(value.includes("webRTC-")){
-                    let roomID = value
-                    
-                    io.to(rcvID.id).emit('acceptedCall', {from:socket.id});
-                    const usersInThisRoom = await io.in(roomID).fetchSockets()
-                    const rawData = usersInThisRoom.map(items=>{
-                        return (items.id)
+            try {
+                const rawSockets = await io.fetchSockets()
+                
+                if(!rawSockets) return
+                const rcvID = rawSockets.find(items => items.id === data.receiver)
+                
+                for(const [key,value] of rcvID.rooms.entries()){
+                    if(value.includes("webRTC-")){
+                        let roomID = value
                         
-                    })
-                    if(!usersInThisRoom) return
-                    socket.emit("all users", {users:rawData,chatType:data.chatType});
-                    socket.join(roomID)
-                    break;
+                        io.to(rcvID.id).emit('acceptedCall', {from:socket.id});
+                        const usersInThisRoom = await io.in(roomID).fetchSockets()
+                        const rawData = usersInThisRoom.map(items=>{
+                            return (items.id)
+                            
+                        })
+                        if(!usersInThisRoom) return
+                        socket.emit("all users", {users:rawData,chatType:data.chatType});
+                        socket.join(roomID)
+                        break;
+                    }
                 }
+            } catch (error) {
+                console.error(error)
+        
             }
         })
 
@@ -124,6 +145,8 @@ export default (io,con)=>{
                 if(value.includes("webRTC-")){
                     let roomID = value
                     socket.leave(roomID)
+                    try {
+
                     const usersInThisRoom = await io.in(roomID).fetchSockets()
                     if(usersInThisRoom.length<=0) {
                         io.in(roomID).socketsLeave(roomID) 
@@ -138,196 +161,25 @@ export default (io,con)=>{
                         }
                     })
                     const usersInThisRooms = await io.in(roomID).fetchSockets()
+                } catch (error) {
+                    console.error(error)
+            
+                }
                 }
             }
         })
 
-        socket.on('getServerList',async ()=>{
-            const token = socket.handshake.auth.token
-	        let rawSockets =await io.fetchSockets()
-
-            function findOnlineUser(serverID,channelID){
-	            const rawRoomName =`server-${serverID}-${channelID}`
-                const online = rawSockets.map(socket=>{
-                    if(socket.rooms.has(rawRoomName)){
-                        const {name,code,userId}=socket.handshake.auth
-                        return {
-                            username:name,
-                            code:code,
-                            _id:userId
-                        }
-                    }}).filter(item=> item!==undefined)
-                return online
-            }
-
-            if(!token) return
-            const res = await userSchema.aggregate([
-                {
-                    $match:{  
-                        token:{
-                            $elemMatch:{
-                                $eq:token
-                            }
-                        },
-                    },
-                },
-                {
-                    $lookup:{
-                        from:"discordservers",
-				        let:{req:"$servers"},
-                        pipeline:[
-                            {
-                                $match:{
-                                    $expr:{
-                                        $in:["$_id","$$req"],
-                                    },
-                                },
-                            },
-                            {
-                                $project:{
-                                    _id:1,
-                                    servername:1,
-                                    userIDs:1,
-                                    channels:1,
-                                    inviteCode:1,
-                                }
-                            }
-                        ],
-                        as:"myservers"
-                    }
-                },
-                {
-                    $unwind:"$myservers"
-                },
-                {
-                    $replaceRoot:{
-                        newRoot:"$myservers"
-                    }
-                }
-            ])
-            if(res.length<=0) return
-
-            
-            const res1 = await serverSchema.aggregate([
-                {
-                    $lookup:{
-                        from:"discordchannels",
-				        let:{req:"$channels"},
-                        pipeline:[
-                            {
-                                $match:{
-                                    $expr:{
-                                        $in:["$_id","$$req"],
-                                    },
-                                },
-                            },
-                            {
-                                $project:{
-                                    _id:1,
-                                    channelname:1,
-                                    serverID:1,
-                                    group:1,
-                                    locked:1,
-                                    onlineUser:1,
-                                    type:1
-                                }
-                            }
-                        ],
-                        as:"mychannels"
-                    }
-                },
-                {
-                    $unwind:"$mychannels"
-                },
-                {
-                    $replaceRoot:{
-                        newRoot:"$mychannels"
-                    }
-                }
-            ])
-
-            const denem1 = res1.map(channel=>(
-                {
-                    ...channel,
-                    onlineUser:findOnlineUser(channel.serverID,channel._id)
-                }
-            ))
-
-            socket.emit("serverList",res)
-            socket.emit("channelList",denem1)
+        socket.on('getServerList',async (data)=>{
+            listServer(io,socket,data)
         })
 
         socket.on('getServerUsers',async (data)=>{
-            const { serverId } = data
-            const token = socket.handshake.auth.token
-            if(!token) return
-            const res = await userSchema.aggregate([
-                {
-                    $match:{
-                        token:{
-                            $elemMatch:{
-                                $eq:token
-                            }
-                        },
-                        servers:{
-                            $elemMatch:{$eq:serverId}
-                        }
-                    },
-                },
-            ])
-            const users = await serverSchema.aggregate([
-                {
-                    $match:{
-                        _id:ObjectId(serverId)
-                    }
-                },
-                {
-                    $lookup:{
-                        from:"discordusers",
-                        let:{req:"$userIDs"},
-                        pipeline:[
-                            {
-                                $match:{
-                                    $expr:{
-                                        $in:["$_id","$$req"],
-                                    },
-                                }
-                            }
-                        ],
-                        as:"users"
-                    }
-                },
-                {
-                    $unwind:"$users"
-                },
-                {
-                    $replaceRoot:{
-                        newRoot:"$users"
-                    }
-                },
-                {
-                    $project:{
-                        _id:0,
-                        id:"$_id",
-                        name:"$username",
-                        code:"$code"
-                    }
-                }
-
-            ])
-
-            return
-            socket.emit("serverUsers",users)
+            usersServer(io,socket,data)
         })
         socket.on('getUserInfo',async(data)=>{
-            const { userId } = data
-            const res = await userSchema.findOne({_id:ObjectId(userId)})
-            socket.emit("newUserInfo",{
-                id:res._id,
-                name:res.username,
-                code:res.code,
-            })
+            infoUser(io,socket,data)
         })
+        
     })
 
     io.on('reconnect',(data)=>{

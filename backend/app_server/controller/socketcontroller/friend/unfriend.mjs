@@ -17,6 +17,10 @@ export default async (io,socket,data)=>{
 			})
 		]
 	}
+
+	try {
+		
+
 	const check = await userSchema.find(checkMe)
 	if(check.length!=2) return
 	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
@@ -49,4 +53,8 @@ export default async (io,socket,data)=>{
 
 		}
 	})
+	} catch (error) {
+		console.error(error)
+
+	}
 }

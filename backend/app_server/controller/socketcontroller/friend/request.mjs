@@ -3,6 +3,9 @@ import userSchema from "../../../schema/user.mjs";
 const getFriendRequests = async (io,socket, data) => {
 	const token = socket.handshake.auth.token
 	if(!token) return
+	try {
+		
+
 	const res = await userSchema.aggregate([
 		{
 			$match:{  
@@ -63,6 +66,10 @@ const getFriendRequests = async (io,socket, data) => {
 
 	if(!res) return
 	socket.emit("friendRequests", res)
+	} catch (error) {
+		console.error(error)
+
+	}
 }
 
 const acceptFriendRequest = async (io,socket, data) => {
@@ -83,6 +90,9 @@ const acceptFriendRequest = async (io,socket, data) => {
 			})
 		]
 	}
+	try {
+		
+
 	const check = await userSchema.find(checkMe)
 	if(check.length!=2) return
 	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
@@ -132,6 +142,10 @@ const acceptFriendRequest = async (io,socket, data) => {
 
 		}
 	})
+} catch (error) {
+	console.error(error)
+
+}
 }
 
 const rejectFriendRequest = async (io,socket, data) => {
@@ -152,6 +166,9 @@ const rejectFriendRequest = async (io,socket, data) => {
 			})
 		]
 	}
+	try {
+		
+
 	const check = await userSchema.find(checkMe)
 	if(check.length!=2) return
 	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
@@ -193,6 +210,10 @@ const rejectFriendRequest = async (io,socket, data) => {
 
 		}
 	})
+} catch (error) {
+	console.error(error)
+
+}
 }
 
 const cancelFriendRequest = async (io,socket, data) => {
@@ -213,6 +234,9 @@ const cancelFriendRequest = async (io,socket, data) => {
 			})
 		]
 	}
+	try {
+		
+
 	const check = await userSchema.find(checkMe)
 	if(check.length!=2) return
 	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
@@ -252,6 +276,10 @@ const cancelFriendRequest = async (io,socket, data) => {
 
 		}
 	})
+	} catch (error) {
+		console.error(error)
+
+	}
 }
 
 export {

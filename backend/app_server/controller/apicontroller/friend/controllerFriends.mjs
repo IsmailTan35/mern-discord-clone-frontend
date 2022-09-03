@@ -36,110 +36,116 @@ const friendsPost = async (req,res) => {
             })]
 
         }
-        const check = await user.find(checkMe)
-        if(check.length!=2) return
-        if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
-
-        const filter = {
-            username:check[0].username,
-            code:check[0].code,
-            friends:{
-                $not: {
-                    $elemMatch:{
-                        $eq:check[1]._id
-                    }
-                }
-            },
-            blocked:{
-                $not: {
-                    $elemMatch:{
-                        $eq:check[1]._id
-                    }
-                }
-            },
-            request:{
-                $not: {
-                    $elemMatch:{
-                        $eq:{
-                            type: "outgoing",
-                            _id:check[1]._id
-                        }
-                    }
-                }
-            }
-        }
-
-        const filter2 = {
-            username:check[1].username,
-            code:check[1].code,
-            friends:{
-                $not: {
-                    $elemMatch:{
-                            $eq:check[0]._id
+        try {
+            const check = await user.find(checkMe)
+            if(check.length!=2) return
+            if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
+            const filter = {
+                username:check[0].username,
+                code:check[0].code,
+                friends:{
+                    $not: {
+                        $elemMatch:{
+                            $eq:check[1]._id
                         }
                     }
                 },
-            blocked:{
-                $not: {
-                    $elemMatch:{
-                            $eq:check[0]._id
+                blocked:{
+                    $not: {
+                        $elemMatch:{
+                            $eq:check[1]._id
                         }
                     }
                 },
-            request:{
-                $not: {
-                    $elemMatch:{
-                        $eq:{
-                            type: "outgoing",
-                            _id:check[0]._id
+                request:{
+                    $not: {
+                        $elemMatch:{
+                            $eq:{
+                                type: "outgoing",
+                                _id:check[1]._id
+                            }
                         }
                     }
                 }
             }
-        }
-    const fromUpdated = await user.findOneAndUpdate(filter,{
-        $push:{
-            request:{
-                type:"outgoing",
-                _id:check[1]._id
+    
+            const filter2 = {
+                username:check[1].username,
+                code:check[1].code,
+                friends:{
+                    $not: {
+                        $elemMatch:{
+                                $eq:check[0]._id
+                            }
+                        }
+                    },
+                blocked:{
+                    $not: {
+                        $elemMatch:{
+                                $eq:check[0]._id
+                            }
+                        }
+                    },
+                request:{
+                    $not: {
+                        $elemMatch:{
+                            $eq:{
+                                type: "outgoing",
+                                _id:check[0]._id
+                            }
+                        }
+                    }
+                }
             }
+            
+            const fromUpdated = await user.findOneAndUpdate(filter,{
+                $push:{
+                    request:{
+                        type:"outgoing",
+                        _id:check[1]._id
+                    }
+                }
+            })
+        
+            if(!fromUpdated) return res.status(400).json("User not found!");
+        
+            const toUpdated = await user.findOneAndUpdate(filter2,{
+                $push:{
+                    request:{
+                        type:"incoming",
+                        _id:check[0]._id
+                    }
+                }
+            })
+        
+            const rawSockets = await io.fetchSockets()
+        
+            const sockets =rawSockets.filter(items =>
+                items.handshake.auth.userId === check[0]._id.toString() || items.handshake.auth.userId === check[1]._id.toString()
+                )
+            if(!sockets || sockets.length<=0) return
+            // rawSockets.map(socket => {
+            //     if(socket.handshake.auth.userId === check[0]._id.toString()){
+            //         socket.emit("newFriendRequest",{
+            //             type:"outgoing",
+            //             code:check[1].code,
+            //         })
+            //     }
+            //     if(socket.handshake.auth.userId === check[1]._id.toString()){
+            //         socket.emit("newFriendRequest",{
+            //             type:"incoming",
+            //             code:check[0].code,
+            //         })
+            //     }
+            //     }
+            // )
+            res.status(200).json("ok")
+        } catch (error) {
+            console.error(error)
+            res.status(400).json("")
         }
-    })
 
-    if(!fromUpdated) return res.status(400).json("User not found!");
 
-    const toUpdated = await user.findOneAndUpdate(filter2,{
-        $push:{
-            request:{
-                type:"incoming",
-                _id:check[0]._id
-            }
-        }
-    })
-
-    const rawSockets = await io.fetchSockets()
-
-    const sockets =rawSockets.filter(items =>
-        items.handshake.auth.userId === check[0]._id.toString() || items.handshake.auth.userId === check[1]._id.toString()
-        )
-    if(!sockets || sockets.length<=0) return
-
-    // rawSockets.map(socket => {
-    //     if(socket.handshake.auth.userId === check[0]._id.toString()){
-    //         socket.emit("newFriendRequest",{
-    //             type:"outgoing",
-    //             code:check[1].code,
-    //         })
-    //     }
-    //     if(socket.handshake.auth.userId === check[1]._id.toString()){
-    //         socket.emit("newFriendRequest",{
-    //             type:"incoming",
-    //             code:check[0].code,
-    //         })
-    //     }
-    //     }
-    // )
-    res.status(200).json("ok")
 }
 
 const friendsPut = (req,res) => {

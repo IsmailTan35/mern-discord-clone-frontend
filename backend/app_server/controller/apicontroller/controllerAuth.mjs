@@ -18,20 +18,26 @@ const loginPost = async (req,res)=> {
       token
     } 
   }
-  var user = await userSchema.findOneAndUpdate(filter,update)
-  if(user){
-      res.status(200).json([
-          {type:"username",value:user.username},
-          {type:"email",value:user.email},
-          {type:"code",value:user.code},
-          {type:"friends",value:user.friends},
-          {type:"blocked",value:user.blocked},
-          {type:"request",value:user.request},
-          {type:"token",value:token},
-      ])
-  }
-  else{
-      res.status(401).json("login failed")
+  try {
+    var user = await userSchema.findOneAndUpdate(filter,update)
+    if(user){
+        res.status(200).json([
+            {type:"username",value:user.username},
+            {type:"email",value:user.email},
+            {type:"code",value:user.code},
+            {type:"friends",value:user.friends},
+            {type:"blocked",value:user.blocked},
+            {type:"request",value:user.request},
+            {type:"token",value:token},
+        ])
+    }
+    else{
+        res.status(401).json("login failed")
+    }
+  } catch (error) {
+    res.status(400).json("login failed")
+    console.error("login failed",error.name);
+    
   }
 }
 

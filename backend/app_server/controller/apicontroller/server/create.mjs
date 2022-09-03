@@ -14,7 +14,7 @@ export default async (req,res) => {
 	form.parse(req, async (err, fields, files) => {
 		if(err) return res.status(500).json({"error":"server not found"})
 		const { serverName } = fields
-		if(!serverName || !token) return res.status(400)
+		if(!serverName || !token) return res.status(400).json("")
 
 		const user = await userSchema.aggregate([
 			{$match:{

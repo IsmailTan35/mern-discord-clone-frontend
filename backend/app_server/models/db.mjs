@@ -4,7 +4,7 @@ const database = (con) => {
 
     con.connect((err) =>{
       if(err) {
-        console.log("Could not connect to mysql.",err)
+        console.error("Could not connect to mysql.",err)
         con.end()
         setTimeout(database, 5000)
       }
@@ -13,7 +13,7 @@ const database = (con) => {
         con.connect((err) =>{
             con.query("CREATE DATABASE wooztracker", (err, result) =>{
               if(err ) {
-                console.log(err.sqlMessage)
+                console.error(err.sqlMessage)
               }
               else{
                 console.log("Database created")

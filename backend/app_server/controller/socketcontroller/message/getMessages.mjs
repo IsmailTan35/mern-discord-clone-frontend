@@ -3,6 +3,9 @@ export default async (io,socket,data)=>{
 
 	if(!socket.handshake.auth.userId || !data) return
 	let messages= []
+	try {
+		
+
 	if(data.receiver){
 		 messages = await messageSchema.find({
 			$in:[
@@ -45,4 +48,8 @@ export default async (io,socket,data)=>{
 	sockets.map(s=>{
 		s.emit("allMessage",messages)
 	})
+	} catch (error) {
+		console.error(error)
+
+	}
 }

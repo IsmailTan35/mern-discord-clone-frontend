@@ -9,6 +9,8 @@ import { serversActions } from "store";
 import { userListActions } from "store";
 import messageSound from "assets/audio/discordMessage.mp3";
 import joinSound from "assets/audio/discordJoin.wav";
+import leaveSound from "assets/audio/discordLeave.mp3";
+
 import { channelsActions } from "store";
 
 const SocketController = () => {
@@ -22,6 +24,7 @@ const SocketController = () => {
   const connectSocket = () => {
     const audio = new Audio(messageSound);
     const discordJoin = new Audio(joinSound);
+    const discordLeave = new Audio(leaveSound);
 
     socket.on("connect", () => {
       if (location.pathname !== "/") {
@@ -163,7 +166,6 @@ const SocketController = () => {
 
     socket.on("joinUserVoiceChannelInChannel", data => {
       discordJoin.play();
-      console.log(data);
       dispatch(
         channelsActions.mutationOnlineUser({
           type: "add",
@@ -181,6 +183,7 @@ const SocketController = () => {
           value: data,
         })
       );
+      discordLeave.play();
     });
   };
 

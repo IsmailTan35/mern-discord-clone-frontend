@@ -1,9 +1,10 @@
 import userSchema from "../../../schema/user.mjs";
 
-const getFriendAll = async (io,socket,data) => {
-	const token = socket.handshake.auth.token
-	if(!token) return
-	
+export default async (io,socket,data) => {
+	try {
+		
+		const token = socket.handshake.auth.token
+		if(!token) return
 	const res = await userSchema.aggregate([
 		{
 			$match:{  
@@ -46,9 +47,10 @@ const getFriendAll = async (io,socket,data) => {
 			}
 		}
 	])
+	
 	socket.emit("friendAll",res)
-}
+} catch (error) {
+	console.error(error)
 
-export {
-	getFriendAll
+}
 }

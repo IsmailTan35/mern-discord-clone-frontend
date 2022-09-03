@@ -3,6 +3,9 @@ import serverSchema from '../../../schema/server.mjs';
 
 export default async (io,socket,data)=>{
 	if(!socket.handshake.auth.userId || !data || data.to) return
+
+	try {
+		
 	let rawSockets =await io.fetchSockets()
 
 	const messageSch = new messageSchema({
@@ -45,5 +48,9 @@ export default async (io,socket,data)=>{
 				}])
 			}
 		})
+	}
+	} catch (error) {
+		console.error(error)
+
 	}
 }

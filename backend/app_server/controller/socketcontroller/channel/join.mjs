@@ -4,6 +4,9 @@ import serverSchema from "../../../schema/server.mjs";
 export default async(io,socket,data)=>{
 	const token = socket.handshake.auth.token
 	if(!token) return
+	try {
+		
+
 	const user = await userSchema.aggregate([
 		{$match:{
 			token:{"$in":[token]
@@ -53,4 +56,8 @@ export default async(io,socket,data)=>{
 	// 	serverID:data.serverID,
 	// 	channelID:data.channelID
 	// });
+	} catch (error) {
+		console.error(error)
+
+	}
 }

@@ -23,7 +23,7 @@ const Chat = () => {
     const parsedLocation = location.pathname.split("/");
 
     let data = {};
-    if (parsedLocation.includes("channels")) {
+    if (parsedLocation.includes("@me")) {
       data = channelList.filter(user => user.id !== channelID);
     } else {
       data = userList.filter(user => user.id !== userID);

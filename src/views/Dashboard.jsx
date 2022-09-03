@@ -19,15 +19,21 @@ import Chat from "views/Chat";
 import "assets/css/dashboard.css";
 import { useSelector } from "react-redux";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { useContext } from "react";
+import { SocketContext } from "controller/Context";
 
 const delay = { show: 50, hide: 0 };
 const Dashboard = () => {
-  const [friends, setFriends] = useState("online");
   const navigate = useNavigate();
   const location = useLocation();
+  const socket = useContext(SocketContext);
   const [server, setServer] = useState({});
-  const serverList = useSelector(state => state.server.items);
   const [stream, setStream] = useState(false);
+  const [friends, setFriends] = useState("online");
+  const userInfo = useSelector(state => state.user);
+  const serverList = useSelector(state => state.server.items);
+  const channelsList = useSelector(state => state.channels.items);
+
   useEffect(async () => {
     window.addEventListener("streamStart", () => {
       setStream(true);
@@ -56,6 +62,9 @@ const Dashboard = () => {
     else setFriends(null);
   };
 
+  const leaveChannel = () => {
+    socket.emit("leaveAllChannels");
+  };
   return (
     <>
       <div className="dashboard-wrapper">
@@ -153,59 +162,78 @@ const Dashboard = () => {
                   />
                 </Routes>
               </nav>
-              <div
-                style={{
-                  background: "#292B2F",
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: 10,
-                  borderBottom: "1px solid #36393E",
-                  color: "white",
-                }}
-              >
-                <div style={{ display: "flex", color: "#96989d" }}>
-                  <div style={{ flex: "1 1" }}>
-                    <div style={{ color: "#3BA55D" }}>Voice Connected</div>
-                    <div style={{}}>General</div>
-                  </div>
-                  <div>Icon</div>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    textAlign: "center",
-                    gap: 10,
-                    height: 30,
-                  }}
-                >
+              {channelsList.map(channel => {
+                const rawMe = channel.onlineUser.find(
+                  user => user._id === userInfo.id
+                );
+
+                if (!rawMe) return null;
+
+                const rawServer = serverList.find(
+                  server => server._id === channel.serverID
+                );
+
+                if (!rawServer) return null;
+                return (
                   <div
                     style={{
-                      flex: "1 1",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: "#393C43",
-                      borderRadius: 5,
-                      cursor: "pointer",
+                      background: "#292B2F",
                       display: "flex",
+                      flexDirection: "column",
+                      padding: 10,
+                      borderBottom: "1px solid #36393E",
+                      color: "white",
                     }}
                   >
-                    Video
+                    <div style={{ display: "flex", color: "#96989d" }}>
+                      <div style={{ flex: "1 1" }}>
+                        <div style={{ color: "#3BA55D" }}>Voice Connected</div>
+                        <div style={{ display: "flex", gap: 3 }}>
+                          <div>{rawServer.servername}</div>
+                          <div>/</div>
+                          <div>{channel.channelname}</div>
+                        </div>
+                      </div>
+                      <div onClick={leaveChannel}>Icon</div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        textAlign: "center",
+                        gap: 10,
+                        height: 30,
+                      }}
+                    >
+                      <div
+                        style={{
+                          flex: "1 1",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "#393C43",
+                          borderRadius: 5,
+                          cursor: "pointer",
+                          display: "flex",
+                        }}
+                      >
+                        Video
+                      </div>
+                      <div
+                        style={{
+                          flex: "1 1",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "#393C43",
+                          borderRadius: 5,
+                          cursor: "pointer",
+                          display: "flex",
+                        }}
+                      >
+                        Screen
+                      </div>
+                    </div>
                   </div>
-                  <div
-                    style={{
-                      flex: "1 1",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      background: "#393C43",
-                      borderRadius: 5,
-                      cursor: "pointer",
-                      display: "flex",
-                    }}
-                  >
-                    Screen
-                  </div>
-                </div>
-              </div>
+                );
+              })}
               <Avatar />
             </div>
           </div>
