@@ -128,7 +128,7 @@ const Room = () => {
         const filterDeviceList = streamDevices.find(
           device => device.kind == "videoinput"
         );
-        if (filterDeviceList.length <= 0) booleanChatType = false;
+        if (filterDeviceList) booleanChatType = false;
       } catch (error) {
         console.error(error);
       }
@@ -169,7 +169,7 @@ const Room = () => {
         const filterDeviceList = streamDevices.find(
           device => device.kind == "videoinput"
         );
-        if (filterDeviceList.length <= 0) booleanChatType = false;
+        if (filterDeviceList) booleanChatType = false;
       } catch (error) {
         console.error(error);
       }
