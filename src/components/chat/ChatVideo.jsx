@@ -120,11 +120,11 @@ const Room = () => {
     });
   }, []);
 
-  const createPeer = (receiver, chatType) => {
+  const createPeer = async (receiver, chatType) => {
     let booleanChatType = chatType == "video" ? true : false;
     if (booleanChatType) {
       try {
-        const streamDevices = navigator.mediaDevices.enumerateDevices();
+        const streamDevices = await navigator.mediaDevices.enumerateDevices();
         const filterDeviceList = streamDevices.find(
           device => (device.kind = "videoinput")
         );
@@ -159,11 +159,11 @@ const Room = () => {
       });
   };
 
-  const addPeer = (incomingSignal, receiver, chatType) => {
+  const addPeer = async (incomingSignal, receiver, chatType) => {
     let booleanChaType = chatType == "video" ? true : false;
     if (booleanChatType) {
       try {
-        const streamDevices = navigator.mediaDevices.enumerateDevices();
+        const streamDevices = await navigator.mediaDevices.enumerateDevices();
         const filterDeviceList = streamDevices.find(
           device => (device.kind = "videoinput")
         );
