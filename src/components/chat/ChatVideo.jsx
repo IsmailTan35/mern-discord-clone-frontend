@@ -160,7 +160,16 @@ const Room = () => {
   };
 
   const addPeer = (incomingSignal, receiver, chatType) => {
-    const booleanChaType = chatType == "video" ? true : false;
+    let booleanChaType = chatType == "video" ? true : false;
+    if (booleanChatType) {
+      try {
+        const streamDevices = navigator.mediaDevices.enumerateDevices();
+        const filterDeviceList = streamDevices.find(
+          device => (device.kind = "videoinput")
+        );
+        if (filterDeviceList.length <= 0) booleanChatType = false;
+      } catch (error) {}
+    }
     navigator.mediaDevices
       .getUserMedia({ video: booleanChaType, audio: true })
       .then(stream => {
