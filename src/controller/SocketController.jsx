@@ -55,15 +55,6 @@ const SocketController = () => {
       dispatch(messageActions.overWrite({ name: "items", value: message }));
     });
 
-    socket.on("data", data => {
-      dispatch(
-        friendsActions.refresh({ name: "onlineUsers", value: data.onlineUsers })
-      );
-      dispatch(userActions.refresh({ name: "id", value: data.userId }));
-      dispatch(userActions.refresh({ name: "name", value: data.name }));
-      dispatch(userActions.refresh({ name: "code", value: data.code }));
-    });
-
     socket.on("friendLeft", user => {
       dispatch(
         friendsActions.update({
@@ -189,13 +180,28 @@ const SocketController = () => {
 
   useEffect(() => {
     let mount = true;
-    if (!token || socket.connected) return;
+    if (location.pathname !== "/") {
+      socket.emit("configuration", {
+        token: localStorage.getItem("accessToken"),
+      });
+    }
+    if (!token || !socket.connected || !userID) return;
     connectSocket();
     return () => {
       mount = false;
     };
-  }, [token, socket.connected]);
+  }, [token, socket.connected, userID]);
 
+  useEffect(() => {
+    socket.on("data", data => {
+      dispatch(
+        friendsActions.refresh({ name: "onlineUsers", value: data.onlineUsers })
+      );
+      dispatch(userActions.refresh({ name: "id", value: data.userId }));
+      dispatch(userActions.refresh({ name: "name", value: data.name }));
+      dispatch(userActions.refresh({ name: "code", value: data.code }));
+    });
+  }, []);
   return null;
 };
 

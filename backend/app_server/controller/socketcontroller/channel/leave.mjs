@@ -7,5 +7,4 @@ export default (io,socket,data)=>{
 		})
 		socket.leave(element)
 	});
-
 }

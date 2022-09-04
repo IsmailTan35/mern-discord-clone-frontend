@@ -121,10 +121,19 @@ const Room = () => {
   }, []);
 
   const createPeer = (receiver, chatType) => {
-    const booleanChaType = chatType == "video" ? true : false;
+    let booleanChatType = chatType == "video" ? true : false;
+    if (booleanChatType) {
+      try {
+        const streamDevices = navigator.mediaDevices.enumerateDevices();
+        const filterDeviceList = streamDevices.find(
+          device => (device.kind = "videoinput")
+        );
+        if (filterDeviceList.length <= 0) booleanChatType = false;
+      } catch (error) {}
+    }
 
     navigator.mediaDevices
-      .getUserMedia({ video: booleanChaType, audio: true })
+      .getUserMedia({ video: booleanChatType, audio: true })
       .then(stream => {
         const item = peers.find(p => p.peerID == receiver);
         if (item) return;
