@@ -126,10 +126,12 @@ const Room = () => {
       try {
         const streamDevices = await navigator.mediaDevices.enumerateDevices();
         const filterDeviceList = streamDevices.find(
-          device => (device.kind = "videoinput")
+          device => device.kind == "videoinput"
         );
         if (filterDeviceList.length <= 0) booleanChatType = false;
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     navigator.mediaDevices
@@ -165,10 +167,12 @@ const Room = () => {
       try {
         const streamDevices = await navigator.mediaDevices.enumerateDevices();
         const filterDeviceList = streamDevices.find(
-          device => (device.kind = "videoinput")
+          device => device.kind == "videoinput"
         );
         if (filterDeviceList.length <= 0) booleanChatType = false;
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     }
     navigator.mediaDevices
       .getUserMedia({ video: booleanChatType, audio: true })
