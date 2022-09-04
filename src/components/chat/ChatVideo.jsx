@@ -160,7 +160,7 @@ const Room = () => {
   };
 
   const addPeer = async (incomingSignal, receiver, chatType) => {
-    let booleanChaType = chatType == "video" ? true : false;
+    let booleanChatType = chatType == "video" ? true : false;
     if (booleanChatType) {
       try {
         const streamDevices = await navigator.mediaDevices.enumerateDevices();
@@ -171,7 +171,7 @@ const Room = () => {
       } catch (error) {}
     }
     navigator.mediaDevices
-      .getUserMedia({ video: booleanChaType, audio: true })
+      .getUserMedia({ video: booleanChatType, audio: true })
       .then(stream => {
         const item = peers.find(p => p.peerID == receiver);
         if (item) return;
