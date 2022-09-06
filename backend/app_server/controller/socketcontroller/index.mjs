@@ -71,14 +71,6 @@ export default (io,con)=>{
             getMessages(io,socket,data)
         })
 
-        socket.on("joinVoiceChannel",async data=>{
-            joinVoiceChannel(io,socket,data)
-        })
-
-        socket.on("leaveAllChannels",async data=>{
-            leaveVoiceChannel(io,socket,data)
-
-        })
         socket.on("call video chat", async user => {
             let roomID = "webRTC-"+UniqueId()
             socket.join(roomID)
@@ -178,6 +170,78 @@ export default (io,con)=>{
         })
         socket.on('getUserInfo',async(data)=>{
             infoUser(io,socket,data)
+        })
+
+        socket.on("joinVoiceChannel",async data=>{
+            joinVoiceChannel(io,socket,data)
+        })
+
+        socket.on("joinVoiceChannelReturnSignal",async data=>{
+            
+        })
+
+        socket.on("channelSendingSignal",async data =>{
+            const token = socket.handshake.auth.token
+            if(!token) return
+            try {
+                const user = await userSchema.aggregate([
+                    {$match:{
+                        token:{"$in":[token]
+                    }}
+                }])
+            
+                if(!user) return
+                const rawRoomName =`server-${data.serverID}-${data.channelID}`
+
+                const server = await serverSchema.findById(data.serverID)
+                io.to(rawRoomName).emit("userJoinedChannel",{
+                    _id:user[0]._id,
+                    username:user[0].username,
+                    code:user[0].code,
+                    serverID:data.serverID,
+                    channelID:data.channelID,
+                    signal:data.signal,
+                    me:socket.handshake.auth.userId===user[0]._id ? null :data.signal,
+                    first:data.first
+                })
+            }
+            catch{
+
+            }
+
+        })
+
+        socket.on("channelReturningSignal", async data=>{
+            const token = socket.handshake.auth.token
+
+            const user = await userSchema.aggregate([
+                {$match:{
+                    token:{"$in":[token]
+                }}
+            }])
+        
+            if(!user) return
+	        let rawSockets =await io.fetchSockets()
+	        const sockets = rawSockets.map(sockett=>{
+                console.log(sockett.handshake.auth.userId==data.userID);
+                if(sockett.handshake.auth.userId==data.userID){
+                    sockett.emit("channelReturningSignalListener",{
+                        _id:user[0]._id,
+                        username:user[0].username,
+                        code:user[0].code,
+                        serverID:data.serverID,
+                        channelID:data.channelID,
+                        signal:data.signal,
+                        me:socket.handshake.auth.userId===user[0]._id ? null :data.signal,
+                        first:data.first
+                    })
+                }
+            })
+        })
+        
+        socket.on("leaveAllChannels",async data=>{
+            leaveVoiceChannel(io,socket,data)
+
         })
         
     })

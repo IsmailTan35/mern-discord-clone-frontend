@@ -153,7 +153,13 @@ const SocketController = () => {
       );
     });
 
-    socket.on("serverUsers", data => {});
+    socket.on("serverUsers", data => {
+      data.map(user => {
+        dispatch(
+          userListActions.update({ type: "add", name: "items", value: user })
+        );
+      });
+    });
 
     socket.on("joinUserVoiceChannelInChannel", data => {
       discordJoin.play();

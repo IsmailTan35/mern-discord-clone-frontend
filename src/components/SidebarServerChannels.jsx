@@ -7,19 +7,104 @@ import { ReactComponent as AddIcon } from "assets/img/addIcon.svg";
 import { ReactComponent as ArrowIcon } from "assets/img/arrowIcon.svg";
 
 import "assets/css/channels.css";
-import { socketActions } from "store/socket";
 import { useContext } from "react";
 import { SocketContext } from "controller/Context";
 
+import Peer from "simple-peer";
+import hark from "hark";
+import { useRef } from "react";
+
 const SidebarServerChannels = () => {
+  const ref = useRef(null);
   const location = useLocation();
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
   const serverList = useSelector(state => state.server.items);
   const channelList = useSelector(state => state.channels.items);
-
+  const user = useSelector(state => state.user);
   const [server, setServer] = useState({});
   const serverId = location.pathname.split("/")[2];
+
+  async function addPeer(data, user) {
+    try {
+      const myPeerStream = await navigator.mediaDevices.getUserMedia({
+        video: false,
+        audio: true,
+      });
+      const peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream: myPeerStream,
+      });
+      peer.signal(data.signal);
+      console.log(2);
+
+      peer.on("stream", stream => {
+        const audio = new Audio();
+        audio.srcObject = myPeerStream;
+        audio.play();
+
+        const speechEvents = hark(stream, {});
+        speechEvents.on("speaking", () => {
+          console.log(true);
+        });
+
+        speechEvents.on("stopped_speaking", () => {
+          console.log(false);
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function createPeer(serverID, channel) {
+    try {
+      const myPeerStream = await navigator.mediaDevices.getUserMedia({
+        video: false,
+        audio: true,
+      });
+
+      const peer = new Peer({
+        initiator: true,
+        trickle: false,
+        stream: myPeerStream,
+      });
+
+      peer.on("signal", signal => {
+        socket.emit("joinVoiceChannel", {
+          serverID,
+          channelID: channel._id,
+          signal,
+        });
+
+        socket.emit("channelSendingSignal", {
+          serverID,
+          channelID: channel._id,
+          signal,
+        });
+
+        socket.on("userJoinedChannel", data => {
+          if (user.id !== data._id) {
+            console.log(2);
+
+            socket.emit("channelReturningSignal", {
+              serverID,
+              channelID: channel._id,
+              signal,
+              userID: data._id,
+            });
+            addPeer(data, user);
+          }
+        });
+        socket.on("channelReturningSignalListener", data => {
+          addPeer(data, user);
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const handleClick = (e, serverID, channel) => {
     const direction = `/channels/${serverId}/${channel._id}`;
@@ -27,8 +112,9 @@ const SidebarServerChannels = () => {
       navigate(direction);
       return;
     }
-    socket.emit("joinVoiceChannel", { serverID, channelID: channel._id });
+    createPeer(serverID, channel);
   };
+
   useEffect(() => {
     // if (location.pathname.split('/').length !== 4) return;
     if (serverList.length == 0 || channelList.length == 0) return;
@@ -53,6 +139,7 @@ const SidebarServerChannels = () => {
   return (
     <>
       <div className="channels-wrapper">
+        {/* <video ref={ref} style={{ width: 50, height: 50 }}></video> */}
         {server &&
           Object.entries(server).length > 0 &&
           Object.keys(server).map((group, index) => {

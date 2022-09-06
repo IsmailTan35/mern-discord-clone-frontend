@@ -15,9 +15,10 @@ const FriendsChatHeader = () => {
   const delay = { show: 50, hide: 0 };
 
   useEffect(() => {
-    const userId = location.pathname.split("/")[2];
+    const parsedLocation = location.pathname.split("/");
+    const userId = parsedLocation[2];
 
-    if (location.pathname.split("/").length != 4) return console.error("hata");
+    if (parsedLocation.length != 4) return console.error("hata");
     const data = userList.filter(user => user.id !== userId);
 
     if (!data || data.length === 0) return console.error("hata");
@@ -25,14 +26,14 @@ const FriendsChatHeader = () => {
   }, [location, userList]);
 
   useEffect(() => {
-    const rawLocation = location.pathname.split("/");
-    const messageType = rawLocation.includes("@me");
-    const hasUser = userList.filter(user => user.id !== rawLocation[2]);
+    const parsedLocation = location.pathname.split("/");
+    const messageType = parsedLocation.includes("@me");
+    const hasUser = userList.filter(user => user.id !== parsedLocation[2]);
 
     if (!messageType) return;
     if (!hasUser || hasUser.length !== 0) return setUser(hasUser[0]);
 
-    const userId = rawLocation[3];
+    const userId = parsedLocation[3];
 
     socket.emit("getUserInfo", {
       userId: userId,

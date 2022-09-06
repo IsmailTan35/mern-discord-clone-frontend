@@ -1,5 +1,5 @@
 export default async (io,socket,data)=>{
-	console.log("discord disconnected")
+	console.warn("discord disconnected")
 	const roomID = socketToRoom[socket.id];
 	let room = users[roomID];
 	if (room) {

@@ -8,19 +8,19 @@ const mongoDb = async () =>{
   const con = mongoose.connection
 
   mongoose.connection.on('connecting', () => {
-    console.log('connecting to mongodb')
+    console.info('connecting to mongodb')
   })
 
   mongoose.connection.on('connected', () => {
-    console.log('connected to mongodb')
+    console.info('connected to mongodb')
   })
 
   mongoose.connection.on('disconnecting', () => {
-    console.log('disconnecting to mongodb')
+    console.warn('disconnecting to mongodb')
   })
 
   mongoose.connection.on('disconnected', () => {
-    console.log('disconnected to mongodb')
+    console.warn('disconnected to mongodb')
   })
   
   mongoose.connection.on('error', ()=>{
@@ -30,16 +30,16 @@ const mongoDb = async () =>{
 
     setTimeout(()=>{
       mongoose.connect(uri)
-        .catch(err => console.log("hata"));;
+        .catch(err => console.error("hata"));;
     },5000)
   })
 
   mongoose.connection.on('reconnected',()=>{
-    console.log('reconnected to Mongodb')
+    console.info('reconnected to Mongodb')
   })
 
   mongoose.connect(uri)
-    .catch(err => console.log("hata"));;
+    .catch(err => console.error("hata"));;
 
   return con
 }

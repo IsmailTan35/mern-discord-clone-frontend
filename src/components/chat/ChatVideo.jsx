@@ -262,7 +262,7 @@ const Room = () => {
         let videoTrack = screenStream.getVideoTracks()[0];
 
         videoTrack.onended = () => {
-          console.log("first");
+          console.info("first");
         };
         setPeers(items =>
           items.map(item => {

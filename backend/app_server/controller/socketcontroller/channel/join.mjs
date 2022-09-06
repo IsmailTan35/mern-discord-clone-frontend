@@ -12,9 +12,11 @@ export default async(io,socket,data)=>{
 			token:{"$in":[token]
 		}}
 	}])
+
+	if(!user) return
+
 	const rawRoomName =`server-${data.serverID}-${data.channelID}`
 	let rawSockets =await io.fetchSockets()
-	
 	if(socket.rooms.has(rawRoomName)) return
 	
 	socket.rooms.forEach(element => {
@@ -26,6 +28,7 @@ export default async(io,socket,data)=>{
 			channelID:data.channelID
 		})
 		socket.leave(element)
+		
 	});
 	socket.join(rawRoomName)
 
@@ -45,17 +48,12 @@ export default async(io,socket,data)=>{
 				username:user[0].username,
 				code:user[0].code,
 				serverID:data.serverID,
-				channelID:data.channelID
+				channelID:data.channelID,
+				signal:data.signal,
+				me:socket.handshake.auth.userId===user[0]._id ? null :data.signal
 			})
 		}
 	})
-	// io.to(rawRoomName).emit("joinUserVoiceChannel",{
-	// 	_id:user[0]._id,
-	// 	username:user[0].username,
-	// 	code:user[0].code,
-	// 	serverID:data.serverID,
-	// 	channelID:data.channelID
-	// });
 	} catch (error) {
 		console.error(error)
 

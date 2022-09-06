@@ -61,10 +61,9 @@ export default async (io,socket,data)=>{
 		}
 
 	])
-} catch (error) {
-	console.error(error)
-
-}
-	return
 	socket.emit("serverUsers",users)
+	} catch (error) {
+		console.error(error)
+
+	}
 }

@@ -9,7 +9,7 @@ import userSchema from "../../../schema/user.mjs";
 export default async (req,res) => {
 	let io = req.app.io
 	const token = req.headers.authorization
-	// console.log(req.files)
+	// console.info(req.files)
 	const form = formidable({ multiples: true })
 	form.parse(req, async (err, fields, files) => {
 		if(err) return res.status(500).json({"error":"server not found"})

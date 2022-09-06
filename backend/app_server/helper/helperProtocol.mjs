@@ -6,7 +6,7 @@ import * as fs from'fs';
 const httpServer = (app,port) =>{
 	const httpServer = httpCreate(app)
 	httpServer.listen(port, () =>{
-		console.log((new Date()) + ' Server is listening on port ' + port);
+		console.info((new Date()) + ' Server is listening on port ' + port);
 	});
 	return httpServer
 }
@@ -14,7 +14,7 @@ const httpServer = (app,port) =>{
 const httpsServer = (app,port,credentials) =>{
 	const httpsServer = httpsCreate(credentials,app)
 	httpsServer.listen(port, () =>{
-		console.log((new Date()) + ' Server is listening on port ' + port);
+		console.info((new Date()) + ' Server is listening on port ' + port);
 	});
 	return httpsServer
 }

@@ -95,7 +95,7 @@ const acceptFriendRequest = async (io,socket, data) => {
 
 	const check = await userSchema.find(checkMe)
 	if(check.length!=2) return
-	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
+	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.info("me")
 	const update = await userSchema.findOneAndUpdate({
 		username:check[0].username,
 		code:check[0].code,
@@ -171,7 +171,7 @@ const rejectFriendRequest = async (io,socket, data) => {
 
 	const check = await userSchema.find(checkMe)
 	if(check.length!=2) return
-	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
+	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.info("me")
 
 	const update = await userSchema.findOneAndUpdate({
 		username:check[0].username,
@@ -239,7 +239,7 @@ const cancelFriendRequest = async (io,socket, data) => {
 
 	const check = await userSchema.find(checkMe)
 	if(check.length!=2) return
-	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.log("me")
+	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.info("me")
 
 	const update = await userSchema.findOneAndUpdate({
 		username:check[0].username,
