@@ -1,8 +1,7 @@
 import "assets/css/panel.css";
-import Dashboard from "views/Dashboard";
 
 import Navbar from "components/Navbar";
-import { useNavigate, useLocation, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { SocketContext } from "controller/Context";
@@ -14,11 +13,8 @@ const ESCAPE_KEYS = ["27", "Escape"];
 
 const Panel = () => {
   const socket = useContext(SocketContext);
-  const friends = useSelector(state => state.friends.onlineUsers);
   const message = useSelector(state => state.user.message);
   const userID = useSelector(state => state.user.id);
-  const navigate = useNavigate();
-  const location = useLocation();
   const [show, setShow] = useState(false);
   const [showAddServerModal, setShowAddServerModal] = useState(false);
 

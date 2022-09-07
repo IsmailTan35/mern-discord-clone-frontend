@@ -166,24 +166,41 @@ const SidebarServerChannels = () => {
                             handleClick(e, serverId, channel);
                           }}
                         >
-                          {channel.type === "text" ? (
-                            <HashIcon
-                              style={{
-                                width: "16px",
-                                height: "16px",
-                                marginRight: "8px",
-                              }}
-                            />
-                          ) : (
-                            <VoiceIcon
-                              style={{
-                                width: "16px",
-                                height: "16px",
-                                marginRight: "8px",
-                              }}
-                            />
-                          )}
-                          <div>{channel.channelname}</div>
+                          <div
+                            style={{
+                              height: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {channel.type === "text" ? (
+                              <HashIcon
+                                style={{
+                                  width: "16px",
+                                  height: "16px",
+                                  marginRight: "8px",
+                                }}
+                              />
+                            ) : (
+                              <VoiceIcon
+                                style={{
+                                  width: "16px",
+                                  height: "16px",
+                                  marginRight: "8px",
+                                }}
+                              />
+                            )}
+                          </div>
+                          <div
+                            style={{
+                              flex: "1 1",
+                              height: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            {channel.channelname}
+                          </div>
                         </div>
                         <div
                           style={{

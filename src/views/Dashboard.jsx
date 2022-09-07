@@ -162,7 +162,7 @@ const Dashboard = () => {
                   />
                 </Routes>
               </nav>
-              {channelsList.map(channel => {
+              {channelsList.map((channel, index) => {
                 const rawMe = channel.onlineUser.find(
                   user => user._id === userInfo.id
                 );
@@ -184,6 +184,7 @@ const Dashboard = () => {
                       borderBottom: "1px solid #36393E",
                       color: "white",
                     }}
+                    key={index}
                   >
                     <div style={{ display: "flex", color: "#96989d" }}>
                       <div style={{ flex: "1 1" }}>
