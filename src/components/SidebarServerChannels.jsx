@@ -25,7 +25,7 @@ const SidebarServerChannels = () => {
   const [server, setServer] = useState({});
   const serverId = location.pathname.split("/")[2];
 
-  async function addPeer(data, user) {
+  async function addPeer(data, user, serverID, channel) {
     try {
       const myPeerStream = await navigator.mediaDevices.getUserMedia({
         video: false,
@@ -36,22 +36,27 @@ const SidebarServerChannels = () => {
         trickle: false,
         stream: myPeerStream,
       });
+
       peer.signal(data.signal);
       console.log(data);
-
       peer.on("stream", stream => {
-        const audio = new Audio();
+        const audio = document.createElement("video");
         audio.srcObject = stream;
         audio.play();
+      });
 
-        const speechEvents = hark(stream, {});
-        speechEvents.on("speaking", () => {
-          console.log(true);
+      peer.on("signal", signal => {
+        console.log(2);
+        socket.emit("channelReturningSignal", {
+          serverID,
+          channelID: channel._id,
+          signal,
+          userID: data._id,
         });
+      });
 
-        speechEvents.on("stopped_speaking", () => {
-          console.log(false);
-        });
+      peer.on("connect", () => {
+        console.log("connected");
       });
     } catch (error) {
       console.error(error);
@@ -60,6 +65,11 @@ const SidebarServerChannels = () => {
 
   async function createPeer(serverID, channel) {
     try {
+      socket.emit("joinVoiceChannel", {
+        serverID,
+        channelID: channel._id,
+      });
+
       const myPeerStream = await navigator.mediaDevices.getUserMedia({
         video: false,
         audio: true,
@@ -71,34 +81,36 @@ const SidebarServerChannels = () => {
         stream: myPeerStream,
       });
 
-      peer.on("signal", signal => {
-        socket.emit("joinVoiceChannel", {
-          serverID,
-          channelID: channel._id,
-          signal,
-        });
+      peer.on("connect", () => {
+        console.log("connected");
+      });
 
+      socket.on("userJoinedChannel", data => {
+        console.log(3);
+        if (user.id == data._id) return;
+        addPeer(data, user, serverID, channel);
+        peer.signal(data.signal);
+      });
+
+      socket.on("channelReturningSignalListener", data => {
+        console.log(3);
+        console.log(user, data);
+        if (user.id == data._id) return;
+        addPeer(data, user, serverID, channel);
+      });
+
+      peer.on("stream", stream => {
+        const audio = document.createElement("video");
+        audio.srcObject = stream;
+        audio.play();
+      });
+
+      peer.on("signal", signal => {
+        console.log(1);
         socket.emit("channelSendingSignal", {
           serverID,
           channelID: channel._id,
           signal,
-        });
-
-        socket.on("userJoinedChannel", data => {
-          if (user.id !== data._id) {
-            socket.emit("channelReturningSignal", {
-              serverID,
-              channelID: channel._id,
-              signal,
-              userID: data._id,
-            });
-            addPeer(data, user);
-          }
-        });
-        socket.on("channelReturningSignalListener", data => {
-          if (user.id !== data._id) {
-            addPeer(data, user);
-          }
         });
       });
     } catch (error) {

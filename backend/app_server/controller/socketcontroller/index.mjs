@@ -222,6 +222,8 @@ export default (io,con)=>{
             if(!user) return
 	        let rawSockets =await io.fetchSockets()
 	        const sockets = rawSockets.map(sockett=>{
+                console.log(sockett.handshake.auth.userId,data.userID);
+                
                 if(sockett.handshake.auth.userId==data.userID){
                     sockett.emit("channelReturningSignalListener",{
                         _id:user[0]._id,
