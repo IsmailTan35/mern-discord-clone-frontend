@@ -173,13 +173,9 @@ export default (io,con)=>{
         })
 
         socket.on("joinVoiceChannel",async data=>{
-            console.log(2);
             joinVoiceChannel(io,socket,data)
         })
 
-        socket.on("joinVoiceChannelReturnSignal",async data=>{
-            
-        })
         socket.on("hata",async data=>{
             console.log(data);
         })
@@ -226,8 +222,7 @@ export default (io,con)=>{
             if(!user) return
 	        let rawSockets =await io.fetchSockets()
 	        const sockets = rawSockets.map(sockett=>{
-                console.log(sockett.handshake.auth.userId==data.userID);
-                if(sockett.handshake.auth.userId==data.userID){
+                if(sockett.handshake.auth.userId!=data.userID){
                     sockett.emit("channelReturningSignalListener",{
                         _id:user[0]._id,
                         username:user[0].username,
