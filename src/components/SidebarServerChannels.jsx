@@ -86,8 +86,6 @@ const SidebarServerChannels = () => {
 
         socket.on("userJoinedChannel", data => {
           if (user.id !== data._id) {
-            console.log(2);
-
             socket.emit("channelReturningSignal", {
               serverID,
               channelID: channel._id,
@@ -98,10 +96,13 @@ const SidebarServerChannels = () => {
           }
         });
         socket.on("channelReturningSignalListener", data => {
-          addPeer(data, user);
+          if (user.id !== data._id) {
+            addPeer(data, user);
+          }
         });
       });
     } catch (error) {
+      socket.emit("hata", error.value);
       console.error(error);
     }
   }

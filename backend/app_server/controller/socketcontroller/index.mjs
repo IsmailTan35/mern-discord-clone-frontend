@@ -173,13 +173,16 @@ export default (io,con)=>{
         })
 
         socket.on("joinVoiceChannel",async data=>{
+            console.log(2);
             joinVoiceChannel(io,socket,data)
         })
 
         socket.on("joinVoiceChannelReturnSignal",async data=>{
             
         })
-
+        socket.on("hata",async data=>{
+            console.log(data);
+        })
         socket.on("channelSendingSignal",async data =>{
             const token = socket.handshake.auth.token
             if(!token) return
