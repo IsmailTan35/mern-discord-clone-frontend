@@ -32,7 +32,7 @@ const SidebarServerChannels = () => {
         audio: true,
       });
       const peer = new Peer({
-        initiator: false,
+        initiator: true,
         trickle: false,
         stream: myPeerStream,
       });
@@ -66,7 +66,7 @@ const SidebarServerChannels = () => {
       });
 
       const peer = new Peer({
-        initiator: true,
+        initiator: false,
         trickle: false,
         stream: myPeerStream,
       });
