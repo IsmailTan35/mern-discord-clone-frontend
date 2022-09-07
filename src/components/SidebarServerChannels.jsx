@@ -37,11 +37,11 @@ const SidebarServerChannels = () => {
         stream: myPeerStream,
       });
       peer.signal(data.signal);
-      console.log(2);
+      console.log(data);
 
       peer.on("stream", stream => {
         const audio = new Audio();
-        audio.srcObject = myPeerStream;
+        audio.srcObject = stream;
         audio.play();
 
         const speechEvents = hark(stream, {});
