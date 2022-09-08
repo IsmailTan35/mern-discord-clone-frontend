@@ -224,19 +224,8 @@ const SocketController = () => {
         progress: undefined,
       });
     });
-    socket.on("connect", () => {
-      if (mount) return;
-      setTimeout(() => {
-        toast.update(id, {
-          render: "Server ile bağlantı tekrar kuruldu",
-          type: toast.TYPE.SUCCESS,
-          isLoading: false,
-          autoClose: 1500,
-        });
-      }, 1000);
-      mount = true;
-    });
-    socket.io.on("reconnect_attempt", () => {
+
+    socket.io.on("reconnect_attempt", data => {
       if (!mount) return;
       id = toast.loading("Server'a bağlanılmaya çalışılıyor.", {
         position: "bottom-right",
@@ -248,6 +237,18 @@ const SocketController = () => {
         progress: undefined,
       });
       mount = false;
+    });
+    socket.io.on("reconnect", data => {
+      if (mount) return;
+      setTimeout(() => {
+        toast.update(id, {
+          render: "Server ile bağlantı tekrar kuruldu",
+          type: toast.TYPE.SUCCESS,
+          isLoading: false,
+          autoClose: 1500,
+        });
+      }, 1000);
+      mount = true;
     });
 
     socket.io.on(" connect_error", () => {
