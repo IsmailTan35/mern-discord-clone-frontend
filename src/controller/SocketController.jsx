@@ -33,15 +33,6 @@ const SocketController = () => {
         socket.emit("configuration", {
           token: localStorage.getItem("accessToken"),
         });
-        toast.success("Server ile bağlantı kuruldu.", {
-          position: "bottom-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
       }
     });
 
@@ -219,6 +210,9 @@ const SocketController = () => {
   }, [token, socket.connected, userID]);
 
   useEffect(() => {
+    let mount = true;
+    let id = null;
+
     socket.on("disconnect", () => {
       toast.error("Server ile bağlantı kesildi.", {
         position: "bottom-right",
@@ -230,8 +224,34 @@ const SocketController = () => {
         progress: undefined,
       });
     });
-    socket.on("reconnect", data => {
-      toast.success("Server ile bağlantı kuruldu.", {
+    socket.on("connect", () => {
+      if (mount) return;
+      setTimeout(() => {
+        toast.update(id, {
+          render: "Server ile bağlantı tekrar kuruldu",
+          type: toast.TYPE.SUCCESS,
+          isLoading: false,
+          autoClose: 1500,
+        });
+      }, 1000);
+      mount = true;
+    });
+    socket.io.on("reconnect_attempt", () => {
+      if (!mount) return;
+      id = toast.loading("Server'a bağlanılmaya çalışılıyor.", {
+        position: "bottom-right",
+        // autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      mount = false;
+    });
+
+    socket.io.on(" connect_error", () => {
+      toast.loading("Server'a bağlanılmaya çalışılıyor.", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -241,6 +261,7 @@ const SocketController = () => {
         progress: undefined,
       });
     });
+
     socket.on("data", data => {
       dispatch(
         friendsActions.refresh({ name: "onlineUsers", value: data.onlineUsers })

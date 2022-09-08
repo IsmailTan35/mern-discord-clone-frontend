@@ -28,7 +28,7 @@ const LoginPage = () => {
     const id = toast.loading("Please wait...");
 
     axios
-      .post("/api/auth/login", form)
+      .post("/api/auth/login", form, { timeout: 7500 })
       .then(res => {
         localStorage.setItem("accessToken", res.data[6].value);
         dispatch(
@@ -48,14 +48,25 @@ const LoginPage = () => {
         }, 500);
       })
       .catch(err => {
-        setTimeout(() => {
-          toast.update(id, {
-            render: "All is bad",
-            type: toast.TYPE.ERROR,
-            isLoading: false,
-            autoClose: 1500,
-          });
-        }, 1500);
+        if (error.code === "ECONNABORTED") {
+          setTimeout(() => {
+            toast.update(id, {
+              render: "İstek zaman aşımına uğradı.",
+              type: toast.TYPE.ERROR,
+              isLoading: false,
+              autoClose: 1500,
+            });
+          }, 1500);
+        } else {
+          setTimeout(() => {
+            toast.update(id, {
+              render: "All is bad",
+              type: toast.TYPE.ERROR,
+              isLoading: false,
+              autoClose: 1500,
+            });
+          }, 1500);
+        }
       });
   };
 
