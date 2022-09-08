@@ -48,7 +48,9 @@ const LoginPage = () => {
         }, 500);
       })
       .catch(err => {
-        if (error.code === "ECONNABORTED") {
+        console.log(err.code);
+
+        if (err.code === "ECONNABORTED") {
           setTimeout(() => {
             toast.update(id, {
               render: "İstek zaman aşımına uğradı.",
