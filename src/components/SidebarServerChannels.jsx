@@ -38,7 +38,6 @@ const SidebarServerChannels = () => {
       });
 
       peer.signal(data.signal);
-      console.log(data);
       peer.on("stream", stream => {
         const audio = document.createElement("video");
         audio.srcObject = stream;
@@ -46,7 +45,7 @@ const SidebarServerChannels = () => {
       });
 
       peer.on("signal", signal => {
-        console.log(2);
+        console.log("signal");
         socket.emit("channelReturningSignal", {
           serverID,
           channelID: channel._id,
@@ -86,15 +85,14 @@ const SidebarServerChannels = () => {
       });
 
       socket.on("userJoinedChannel", data => {
-        console.log(3);
         if (user.id == data._id) return;
         addPeer(data, user, serverID, channel);
+        console.log(2);
+
         peer.signal(data.signal);
       });
 
       socket.on("channelReturningSignalListener", data => {
-        console.log(3);
-        console.log(user, data);
         if (user.id == data._id) return;
         addPeer(data, user, serverID, channel);
       });
@@ -106,7 +104,7 @@ const SidebarServerChannels = () => {
       });
 
       peer.on("signal", signal => {
-        console.log(1);
+        console.log("signal");
         socket.emit("channelSendingSignal", {
           serverID,
           channelID: channel._id,

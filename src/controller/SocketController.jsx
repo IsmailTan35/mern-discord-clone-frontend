@@ -12,6 +12,8 @@ import joinSound from "assets/audio/discordJoin.wav";
 import leaveSound from "assets/audio/discordLeave.mp3";
 
 import { channelsActions } from "store";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const SocketController = () => {
   const socket = useContext(SocketContext);
@@ -31,10 +33,17 @@ const SocketController = () => {
         socket.emit("configuration", {
           token: localStorage.getItem("accessToken"),
         });
+        toast.success("Server ile bağlantı kuruldu.", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
     });
-
-    socket.on("disconnect", () => {});
 
     socket.on("reconnect", () => {
       if (location.pathname !== "/") {
@@ -141,10 +150,21 @@ const SocketController = () => {
       );
     });
 
-    socket.on("newServer", data => {
+    socket.on("newServer", async data => {
       dispatch(
         serversActions.update({ type: "add", name: "items", value: data })
       );
+      try {
+        const res = await axios.get("/api/icon/server", {
+          params: { picture: data.picture },
+          responseType: "arraybuffer",
+        });
+
+        let base64 = Buffer.from(res.data, "binary").toString("base64");
+        let image = `data`;
+      } catch (error) {
+        if (error) console.error(error);
+      }
     });
 
     socket.on("newUserInfo", data => {
@@ -199,6 +219,28 @@ const SocketController = () => {
   }, [token, socket.connected, userID]);
 
   useEffect(() => {
+    socket.on("disconnect", () => {
+      toast.error("Server ile bağlantı kesildi.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    });
+    socket.on("reconnect", data => {
+      toast.success("Server ile bağlantı kuruldu.", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    });
     socket.on("data", data => {
       dispatch(
         friendsActions.refresh({ name: "onlineUsers", value: data.onlineUsers })

@@ -45,4 +45,8 @@ export default (app,con) =>{
     app.get("/api/user/getName",userInfo)
     app.get("/api/user/getMessages",messageAll)
 
+    app.get("/api/icon/server",(req,res)=>{
+        
+    })
+
 }

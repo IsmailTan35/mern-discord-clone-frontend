@@ -1,18 +1,18 @@
-import mongoose from 'mongoose';
 import formidable from 'formidable';
 
 import serverSchema from "../../../schema/server.mjs";
 import channelSchema from "../../../schema/channel.mjs";
-
 import userSchema from "../../../schema/user.mjs";
+import path from "path";
+import fs from "fs"
 
 export default async (req,res) => {
 	let io = req.app.io
 	const token = req.headers.authorization
-	// console.info(req.files)
 	const form = formidable({ multiples: true })
 	form.parse(req, async (err, fields, files) => {
 		if(err) return res.status(500).json({"error":"server not found"})
+
 		const { serverName } = fields
 		if(!serverName || !token) return res.status(400).json("")
 
@@ -31,6 +31,19 @@ export default async (req,res) => {
 			userIDs:[user[0]._id],
 		})
 
+		if(files){
+			try {
+				let oldPath=files.serverPhoto.filepath
+				let newFileName= `${svSchema._id.toString()}.png`
+				let rawPath = `backend/app_server/uploads/server`
+				let newPath =path.join(path.resolve(),rawPath,newFileName)
+				let rawData = fs.readFileSync(oldPath)
+				const res = await fs.writeFile(newPath,rawData,()=>{})
+				svSchema.serverpicture=rawPath+newFileName
+			} catch (error) {
+				if(error) console.error(error);
+			}
+		}
 		const chSchema1 =  new channelSchema({
 			channelname:"general",
 			type:"voice",

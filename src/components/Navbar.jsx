@@ -11,15 +11,19 @@ const Navbar = () => {
   const socket = useContext(SocketContext);
   const token = useSelector(state => state.user.token);
   const serverList = useSelector(state => state.server.items);
+  const channelList = useSelector(state => state.channels.items);
+
   const navigate = useNavigate();
   const location = useLocation();
 
   const delay = { show: 50, hide: 0 };
 
   const changeHistory = id => {
-    const firstChannel = serverList.find(server => server._id === id)
-      .channels[0];
-    navigate("/channels/" + id + "/" + firstChannel);
+    const firstChannel = channelList.find(
+      channel => channel.serverID == id && channel.type == "text"
+    );
+    if (!firstChannel) return;
+    navigate("/channels/" + firstChannel.serverID + "/" + firstChannel._id);
   };
 
   const handleAddServerModal = e => {

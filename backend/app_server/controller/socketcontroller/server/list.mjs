@@ -1,5 +1,6 @@
 import userSchema from "../../../schema/user.mjs";
 import serverSchema from "../../../schema/server.mjs";
+import server from "../../../schema/server.mjs";
 
 export default async (io,socket,data)=>{
 	const token = socket.handshake.auth.token
@@ -51,6 +52,7 @@ export default async (io,socket,data)=>{
 							userIDs:1,
 							channels:1,
 							inviteCode:1,
+							serverPicture:1
 						}
 					}
 				],
@@ -113,7 +115,7 @@ export default async (io,socket,data)=>{
 			onlineUser:findOnlineUser(channel.serverID,channel._id)
 		}
 	))
-
+	// server.map()
 	socket.emit("serverList",res)
 	socket.emit("channelList",denem1)
 } catch (error) {
