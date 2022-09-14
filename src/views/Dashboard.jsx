@@ -65,6 +65,12 @@ const Dashboard = () => {
   const leaveChannel = () => {
     socket.emit("leaveAllChannels");
   };
+
+  const handleCopyServerCode = text => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+  };
+
   return (
     <>
       <div className="dashboard-wrapper">
@@ -112,7 +118,12 @@ const Dashboard = () => {
                             }`}</Tooltip>
                           )}
                         >
-                          <h1 className="dashboard-navbar-server-name">
+                          <h1
+                            className="dashboard-navbar-server-name"
+                            onClick={() => {
+                              handleCopyServerCode(server.inviteCode);
+                            }}
+                          >
                             {server.servername}
                           </h1>
                         </OverlayTrigger>

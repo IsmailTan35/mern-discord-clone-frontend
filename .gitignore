@@ -10,7 +10,7 @@
 
 # production
 /build
-
+/backend/app_server/uploads/server
 # misc
 .DS_Store
 .env.local

@@ -115,7 +115,7 @@ const LoginPage = () => {
             <button
               className="auth-links-button"
               onClick={() => {
-                handleUrl("/auth/forget");
+                // handleUrl("/auth/forget");
               }}
             >
               Şifreni mi Unuttun?

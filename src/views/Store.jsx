@@ -51,7 +51,7 @@ const Store = () => {
               >
                 <div style={{ height: 464, maxWidth: "660px" }}>
                   <div
-                    className="store-hero desaturate-_Twf3u"
+                    className="store-hero "
                     style={{
                       position: "relative",
                     }}
@@ -83,10 +83,10 @@ const Store = () => {
                         Emojilerini geliştir, profilini kişiselleştir ve
                         sunucularda öne çık.
                       </div>
-                      <div className="heroButtons-357iJy buttons-19uowm buttonsCenter-21Ab-2">
+                      <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
                         <button
                           type="button"
-                          className="shinyButton-2Q9MDB button-1U79Hu button-f2h6uQ lookInverted-2mDUMi colorBrand-I6CyqQ sizeMedium-2bFIHr grow-2sR_-F"
+                          className="store-buttons-subscribe"
                         >
                           <div className="contents-3ca1mk premiumSubscribeButton-17z7Tg">
                             <svg
@@ -101,14 +101,11 @@ const Store = () => {
                                 d="M2.98966977,9.35789159 C2.98966977,9.77582472 2.63442946,10.1240466 2.20807287,10.1240466 L1.78171628,10.1240466 C1.35535969,10.1240466 0.999948837,9.77582472 0.999948837,9.35789159 C0.999948837,8.93995846 1.35535969,8.59173658 1.78171628,8.59173658 L2.20807287,8.59173658 C2.63442946,8.59173658 2.98966977,8.93995846 2.98966977,9.35789159 Z M22.2467643,9.14892503 C24.0942527,12.9800344 22.3888264,17.5772989 18.3384388,19.3882867 C14.4302837,21.1297305 9.74036124,19.457998 7.9638186,15.6268886 C7.60857829,14.8607335 7.3954,14.0248673 7.32428372,13.189001 L5.76091938,13.189001 C5.33456279,13.189001 4.97932248,12.840612 4.97932248,12.4226788 C4.97932248,12.0047457 5.33456279,11.6565238 5.76091938,11.6565238 L8.03493488,11.6565238 C8.46129147,11.6565238 8.81653178,11.3083019 8.81653178,10.8903688 C8.81653178,10.4724357 8.46129147,10.1240466 8.03493488,10.1240466 L4.41090388,10.1240466 C3.98454729,10.1240466 3.62913643,9.77582472 3.62913643,9.35789159 C3.62913643,8.93995846 3.98454729,8.59173658 4.41090388,8.59173658 L9.45606667,8.59173658 C9.88242326,8.59173658 10.2376636,8.24334752 10.2376636,7.82541439 C10.2376636,7.40748126 9.88242326,7.05925937 9.45606667,7.05925937 L7.3954,7.05925937 C6.75586512,7.05925937 6.18727597,6.57161499 6.18727597,5.87517123 C6.18727597,5.24827153 6.68474884,4.69091591 7.3954,4.69091591 L15.4250589,4.69091591 C18.267493,4.8303384 20.9676946,6.43235968 22.2467643,9.14892503 Z M13.2662961,8.38056332 C11.0193969,9.3919615 10.0341721,11.9973566 11.065955,14.1998642 C12.097738,16.4023718 14.755645,17.3681317 17.0025442,16.3567335 C19.249614,15.3453354 20.2346682,12.7399402 19.2028853,10.5374326 C18.1711023,8.33492503 15.5131953,7.36916515 13.2662961,8.38056332 Z M16.8462589,9.84548582 L18.2673907,12.2138293 C18.338507,12.3530846 18.338507,12.4227958 18.2673907,12.5620512 L16.8462589,14.9303946 C16.7751426,15.0696499 16.6330806,15.0696499 16.5619643,15.0696499 L13.7906465,15.0696499 C13.6485845,15.0696499 13.5774682,14.9999387 13.5065225,14.9303946 L12.0852202,12.5620512 C12.0142744,12.4227958 12.0142744,12.3530846 12.0852202,12.2138293 L13.5065225,9.84548582 C13.5774682,9.7062305 13.7197008,9.7062305 13.7906465,9.7062305 L16.5619643,9.7062305 C16.7041969,9.63651925 16.7751426,9.7062305 16.8462589,9.84548582 Z"
                               ></path>
                             </svg>
-                            <span className="buttonText-1c-l_x">Abone Ol</span>
                           </div>
+                          <span className="buttonText-1c-l_x">Abone Ol</span>
                         </button>
-                        <button
-                          type="button"
-                          className="button-1U79Hu button-f2h6uQ lookInverted-2mDUMi colorBrand-I6CyqQ sizeMedium-2bFIHr grow-2sR_-F"
-                        >
-                          <div className="contents-3ca1mk giftButton-2RVWns">
+                        <button type="button" className="store-buttons-gift">
+                          <div>
                             <svg
                               width="24"
                               height="24"
@@ -123,54 +120,35 @@ const Store = () => {
                                 d="M16.886 7.999H20C21.104 7.999 22 8.896 22 9.999V11.999H2V9.999C2 8.896 2.897 7.999 4 7.999H7.114C6.663 7.764 6.236 7.477 5.879 7.121C4.709 5.951 4.709 4.048 5.879 2.879C7.012 1.746 8.986 1.746 10.121 2.877C11.758 4.514 11.979 7.595 11.998 7.941C11.9991 7.9525 11.9966 7.96279 11.9941 7.97304C11.992 7.98151 11.99 7.98995 11.99 7.999H12.01C12.01 7.98986 12.0079 7.98134 12.0058 7.97287C12.0034 7.96282 12.0009 7.95286 12.002 7.942C12.022 7.596 12.242 4.515 13.879 2.878C15.014 1.745 16.986 1.746 18.121 2.877C19.29 4.049 19.29 5.952 18.121 7.121C17.764 7.477 17.337 7.764 16.886 7.999ZM7.293 5.707C6.903 5.316 6.903 4.682 7.293 4.292C7.481 4.103 7.732 4 8 4C8.268 4 8.519 4.103 8.707 4.292C9.297 4.882 9.641 5.94 9.825 6.822C8.945 6.639 7.879 6.293 7.293 5.707ZM14.174 6.824C14.359 5.941 14.702 4.883 15.293 4.293C15.481 4.103 15.732 4 16 4C16.268 4 16.519 4.103 16.706 4.291C17.096 4.682 17.097 5.316 16.707 5.707C16.116 6.298 15.057 6.642 14.174 6.824ZM3 13.999V19.999C3 21.102 3.897 21.999 5 21.999H11V13.999H3ZM13 13.999V21.999H19C20.104 21.999 21 21.102 21 19.999V13.999H13Z"
                               ></path>
                             </svg>
-                            <span>Hediye Et</span>
                           </div>
+                          <span>Hediye Et</span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <h3
-                    className="defaultColor-24IHKz heading-xl-medium-_XBxHT defaultColor-HXu-5n featuresHeader-2bjq5B"
-                    data-text-variant="heading-xl/medium"
-                  >
+                  <h3 data-text-variant="heading-xl/medium">
                     İşte Nitro ile alacakların:
                   </h3>
                   <div className="store-cards-wrapper">
-                    <li className="store-card store-card">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Birden Fazla Profil
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Nasıl istiyorsan öyle görün; sunucularında farklı
                         avatarlar, afişler ve biyografiler kullan.
                       </div>
                       <div className="store-card-img">
-                        <img
-                          className="store-card-img featureImage-91H2fC desaturate-_Twf3u"
-                          src={Store2}
-                          alt=""
-                        />
+                        <img className="store-card-img" src={Store2} alt="" />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureVideoBackgrounds-3-ItPq">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Daha Fazla Arka Plan
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Kendi video arka planlarınla görüntülü aramaları
                         özelleştir.
                       </div>
@@ -178,39 +156,26 @@ const Store = () => {
                         <Store3 />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureProfile-2h92hd">
+                    <li className="store-card">
                       <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
+                        className="defaultColor-24IHKz"
                         data-text-variant="heading-lg/medium"
                       >
                         Profiline Tarz Kat
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Hareketli avatar, profil afişi ve özel bir etiketle
                         kendini ifade et.
                       </div>
                       <div className="store-card-img">
-                        <img
-                          className="store-card-img featureImage-91H2fC desaturate-_Twf3u"
-                          src={Store4}
-                          alt=""
-                        />
+                        <img className="store-card-img" src={Store4} alt="" />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI stickers-2JFQr2">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Özel Çıkartma Erişimi
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Özel çıkartmaları her yerde kullan ve Nitro'ya özel 300
                         çıkartmaya eriş.{" "}
                         <svg
@@ -231,17 +196,11 @@ const Store = () => {
                         <Store5 />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureEmoji-cnSD0D">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Daha Fazla Emoji Gücü
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         En sevdiğin emojiyi her yerde kullan ve emojilerini
                         hareketlendir.
                       </div>
@@ -249,24 +208,14 @@ const Store = () => {
                         <Store6 />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featurePremiumGuild-2uV6-N">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Sunucunu Destekle
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         2 Sunucu Takviyesi ve ilave Takviye alımlarında %30
                         indirim kazan.{" "}
-                        <span
-                          className="learnMoreLink-2JwgbJ"
-                          role="button"
-                          tabIndex="0"
-                        >
+                        <span role="button" tabIndex="0">
                           Daha fazla bilgi al
                         </span>
                         .
@@ -275,61 +224,33 @@ const Store = () => {
                         <Store7 />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureBadge-1FNGAH">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card ">
+                      <h3 data-text-variant="heading-lg/medium">
                         Durumunla Hava At
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Özel profil rozetiyle Nitro Abonesi olduğunu herkese
                         göster.
                       </div>
                       <div className="store-card-img">
-                        <img
-                          className="store-card-img featureImage-91H2fC desaturate-_Twf3u"
-                          src={Store8}
-                          alt=""
-                        />
+                        <img className="store-card-img" src={Store8} alt="" />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureUploadSize-3k1zif">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Daha Büyük Yüklemeler
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Arttırılmış 100 mb'lık yükleme boyutuyla istediğini
                         yükle.
                       </div>
                       <div className="store-card-img">
-                        <img
-                          className="store-card-img featureImage-91H2fC desaturate-_Twf3u"
-                          src={Store9}
-                          alt=""
-                        />
+                        <img className="store-card-img" src={Store9} alt="" />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureGoLive-15Pf6l">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
-                        HD Video
-                      </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">HD Video</h3>
+                      <div data-text-variant="text-sm/normal">
                         Tüm yayınlarını daha iyi çözünürlük seçenekleriyle
                         paylaş.{" "}
                         <svg
@@ -348,24 +269,14 @@ const Store = () => {
                         .
                       </div>
                       <div className="store-card-img">
-                        <img
-                          className="store-card-img featureImage-91H2fC desaturate-_Twf3u"
-                          src={Store10}
-                          alt=""
-                        />
+                        <img className="store-card-img" src={Store10} alt="" />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureLongerMessageContent-4BIM8v">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Daha Uzun Mesajlar
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Daha yüksek karakter sınırlamasıyla aklından geçenleri
                         paylaş.
                       </div>
@@ -373,51 +284,42 @@ const Store = () => {
                         <Store11 />
                       </div>
                     </li>
-                    <li className="store-card feature-2IUcBI featureMoreServers-3eY3SW">
-                      <h3
-                        className="defaultColor-24IHKz heading-lg-medium-3gUJeM defaultColor-HXu-5n featureTitle-3N9Stg desaturate-_Twf3u"
-                        data-text-variant="heading-lg/medium"
-                      >
+                    <li className="store-card">
+                      <h3 data-text-variant="heading-lg/medium">
                         Daha Fazla Sunucu
                       </h3>
-                      <div
-                        className="defaultColor-24IHKz text-sm-normal-3Zj3Iv featureDescription-3U0QB3"
-                        data-text-variant="text-sm/normal"
-                      >
+                      <div data-text-variant="text-sm/normal">
                         Katılabildiğin sunucu sayısını ikiye katlayarak 200'e
                         çıkar.
                       </div>
                       <div className="store-card-img">
-                        <img
-                          className="store-card-img featureImage-91H2fC desaturate-_Twf3u"
-                          src={Store12}
-                          alt=""
-                        />
+                        <img className="store-card-img" src={Store12} alt="" />
                       </div>
                     </li>
                   </div>
                 </div>
                 <div
-                  className="marketingRefreshTier2Cta-2dN2zP"
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                   }}
                 >
-                  <p className="marketingRefreshTitle-UaHKpk">
-                    Nitro'ya yükseltmeye hazır mısın?
-                  </p>
-                  <p className="marketingRefreshSubtitle-17I8Dd">
+                  <p>Nitro'ya yükseltmeye hazır mısın?</p>
+                  <p>
                     Sana en uygun olan planı seç ve emoji koleksiyonunu
                     oluşturmaya başla.
                   </p>
-                  <div className="tier2Buttons-p_48oy buttons-19uowm buttonsCenter-21Ab-2">
+                  <div style={{ display: "flex", gap: 10 }}>
                     <button
                       type="button"
-                      className="shinyButton-2Q9MDB button-1U79Hu button-f2h6uQ lookFilled-yCfaCM colorGreen-3y-Z79 sizeMedium-2bFIHr grow-2sR_-F"
+                      className="store-buttons-subscribe"
+                      style={{
+                        background: "hsl(139,47.1%,33.3%)",
+                        color: "hsl(0,0%,100%)",
+                      }}
                     >
-                      <div className="contents-3ca1mk premiumSubscribeButton-17z7Tg">
+                      <div>
                         <svg
                           className="premiumIcon-G_KEYC"
                           aria-hidden="false"
@@ -430,14 +332,18 @@ const Store = () => {
                             d="M2.98966977,9.35789159 C2.98966977,9.77582472 2.63442946,10.1240466 2.20807287,10.1240466 L1.78171628,10.1240466 C1.35535969,10.1240466 0.999948837,9.77582472 0.999948837,9.35789159 C0.999948837,8.93995846 1.35535969,8.59173658 1.78171628,8.59173658 L2.20807287,8.59173658 C2.63442946,8.59173658 2.98966977,8.93995846 2.98966977,9.35789159 Z M22.2467643,9.14892503 C24.0942527,12.9800344 22.3888264,17.5772989 18.3384388,19.3882867 C14.4302837,21.1297305 9.74036124,19.457998 7.9638186,15.6268886 C7.60857829,14.8607335 7.3954,14.0248673 7.32428372,13.189001 L5.76091938,13.189001 C5.33456279,13.189001 4.97932248,12.840612 4.97932248,12.4226788 C4.97932248,12.0047457 5.33456279,11.6565238 5.76091938,11.6565238 L8.03493488,11.6565238 C8.46129147,11.6565238 8.81653178,11.3083019 8.81653178,10.8903688 C8.81653178,10.4724357 8.46129147,10.1240466 8.03493488,10.1240466 L4.41090388,10.1240466 C3.98454729,10.1240466 3.62913643,9.77582472 3.62913643,9.35789159 C3.62913643,8.93995846 3.98454729,8.59173658 4.41090388,8.59173658 L9.45606667,8.59173658 C9.88242326,8.59173658 10.2376636,8.24334752 10.2376636,7.82541439 C10.2376636,7.40748126 9.88242326,7.05925937 9.45606667,7.05925937 L7.3954,7.05925937 C6.75586512,7.05925937 6.18727597,6.57161499 6.18727597,5.87517123 C6.18727597,5.24827153 6.68474884,4.69091591 7.3954,4.69091591 L15.4250589,4.69091591 C18.267493,4.8303384 20.9676946,6.43235968 22.2467643,9.14892503 Z M13.2662961,8.38056332 C11.0193969,9.3919615 10.0341721,11.9973566 11.065955,14.1998642 C12.097738,16.4023718 14.755645,17.3681317 17.0025442,16.3567335 C19.249614,15.3453354 20.2346682,12.7399402 19.2028853,10.5374326 C18.1711023,8.33492503 15.5131953,7.36916515 13.2662961,8.38056332 Z M16.8462589,9.84548582 L18.2673907,12.2138293 C18.338507,12.3530846 18.338507,12.4227958 18.2673907,12.5620512 L16.8462589,14.9303946 C16.7751426,15.0696499 16.6330806,15.0696499 16.5619643,15.0696499 L13.7906465,15.0696499 C13.6485845,15.0696499 13.5774682,14.9999387 13.5065225,14.9303946 L12.0852202,12.5620512 C12.0142744,12.4227958 12.0142744,12.3530846 12.0852202,12.2138293 L13.5065225,9.84548582 C13.5774682,9.7062305 13.7197008,9.7062305 13.7906465,9.7062305 L16.5619643,9.7062305 C16.7041969,9.63651925 16.7751426,9.7062305 16.8462589,9.84548582 Z"
                           ></path>
                         </svg>
-                        <span className="buttonText-1c-l_x">Abone Ol</span>
                       </div>
+                      <span>Abone Ol</span>
                     </button>
                     <button
                       type="button"
-                      className="button-1U79Hu button-f2h6uQ lookFilled-yCfaCM colorPrimary-2AuQVo sizeMedium-2bFIHr grow-2sR_-F"
+                      className="store-buttons-gift"
+                      style={{
+                        color: "hsl(0,0%,100%)",
+                        background: "hsl(213,5%,42.9%)",
+                      }}
                     >
-                      <div className="contents-3ca1mk giftButton-2RVWns">
+                      <div>
                         <svg
                           width="24"
                           height="24"
@@ -452,21 +358,17 @@ const Store = () => {
                             d="M16.886 7.999H20C21.104 7.999 22 8.896 22 9.999V11.999H2V9.999C2 8.896 2.897 7.999 4 7.999H7.114C6.663 7.764 6.236 7.477 5.879 7.121C4.709 5.951 4.709 4.048 5.879 2.879C7.012 1.746 8.986 1.746 10.121 2.877C11.758 4.514 11.979 7.595 11.998 7.941C11.9991 7.9525 11.9966 7.96279 11.9941 7.97304C11.992 7.98151 11.99 7.98995 11.99 7.999H12.01C12.01 7.98986 12.0079 7.98134 12.0058 7.97287C12.0034 7.96282 12.0009 7.95286 12.002 7.942C12.022 7.596 12.242 4.515 13.879 2.878C15.014 1.745 16.986 1.746 18.121 2.877C19.29 4.049 19.29 5.952 18.121 7.121C17.764 7.477 17.337 7.764 16.886 7.999ZM7.293 5.707C6.903 5.316 6.903 4.682 7.293 4.292C7.481 4.103 7.732 4 8 4C8.268 4 8.519 4.103 8.707 4.292C9.297 4.882 9.641 5.94 9.825 6.822C8.945 6.639 7.879 6.293 7.293 5.707ZM14.174 6.824C14.359 5.941 14.702 4.883 15.293 4.293C15.481 4.103 15.732 4 16 4C16.268 4 16.519 4.103 16.706 4.291C17.096 4.682 17.097 5.316 16.707 5.707C16.116 6.298 15.057 6.642 14.174 6.824ZM3 13.999V19.999C3 21.102 3.897 21.999 5 21.999H11V13.999H3ZM13 13.999V21.999H19C20.104 21.999 21 21.102 21 19.999V13.999H13Z"
                           ></path>
                         </svg>
-                        <span>Hediye Et</span>
                       </div>
+                      <span>Hediye Et</span>
                     </button>
                   </div>
                 </div>
-                <section
-                  className="marketingRefreshSectionTier1-1chtWC"
-                  style={{ display: "flex" }}
-                >
+                <section style={{ display: "flex" }}>
                   <div>
                     <Store13 />
                   </div>
                   <div>
                     <svg
-                      className="marketingRefreshTier1Logo-38ksW_"
                       aria-hidden="false"
                       width="194"
                       height="20"
@@ -489,7 +391,7 @@ const Store = () => {
                         <path d="M176.537 1.31722L174.084 18.9333C174.022 19.378 173.64 19.7186 173.186 19.7186H170.129C169.629 19.7186 169.225 19.3105 169.225 18.8123C169.225 18.7729 169.225 18.7279 169.234 18.6885L171.687 1.07236C171.748 0.627666 172.13 0.287109 172.585 0.287109H175.642C176.138 0.287109 176.548 0.695214 176.548 1.19338C176.545 1.23279 176.545 1.27782 176.537 1.31722Z"></path>
                       </g>
                     </svg>
-                    <p className="marketingRefreshDescription-2_tCTt">
+                    <p>
                       İşleri basit mi tutmak istersin? Daha az avantajın yer
                       aldığı hafif bir planın keyfini çıkar, Discord'a destek
                       olmaya devam et ve Sunucu Takviyelerinde %30 indirim
@@ -500,7 +402,6 @@ const Store = () => {
                     <div className="store-perk-list-item-wrapper">
                       <div className="store-perk-list-item">
                         <svg
-                          className="perkListItemIcon-3Odm5d tier1ProfilePerk-2IBE1c"
                           aria-hidden="false"
                           width="24"
                           height="24"
@@ -513,17 +414,13 @@ const Store = () => {
                             fill="currentColor"
                           ></path>
                         </svg>
-                        <div
-                          className="defaultColor-24IHKz text-sm-normal-3Zj3Iv"
-                          data-text-variant="text-sm/normal"
-                        >
+                        <div data-text-variant="text-sm/normal">
                           Özel etiket, hareketli avatar ve özel Nitro rozetiyle
                           profiline tarz kat
                         </div>
                       </div>
                       <div className="store-perk-list-item">
                         <svg
-                          className="perkListItemIcon-3Odm5d tier1BoostPerk-V7RkB_"
                           aria-hidden="false"
                           width="24"
                           height="24"
@@ -538,16 +435,12 @@ const Store = () => {
                             fill="currentColor"
                           ></path>
                         </svg>
-                        <div
-                          className="defaultColor-24IHKz text-sm-normal-3Zj3Iv"
-                          data-text-variant="text-sm/normal"
-                        >
+                        <div data-text-variant="text-sm/normal">
                           Sunucu Takviyelerinde %30 indirim
                         </div>
                       </div>
                       <div className="store-perk-list-item">
                         <svg
-                          className="perkListItemIcon-3Odm5d tier1CustomEmojiPerk-2v95LZ"
                           aria-hidden="false"
                           width="24"
                           height="24"
@@ -560,16 +453,12 @@ const Store = () => {
                             transform="translate(0 1)"
                           ></path>
                         </svg>
-                        <div
-                          className="defaultColor-24IHKz text-sm-normal-3Zj3Iv"
-                          data-text-variant="text-sm/normal"
-                        >
+                        <div data-text-variant="text-sm/normal">
                           Özel ve hareketli emojileri her yerde kullan
                         </div>
                       </div>
                       <div className="store-perk-list-item">
                         <svg
-                          className="perkListItemIcon-3Odm5d tier1UploadPerk-1ZDumb"
                           aria-hidden="false"
                           width="24"
                           height="24"
@@ -582,16 +471,12 @@ const Store = () => {
                             d="M11.2137 2.00088L2.27111 13.3826C1.9299 13.8168 2.00535 14.4455 2.43963 14.7867C2.61581 14.9251 2.83338 15.0004 3.05744 15.0004H7V21.0004C7 21.5527 7.44772 22.0004 8 22.0004H16C16.5523 22.0004 17 21.5527 17 21.0004V15.0004H20.9425C21.4948 15.0004 21.9425 14.5527 21.9425 14.0004C21.9425 13.7763 21.8673 13.5588 21.7289 13.3826L12.7863 2.00088C12.4451 1.56661 11.8165 1.49116 11.3822 1.83237C11.3195 1.88162 11.2629 1.93819 11.2137 2.00088Z"
                           ></path>
                         </svg>
-                        <div
-                          className="defaultColor-24IHKz text-sm-normal-3Zj3Iv"
-                          data-text-variant="text-sm/normal"
-                        >
+                        <div data-text-variant="text-sm/normal">
                           8MB yerine 50MB arttırılmış yükleme hızı
                         </div>
                       </div>
                       <div className="store-perk-list-item">
                         <svg
-                          className="perkListItemIcon-3Odm5d tier1StreamPerk-1ksfni"
                           aria-hidden="false"
                           width="24"
                           height="24"
@@ -606,18 +491,19 @@ const Store = () => {
                             fill="currentColor"
                           ></path>
                         </svg>
-                        <div
-                          className="defaultColor-24IHKz text-sm-normal-3Zj3Iv"
-                          data-text-variant="text-sm/normal"
-                        >
+                        <div data-text-variant="text-sm/normal">
                           1080p ve 60 FPS'ye kadar ekran paylaşımı
                         </div>
                       </div>
                     </div>
-                    <div className="buttons-19uowm">
+                    <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
                       <button
                         type="button"
-                        className="shinyButton-2Q9MDB button-1U79Hu button-f2h6uQ lookFilled-yCfaCM colorPrimary-2AuQVo sizeMedium-2bFIHr grow-2sR_-F"
+                        className="store-buttons-subscribe"
+                        style={{
+                          background: "hsl(213,5%,42.9%)",
+                          color: "hsl(0,0%,100%)",
+                        }}
                       >
                         <div className="contents-3ca1mk premiumSubscribeButton-17z7Tg">
                           <svg
@@ -632,14 +518,18 @@ const Store = () => {
                               d="M2.98966977,9.35789159 C2.98966977,9.77582472 2.63442946,10.1240466 2.20807287,10.1240466 L1.78171628,10.1240466 C1.35535969,10.1240466 0.999948837,9.77582472 0.999948837,9.35789159 C0.999948837,8.93995846 1.35535969,8.59173658 1.78171628,8.59173658 L2.20807287,8.59173658 C2.63442946,8.59173658 2.98966977,8.93995846 2.98966977,9.35789159 Z M22.2467643,9.14892503 C24.0942527,12.9800344 22.3888264,17.5772989 18.3384388,19.3882867 C14.4302837,21.1297305 9.74036124,19.457998 7.9638186,15.6268886 C7.60857829,14.8607335 7.3954,14.0248673 7.32428372,13.189001 L5.76091938,13.189001 C5.33456279,13.189001 4.97932248,12.840612 4.97932248,12.4226788 C4.97932248,12.0047457 5.33456279,11.6565238 5.76091938,11.6565238 L8.03493488,11.6565238 C8.46129147,11.6565238 8.81653178,11.3083019 8.81653178,10.8903688 C8.81653178,10.4724357 8.46129147,10.1240466 8.03493488,10.1240466 L4.41090388,10.1240466 C3.98454729,10.1240466 3.62913643,9.77582472 3.62913643,9.35789159 C3.62913643,8.93995846 3.98454729,8.59173658 4.41090388,8.59173658 L9.45606667,8.59173658 C9.88242326,8.59173658 10.2376636,8.24334752 10.2376636,7.82541439 C10.2376636,7.40748126 9.88242326,7.05925937 9.45606667,7.05925937 L7.3954,7.05925937 C6.75586512,7.05925937 6.18727597,6.57161499 6.18727597,5.87517123 C6.18727597,5.24827153 6.68474884,4.69091591 7.3954,4.69091591 L15.4250589,4.69091591 C18.267493,4.8303384 20.9676946,6.43235968 22.2467643,9.14892503 Z M13.2662961,8.38056332 C11.0193969,9.3919615 10.0341721,11.9973566 11.065955,14.1998642 C12.097738,16.4023718 14.755645,17.3681317 17.0025442,16.3567335 C19.249614,15.3453354 20.2346682,12.7399402 19.2028853,10.5374326 C18.1711023,8.33492503 15.5131953,7.36916515 13.2662961,8.38056332 Z M16.8462589,9.84548582 L18.2673907,12.2138293 C18.338507,12.3530846 18.338507,12.4227958 18.2673907,12.5620512 L16.8462589,14.9303946 C16.7751426,15.0696499 16.6330806,15.0696499 16.5619643,15.0696499 L13.7906465,15.0696499 C13.6485845,15.0696499 13.5774682,14.9999387 13.5065225,14.9303946 L12.0852202,12.5620512 C12.0142744,12.4227958 12.0142744,12.3530846 12.0852202,12.2138293 L13.5065225,9.84548582 C13.5774682,9.7062305 13.7197008,9.7062305 13.7906465,9.7062305 L16.5619643,9.7062305 C16.7041969,9.63651925 16.7751426,9.7062305 16.8462589,9.84548582 Z"
                             ></path>
                           </svg>
-                          <span className="buttonText-1c-l_x">Abone Ol</span>
                         </div>
+                        <span className="buttonText-1c-l_x">Abone Ol</span>
                       </button>
                       <button
                         type="button"
-                        className="button-1U79Hu button-f2h6uQ lookFilled-yCfaCM colorPrimary-2AuQVo sizeMedium-2bFIHr grow-2sR_-F"
+                        className="store-buttons-gift"
+                        style={{
+                          background: "hsl(213,5%,42.9%)",
+                          color: "hsl(0,0%,100%)",
+                        }}
                       >
-                        <div className="contents-3ca1mk giftButton-2RVWns">
+                        <div>
                           <svg
                             width="24"
                             height="24"

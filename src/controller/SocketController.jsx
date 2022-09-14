@@ -46,8 +46,19 @@ const SocketController = () => {
 
     socket.on("reconnect_attempt", () => {});
 
-    socket.on("allMessage", message => {
-      dispatch(messageActions.overWrite({ name: "items", value: message }));
+    socket.on("allMessage", messages => {
+      console.log(messages[0].readers);
+
+      const count = messages.filter(
+        message => !message.readers.includes(userID)
+      );
+      alert(count.length > 99 ? "+99" : count.length);
+      document.title =
+        "(" +
+        (count.length > 99 ? "+99" : count.length) +
+        ") " +
+        "Discord Clone";
+      dispatch(messageActions.overWrite({ name: "items", value: messages }));
     });
 
     socket.on("newMessage", message => {

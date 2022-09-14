@@ -20,6 +20,10 @@ var userSchema = new Schema({
         type: String,
         default:null
     },
+    readers:{
+        type:Array,
+        default:[]
+    },
     timestamps: {
         type: Date,
         default: Date.now,

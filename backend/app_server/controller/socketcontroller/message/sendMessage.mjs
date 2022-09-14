@@ -15,7 +15,7 @@ export default async (io,socket,data)=>{
 		serverName:data.serverName,
 		channelName:data.channelName
 	})
-
+	messageSch.readers.push(socket.handshake.auth.userId)
 	const msg = await messageSch.save()
 	
 	if(data.receiver && !data.serverName && !data.channelName){

@@ -58,6 +58,27 @@
 	column-gap: 10px;
 }
 
+.store-buttons-subscribe{
+	background: hsl(240,77.8%,98.2%);
+	color: hsl(235,85.6%,64.7%);
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	padding: 5px 10px;
+	display: flex;
+	gap:4px
+}
+
+.store-buttons-gift{
+	background: hsl(240,77.8%,98.2%);
+	color: hsl(235,85.6%,64.7%);
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	padding: 5px 10px;
+	display: flex;
+	gap:4px
+}
 @media only screen and (max-width: 1049px) {
 	.store-cards-wrapper{
 		justify-content: center;
