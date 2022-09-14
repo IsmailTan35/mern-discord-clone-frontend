@@ -238,6 +238,7 @@ const SocketController = () => {
       });
       mount = false;
     });
+
     socket.io.on("reconnect", data => {
       if (mount) return;
       setTimeout(() => {
