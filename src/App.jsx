@@ -22,11 +22,13 @@ import { userActions } from "store";
 import axios from "axios";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import InformationModal from "components/InformationModal";
 
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     dispatch(
@@ -37,6 +39,14 @@ const App = () => {
     );
   }, []);
 
+  useEffect(() => {
+    const sessionShow = sessionStorage.getItem("information");
+    if (sessionShow == null) {
+      setTimeout(() => {
+        setShow(true);
+      }, 750);
+    }
+  }, []);
   useEffect(() => {
     axios
       .post("/api/auth/check", {
@@ -61,6 +71,7 @@ const App = () => {
 
   return (
     <>
+      {show && <InformationModal setShow={setShow} />}
       <SocketContext.Provider value={client}>
         <SocketController />
         <Routes>
