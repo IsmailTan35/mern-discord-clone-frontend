@@ -10,13 +10,15 @@ var serverSchema = new Schema({
 		type: String,
 	},
     userIDs:{
-        type:Array
+        type:Array,
+        unique: true
     },
     channels:{
         type:Array
     },
     inviteCode:{
-        type:String
+        type:String,
+        unique: true
     }
 });
 

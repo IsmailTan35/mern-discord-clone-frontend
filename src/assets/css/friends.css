@@ -55,6 +55,11 @@
     flex: 1;
     
 }
+
+.friends-add-input-wrapper:focus-within {
+    border: 1px solid #5865f2 ;
+}
+
 .friends-add-input-button{
     border: none;
     outline: none;

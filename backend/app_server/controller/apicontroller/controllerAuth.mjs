@@ -1,9 +1,10 @@
 
 import { generateAccessToken } from "../../helper/helperToken.mjs"
 import { generateRefreshToken } from "../../helper/helperToken.mjs"
-import userSchema from '../../schema/user.mjs'
-import crypto  from 'crypto'
 import {UniqueId,UniqueName} from "../../helper/helperGetUniqueID.mjs";
+import crypto  from 'crypto'
+import serverSchema from "../../schema/server.mjs";
+import userSchema from '../../schema/user.mjs'
 
 const loginPost = async (req,res)=> {
   let data = req.body
@@ -72,23 +73,39 @@ const authRefresh = (req,res) => {
   })
 }
 
-const registerPost = (req,res) => {
-  let data = req.body
-  if(Object.values(data).length<3) return res.status(400).send({error:"no data"})
-  var user = new userSchema({ 
-    username: data.username,
-      email: data.email,
-      password: crypto.createHash('md5').update(data.password).digest('hex'),
-      code:UniqueId(),
-      friends: [],
-      blocked: [],
-      request: [],
-      state: "offline",
-      token:[],
-  });
-  user.save((err, user)=> {
-    err ? res.status(401).json("not registered"):res.status(200).json("registered")
-  });
+const registerPost = async (req,res) => {
+  try {
+    let data = req.body
+    if(Object.values(data).length<3) return res.status(400).send({error:"no data"})
+    var user = new userSchema({ 
+      username: data.username,
+        email: data.email,
+        password: crypto.createHash('md5').update(data.password).digest('hex'),
+        code:UniqueId(),
+        friends: [],
+        blocked: [],
+        request: [],
+        state: "offline",
+        token:[],
+        servers:[]
+    });
+
+    const data2 = await serverSchema.findOneAndUpdate({
+			inviteCode:"jruumfii"
+		},{
+			$push:{
+				userIDs:user._id
+			}
+		})
+
+    user.servers.push(data2._id)
+    
+    user.save((err, user)=> {
+      err ? res.status(401).json("not registered"):res.status(200).json("registered")
+    });
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export {

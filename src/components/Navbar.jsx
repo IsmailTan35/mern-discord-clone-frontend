@@ -148,7 +148,10 @@ const Navbar = () => {
             )}
           >
             <div className="navbarAddUser">
-              <a href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86">
+              <a
+                href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
+                target={"_blank"}
+              >
                 <svg
                   aria-hidden="false"
                   width="24"

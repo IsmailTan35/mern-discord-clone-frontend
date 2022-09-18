@@ -7,4 +7,6 @@ export default (io,socket,data)=>{
 		})
 		socket.leave(element)
 	});
+
+	socket.emit("closeStreamDevices")
 }

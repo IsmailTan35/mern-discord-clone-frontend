@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     username: {
         type: String,
+        unique: true
     },
     code:{
         type:Number
@@ -14,6 +15,7 @@ var userSchema = new Schema({
     },
     email : {
         type: String,
+        unique: true
     },
     state: {
         type: String,

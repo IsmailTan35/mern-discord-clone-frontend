@@ -89,6 +89,11 @@ export default (io,con)=>{
                 });
 
             })
+            socket.emit("callStarted",{
+                userID:rcvSockets[0].handshake.auth.userId,
+                name:rcvSockets[0].handshake.auth.name,
+                code:rcvSockets[0].handshake.auth.code
+            })
             } catch (error) {
                 console.error(error)
         
@@ -124,6 +129,31 @@ export default (io,con)=>{
             }
         })
 
+        socket.on("rejectCall", async data =>{
+            try {
+                const rawSockets = await io.fetchSockets()
+    
+                const rcvID = rawSockets.find(items => items.id === data.callerId)
+                rcvID.forEach(sck => {
+                    sck.emit("rejectedCall")
+                });
+                
+            } catch (error) {
+                
+            }
+        })
+        socket.on("callCancel",async data =>{
+            try {
+                const rawSockets = await io.fetchSockets()
+                const rcvID = rawSockets.filter(items => items.handshake.auth.userId === data.userID)
+                rcvID.forEach(sck => {
+                    sck.emit("callCanceled")
+                });
+                
+            } catch (error) {
+                
+            }
+        })
         socket.on("sending signal", payload => {
             io.to(payload.receiver).emit('user joined', { signal: payload.signal, from: socket.id ,chatType:payload.chatType});
         });
@@ -177,7 +207,7 @@ export default (io,con)=>{
         })
 
         socket.on("hata",async data=>{
-            console.log(data);
+            console.error(data);
         })
         socket.on("channelSendingSignal",async data =>{
             const token = socket.handshake.auth.token
@@ -222,8 +252,6 @@ export default (io,con)=>{
             if(!user) return
 	        let rawSockets =await io.fetchSockets()
 	        const sockets = rawSockets.map(sockett=>{
-                console.log(sockett.handshake.auth.userId,data.userID);
-                
                 if(sockett.handshake.auth.userId==data.userID){
                     sockett.emit("channelReturningSignalListener",{
                         _id:user[0]._id,

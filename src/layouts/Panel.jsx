@@ -8,6 +8,7 @@ import { SocketContext } from "controller/Context";
 import Settings from "views/settings";
 import AddServerModal from "components/modal/AddServerModal";
 import CallRequest from "components/modal/callrequest";
+import CallerRequest from "components/modal/CallerRequest";
 
 const ESCAPE_KEYS = ["27", "Escape"];
 
@@ -85,6 +86,7 @@ const Panel = () => {
       <Settings data={show} setData={handleClick} />
       <AddServerModal show={showAddServerModal} setShow={handleClick} />
       <CallRequest />
+      <CallerRequest />
     </>
   );
 };

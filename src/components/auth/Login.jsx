@@ -38,7 +38,7 @@ const LoginPage = () => {
         setTimeout(() => {
           navigate(url);
           toast.update(id, {
-            render: "All is good",
+            render: "Giriş yapıldı.",
             type: toast.TYPE.SUCCESS,
             isLoading: false,
             autoClose: 1500,
@@ -62,7 +62,7 @@ const LoginPage = () => {
         } else {
           setTimeout(() => {
             toast.update(id, {
-              render: "All is bad",
+              render: "Giriş başarısız.",
               type: toast.TYPE.ERROR,
               isLoading: false,
               autoClose: 1500,

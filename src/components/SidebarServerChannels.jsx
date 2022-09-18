@@ -80,6 +80,16 @@ const SidebarServerChannels = () => {
         stream: myPeerStream,
       });
 
+      socket.on("closeStreamDevices", data => {
+        peer.removeListener("stream", () => {});
+        peer.removeListener("signal", () => {});
+        peer.removeListener("stream", () => {});
+
+        myPeerStream.getTracks().map(track => track.stop());
+        peer.streams[0].getTracks().map(track => track.stop());
+        peer.destroy();
+      });
+
       peer.on("connect", () => {
         console.log("connected");
       });
@@ -104,7 +114,6 @@ const SidebarServerChannels = () => {
       });
 
       peer.on("signal", signal => {
-        console.log("signal");
         socket.emit("channelSendingSignal", {
           serverID,
           channelID: channel._id,

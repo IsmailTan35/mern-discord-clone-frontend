@@ -6,6 +6,7 @@ const InformationModal = ({ setShow }) => {
     setShow(false);
     sessionStorage.setItem("information", "false");
   };
+
   return (
     <div className="information-wrapper">
       <div className="information-container">
@@ -45,6 +46,9 @@ const InformationModal = ({ setShow }) => {
             <div className="information-footer">
               <div>
                 Aynı anda iki hesapla giriş yapıp test etmenizi tavsiye ederim.
+              </div>
+              <div>
+                Ayrıca sayfanın kaynak kodlarına da bakarsanız sevirinirim.
               </div>
             </div>
           </div>

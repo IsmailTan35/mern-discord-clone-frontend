@@ -22,7 +22,7 @@ import { userActions } from "store";
 import axios from "axios";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import InformationModal from "components/InformationModal";
+import InformationModal from "components/modal/InformationModal";
 
 const App = () => {
   const dispatch = useDispatch();

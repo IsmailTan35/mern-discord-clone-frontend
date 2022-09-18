@@ -16,9 +16,11 @@ axios.defaults.headers.common["Authorization"] =
 
 ReactDOM.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
   </BrowserRouter>,
   document.getElementById("root")
 );

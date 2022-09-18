@@ -117,6 +117,14 @@
     cursor: pointer;
 }
 
+.navbarAddUser a{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .navbarAddUser:hover {
     border-radius: 17px;
     background-color: #3ba55d;

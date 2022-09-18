@@ -1,12 +1,11 @@
 *{
     padding: 0;
     margin: 0;
-    /* background-color: #2F3136; */
 }
 
 .panelWrapper,.panelWrapper-active{
-    height: 100vh;
-    width: 100vw;
+    height:100%;
+    width: 100%;
     background-color: #ccc;
     display: flex;
     flex: auto 1;

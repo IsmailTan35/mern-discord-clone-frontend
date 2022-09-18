@@ -2,8 +2,19 @@ body {
   margin: 0;
   background: #202225;
   background: white;
+  height: 100%;
+  width: 100%;
 }
 
+html{
+  height: 100%;
+  width: 100%;
+}
+
+#root{
+  height: 100%;
+  width: 100%;
+}
 iframe{
   display: none !important;
   z-index: -1;

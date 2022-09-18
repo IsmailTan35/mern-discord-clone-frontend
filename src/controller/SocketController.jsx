@@ -47,17 +47,17 @@ const SocketController = () => {
     socket.on("reconnect_attempt", () => {});
 
     socket.on("allMessage", messages => {
-      console.log(messages[0].readers);
-
       const count = messages.filter(
-        message => !message.readers.includes(userID)
+        message => message.readers && !message.readers.includes(userID)
       );
-      alert(count.length > 99 ? "+99" : count.length);
-      document.title =
-        "(" +
-        (count.length > 99 ? "+99" : count.length) +
-        ") " +
-        "Discord Clone";
+
+      // document.title =
+      //   "(" +
+      //   (count.length > 99 ? "+99" : count.length) +
+      //   ") " +
+      //   " Yeni Mesaj " +
+      //   "Discord Clone";
+
       dispatch(messageActions.overWrite({ name: "items", value: messages }));
     });
 
@@ -184,7 +184,6 @@ const SocketController = () => {
     });
 
     socket.on("joinUserVoiceChannelInChannel", data => {
-      discordJoin.play();
       dispatch(
         channelsActions.mutationOnlineUser({
           type: "add",
@@ -192,6 +191,7 @@ const SocketController = () => {
           value: data,
         })
       );
+      discordJoin.play();
     });
 
     socket.on("leftUserVoiceChannelInChannel", data => {

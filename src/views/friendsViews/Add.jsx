@@ -1,10 +1,17 @@
 import "assets/css/friends.css";
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ReactComponent as AddFriend } from "assets/img/addFriend.svg";
+import { useEffect } from "react";
 const Add = () => {
+  const ref = useRef();
   const [name, setName] = useState("demo2#6846");
 
+  useEffect(() => {
+    if (ref) {
+      ref.current.focus();
+    }
+  }, [ref]);
   const handleAdd = e => {
     e.preventDefault();
     axios
@@ -15,12 +22,14 @@ const Add = () => {
       .then(res => {})
       .catch(err => {});
   };
+
   return (
     <div style={{ display: "flex", flex: "1 1", flexDirection: "column" }}>
       <div className="friends-add-header">{`Arkadaş Ekle`}</div>
       <div className="friends-add-subheader">{`Bir arkadaşını Discord Etiketi ile ekleyebilirsin. BüYüK kÜçÜk HaRfLeRe DuYaRlIdIr!`}</div>
       <div className="friends-add-input-wrapper">
         <input
+          ref={ref}
           className="friends-add-input"
           type="text"
           placeholder="Bir kullanıcı adı#0000 gir"

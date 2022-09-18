@@ -18,10 +18,10 @@ const FriendsChatHeader = () => {
     const parsedLocation = location.pathname.split("/");
     const userId = parsedLocation[2];
 
-    if (parsedLocation.length != 4) return console.error("hata");
+    if (parsedLocation.length != 4) return;
     const data = userList.filter(user => user.id !== userId);
 
-    if (!data || data.length === 0) return console.error("hata");
+    if (!data || data.length === 0) return;
     setUser(data[0]);
   }, [location, userList]);
 

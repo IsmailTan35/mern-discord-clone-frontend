@@ -1,10 +1,11 @@
 import mongoose from 'mongoose'
-const email = process.env.EMAIL || "ismail"
-const password = process.env.PASSWORD  || "rdhXhqyMAI2c6nE6"
-const cluster = process.env.CLUSTER || "cluster0"
-const uri = `mongodb+srv://${email}:${password}@${cluster}.xlfsl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 const mongoDb = async () =>{
+  const email = process.env.EMAIL 
+  const password = process.env.PASSWORD  
+  const cluster = process.env.CLUSTER 
+  const uri = `mongodb+srv://${email}:${password}@${cluster}.xlfsl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+  
   const con = mongoose.connection
 
   mongoose.connection.on('connecting', () => {
