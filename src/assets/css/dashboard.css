@@ -350,3 +350,25 @@
     min-height: 0px;
 }
 
+.dashboard-btn-hangup-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-btn-hangup{
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+}
+
+.dashboard-btn-hangup:hover{
+    background: hsla(217,7.6%,33.5%,0.6);
+    color:hsl(210,2.9%,86.7%);
+}

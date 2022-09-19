@@ -22,6 +22,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useContext } from "react";
 import { SocketContext } from "controller/Context";
 
+import { ReactComponent as HangUp } from "assets/img/hangUp.svg";
 const delay = { show: 50, hide: 0 };
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -191,9 +192,10 @@ const Dashboard = () => {
                       background: "#292B2F",
                       display: "flex",
                       flexDirection: "column",
-                      padding: 10,
+                      padding: 5,
                       borderBottom: "1px solid #36393E",
                       color: "white",
+                      gap: 5,
                     }}
                     key={index}
                   >
@@ -206,7 +208,14 @@ const Dashboard = () => {
                           <div>{channel.channelname}</div>
                         </div>
                       </div>
-                      <div onClick={leaveChannel}>Icon</div>
+                      <div
+                        onClick={leaveChannel}
+                        className="dashboard-btn-hangup-wrapper"
+                      >
+                        <div className="dashboard-btn-hangup">
+                          <HangUp />
+                        </div>
+                      </div>
                     </div>
                     <div
                       style={{

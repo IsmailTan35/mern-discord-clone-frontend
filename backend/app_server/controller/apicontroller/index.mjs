@@ -20,6 +20,7 @@ import createServer from './server/create.mjs';
 import userInfo from "./user/info.mjs"
 import serverInfo from "./server/info.mjs"
 import messageAll from "./messages/all.mjs"
+import path from "path"
 
 export default (app,con) =>{
     app.get('/',(req,res) => {
@@ -45,8 +46,24 @@ export default (app,con) =>{
     app.get("/api/user/getName",userInfo)
     app.get("/api/user/getMessages",messageAll)
 
-    app.get("/api/icon/server",(req,res)=>{
-        
+    app.get("/api/icon/server/:filename",(req,res,next)=>{
+        let rawPath = `backend/app_server/uploads/server`
+        var options = {
+            root: path.join(path.resolve(), `${rawPath}`),
+            dotfiles: 'deny',
+            headers: {
+              'x-timestamp': Date.now(),
+              'x-sent': true
+            }
+          }
+          var fileName =req.params.filename
+          res.sendFile(fileName, options, function (err) {
+            if (err) {
+              next(err)
+            } else {
+              console.info('Sent:', fileName)
+            }
+          })
     })
 
 }

@@ -60,11 +60,9 @@ const CallRequest = () => {
   useEffect(() => {
     socket.on("callStarted", data => {
       setReceiver(data);
-      console.log(data);
     });
 
     socket.on("callCanceled", data => {
-      console.log(2);
       dispatch(streamActions.delete());
     });
   });

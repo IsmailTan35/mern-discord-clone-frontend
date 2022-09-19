@@ -11,6 +11,8 @@ var userSchema = new Schema({
     },
     message: {
         type: String,
+        require:true
+
     },
     serverName: {
         type: String,

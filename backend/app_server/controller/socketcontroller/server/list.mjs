@@ -52,7 +52,7 @@ export default async (io,socket,data)=>{
 							userIDs:1,
 							channels:1,
 							inviteCode:1,
-							serverPicture:1
+							serverpicture:1
 						}
 					}
 				],
@@ -92,6 +92,7 @@ export default async (io,socket,data)=>{
 							group:1,
 							locked:1,
 							onlineUser:1,
+							serverpicture:1,
 							type:1
 						}
 					}

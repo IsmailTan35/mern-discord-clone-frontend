@@ -39,7 +39,7 @@ export default async (req,res) => {
 				let newPath =path.join(path.resolve(),rawPath,newFileName)
 				let rawData = fs.readFileSync(oldPath)
 				const res = await fs.writeFile(newPath,rawData,()=>{})
-				svSchema.serverpicture=rawPath+newFileName
+				svSchema.serverpicture=newFileName
 			} catch (error) {
 				if(error) console.error(error);
 			}
@@ -101,6 +101,7 @@ export default async (req,res) => {
 				},
 				userIDs:svSchema.userIDs,
 				inviteCode:svSchema.inviteCode,
+				serverpicture:svSchema.serverpicture
 			})
 		})
 	})

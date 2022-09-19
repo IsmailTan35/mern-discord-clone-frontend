@@ -95,7 +95,16 @@ const Navbar = () => {
                     changeHistory(server._id);
                   }}
                 >
-                  {server.servername.slice(0, 2).toLocaleUpperCase()}
+                  {server.serverpicture ? (
+                    <img
+                      src={`//localhost:10000/api/icon/server/${server.serverpicture}`}
+                      style={{ width: "100%", height: "100%" }}
+                    ></img>
+                  ) : (
+                    <div>
+                      {server.servername.slice(0, 2).toLocaleUpperCase()}
+                    </div>
+                  )}
                 </div>
               </OverlayTrigger>
               <span></span>

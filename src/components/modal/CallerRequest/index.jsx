@@ -14,7 +14,6 @@ const CallerRequest = () => {
   useEffect(() => {
     socket.on("callStarted", data => {
       setReceiver(data);
-      console.log(data);
     });
     socket.on("acceptedCall", data => {
       setReceiver(null);
@@ -22,7 +21,6 @@ const CallerRequest = () => {
   });
 
   const callCancel = () => {
-    console.log(receiver);
     socket.emit("callCancel", receiver);
     setReceiver(null);
   };

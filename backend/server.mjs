@@ -11,7 +11,6 @@ import mongoDb from"./app_server/models/mongoDb.mjs"
 const env = dotenv.config()
 const app = express()
 const port = process.env.PORT || 10000 
-console.log(process.env.EMAIL);
 const db = mongoDb()
 const server = CreateServer(app,port)
 const socket = webSocket(server)

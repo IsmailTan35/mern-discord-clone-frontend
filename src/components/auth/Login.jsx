@@ -48,7 +48,7 @@ const LoginPage = () => {
         }, 500);
       })
       .catch(err => {
-        console.log(err.code);
+        console.error(err.code);
 
         if (err.code === "ECONNABORTED") {
           setTimeout(() => {

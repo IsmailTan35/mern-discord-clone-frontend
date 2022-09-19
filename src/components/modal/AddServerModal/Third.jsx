@@ -1,8 +1,10 @@
 import axios from "axios";
 import React from "react";
 import { ReactComponent as CloseIcon } from "assets/img/closeIcon.svg";
+import { useState } from "react";
 
 const Third = ({ setStep, setShow }) => {
+  const [image, setImage] = useState(null);
   const handleBack = e => {
     e.preventDefault();
     setStep(step => step - 1);
@@ -31,6 +33,12 @@ const Third = ({ setStep, setShow }) => {
     e.preventDefault();
   };
 
+  const handleChangeImage = e => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
   return (
     <>
       <div style={{ minWidth: "100%", position: "relative" }}>
@@ -49,15 +57,22 @@ const Third = ({ setStep, setShow }) => {
           </div>
           <div className="modal-upload-button-wrapper">
             <img
-              src="/assets/img/upload.svg"
+              src={image ? image : "/assets/img/upload.svg"}
               alt=""
-              style={{ position: "absolute" }}
+              style={{
+                position: "absolute",
+                borderRadius: "100%",
+                borderRadius: image ? "100%" : "0",
+              }}
             />
             <input
               type="file"
+              id="serverPhoto"
               name="serverPhoto"
               className="modal-upload-button"
               style={{ position: "absolute" }}
+              onChange={handleChangeImage}
+              accept="image/*"
             />
           </div>
           <div className="modal-input-wrapper">

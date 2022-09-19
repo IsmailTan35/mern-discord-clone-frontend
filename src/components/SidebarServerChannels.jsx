@@ -45,7 +45,6 @@ const SidebarServerChannels = () => {
       });
 
       peer.on("signal", signal => {
-        console.log("signal");
         socket.emit("channelReturningSignal", {
           serverID,
           channelID: channel._id,
@@ -55,7 +54,7 @@ const SidebarServerChannels = () => {
       });
 
       peer.on("connect", () => {
-        console.log("connected");
+        console.info("connected");
       });
     } catch (error) {
       console.error(error);
@@ -91,13 +90,12 @@ const SidebarServerChannels = () => {
       });
 
       peer.on("connect", () => {
-        console.log("connected");
+        console.info("connected");
       });
 
       socket.on("userJoinedChannel", data => {
         if (user.id == data._id) return;
         addPeer(data, user, serverID, channel);
-        console.log(2);
 
         peer.signal(data.signal);
       });

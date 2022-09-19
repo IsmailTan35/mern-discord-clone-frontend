@@ -90,6 +90,7 @@ export default async (io,socket,data)=>{
 							group:1,
 							locked:1,
 							onlineUser:1,
+							serverpicture:1,
 							type:1
 						}
 					}

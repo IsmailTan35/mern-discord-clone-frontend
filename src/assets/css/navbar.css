@@ -8,9 +8,11 @@
     display: flex;
     flex-direction: column;
 }
+
 .navbar-wrapper::-webkit-scrollbar {
     display: none;
 }
+
 .navbar-list-item{
     width: 72px;
     height: 48px;
@@ -22,11 +24,13 @@
     align-items: center;
     position: relative;
 }
+
 .navbar-list-item span{
     width: 0px;
     height: 0px;
     position: absolute;
 }
+
 .navbarCircle{
     width:48px;
     height:48px;
@@ -40,7 +44,9 @@
     color: #dcddde;
     font-weight: 500;
     transition: all 0.1s;
+    overflow: hidden;
 }
+
 .navbarCircle:hover{
     border-radius: 17px;
     background-color: #5865F2;
@@ -64,6 +70,7 @@
     background-color: #5865F2;
     border-radius: 17px;
 }
+
 .navbarCircle.active ~ span{
     width: 8px;
     height: 40px;
@@ -141,12 +148,14 @@
     margin-right: 10px;
     transition: all 0.3s;
 }
+
 .navbarAddUser div{
     width:15px;
     height:2px;
     background-color: #3ba55d;
     position: absolute;
 }
+
 .navbarAddUser:hover div{
     background-color: #fff;
     transition: all 0.5s ease-in-out;
@@ -156,7 +165,6 @@
 .navbarAddUser:hover svg{
     fill: #fff;
     transition: all 0.5s ease-in-out;
-
 }
 
 .navbarAddUser div:first-child{

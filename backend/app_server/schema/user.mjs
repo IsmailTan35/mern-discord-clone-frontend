@@ -5,17 +5,24 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     username: {
         type: String,
-        unique: true
+        unique: true,
+        require:true
     },
     code:{
-        type:Number
+        type:Number,
+        require:true
+
     },
     password: {
         type: String,
+        require:true
+
     },
     email : {
         type: String,
-        unique: true
+        unique: true,
+        require:true
+
     },
     state: {
         type: String,
@@ -25,6 +32,10 @@ var userSchema = new Schema({
     blocked:Array,
     request:Array,
     token:Array,
+    timestamps: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 export default mongoose.model('discorduser', userSchema);
