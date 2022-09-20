@@ -12,11 +12,12 @@ import CallerRequest from "components/modal/CallerRequest";
 
 const ESCAPE_KEYS = ["27", "Escape"];
 
-const Panel = () => {
+const Panel = ({ show2, setShow2 }) => {
   const socket = useContext(SocketContext);
   const message = useSelector(state => state.user.message);
   const userID = useSelector(state => state.user.id);
   const [show, setShow] = useState(false);
+
   const [showAddServerModal, setShowAddServerModal] = useState(false);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const Panel = () => {
   return (
     <>
       <div className={`panelWrapper${!show ? "-active" : ""}`}>
-        <Navbar />
+        <Navbar show2={show2} setShow2={setShow2} />
         <Outlet />
       </div>
       <Settings data={show} setData={handleClick} />

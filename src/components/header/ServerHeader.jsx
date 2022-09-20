@@ -105,7 +105,7 @@ const ServerHeader = () => {
           placement="bottom"
           delay={delay}
           overlay={props => (
-            <Tooltip {...props}>{`Üye Listesini Gizle`}</Tooltip>
+            <Tooltip {...props}>{`Sabitlemiş mesajlar`}</Tooltip>
           )}
         >
           <div>
@@ -128,7 +128,7 @@ const ServerHeader = () => {
           placement="bottom"
           delay={delay}
           overlay={props => (
-            <Tooltip {...props}>{`DM'ye Arkadaş Ekle`}</Tooltip>
+            <Tooltip {...props}>{`Üye Listesini Göster`}</Tooltip>
           )}
         >
           <div>

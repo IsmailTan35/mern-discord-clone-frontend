@@ -7,7 +7,7 @@ import { SocketContext } from "controller/Context";
 import "assets/css/navbar.css";
 import axios from "axios";
 
-const Navbar = () => {
+const Navbar = ({ show2, setShow2 }) => {
   const socket = useContext(SocketContext);
   const token = useSelector(state => state.user.token);
   const serverList = useSelector(state => state.server.items);
@@ -23,7 +23,12 @@ const Navbar = () => {
       channel => channel.serverID == id && channel.type == "text"
     );
     if (!firstChannel) return;
-    navigate("/channels/" + firstChannel.serverID + "/" + firstChannel._id);
+    const rawNavigate =
+      "/channels/" + firstChannel.serverID + "/" + firstChannel._id;
+    navigate(rawNavigate);
+    if (location.pathname === rawNavigate) {
+      setShow2(prv => !prv);
+    }
   };
 
   const handleAddServerModal = e => {
@@ -54,6 +59,9 @@ const Navbar = () => {
               }`}
               onClick={() => {
                 navigate("/channels/@me");
+                if (location.pathname === "/channels/@me") {
+                  setShow2(prv => !prv);
+                }
               }}
             >
               <svg

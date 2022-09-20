@@ -29,6 +29,7 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(true);
 
   useEffect(() => {
     dispatch(
@@ -81,9 +82,16 @@ const App = () => {
             <Route path="register" element={<Register />} />
             <Route path="forgot" element={<Register />} />
           </Route>
-          <Route path="/" element={<Panel />}>
-            <Route path="store" element={<Dashboard />} />
-            <Route path="channels/*" exact element={<Dashboard />} />
+          <Route path="/" element={<Panel show2={show2} setShow2={setShow2} />}>
+            <Route
+              path="store"
+              element={<Dashboard show2={show2} setShow2={setShow2} />}
+            />
+            <Route
+              path="channels/*"
+              exact
+              element={<Dashboard show2={show2} setShow2={setShow2} />}
+            />
             <Route
               path="channels"
               exact

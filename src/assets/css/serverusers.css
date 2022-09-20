@@ -22,3 +22,9 @@
 	background-color: rgba(79,84,92,0.4);
 	color: #dcddde;
 }
+
+@media only screen and (max-width : 768px){
+	.serverusers-wrapper{
+		display: none;
+	}
+}

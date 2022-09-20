@@ -25,3 +25,27 @@
     transform: scale(1);
     opacity: 1;
 }
+
+.panel-mobile-wrapper{
+    flex: 1 1;
+
+}
+
+@media only screen and (max-width: 768px) {
+    .panel-mobile-wrapper{
+        position: absolute;
+        display: none;
+        overflow: hidden;
+        flex-direction: column;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
+    .panel-mobile-wrapper.show{
+        position: absolute;
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+        flex: 1 1;
+    }   
+}

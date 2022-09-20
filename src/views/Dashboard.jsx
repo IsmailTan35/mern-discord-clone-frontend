@@ -24,7 +24,7 @@ import { SocketContext } from "controller/Context";
 
 import { ReactComponent as HangUp } from "assets/img/hangUp.svg";
 const delay = { show: 50, hide: 0 };
-const Dashboard = () => {
+const Dashboard = ({ show2, setShow2 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const socket = useContext(SocketContext);
@@ -74,7 +74,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="dashboard-wrapper">
+      <div className={`dashboard-wrapper${show2 ? " show" : ""}`}>
         <div className="dashboard-second-wrapper">
           <div className="dashboard-sidebar">
             <div id="container">
@@ -258,64 +258,88 @@ const Dashboard = () => {
               <Avatar />
             </div>
           </div>
-          <div className="dashboard-panel">
-            <div
-              className="dashboard-panel-header-wrapper"
-              style={{ background: stream ? "rgba(0,0,0,0.8)" : "inherit" }}
-            >
-              <Routes>
-                <Route
-                  path="@me"
-                  element={
-                    <FriendsHeader
-                      friends={friends}
-                      changeFriends={changeFriends}
-                    />
-                  }
-                />
-                <Route
-                  exact
-                  strict
-                  sensitive
-                  path={"@me/:id"}
-                  element={<FriendsChatHeader />}
-                />
-                <Route
-                  path={":serverID/:channelID"}
-                  element={<ServerHeader />}
-                />
-                <Route
-                  index
-                  element={
-                    <StoreHeader
-                      servers={friends}
-                      changeServers={changeFriends}
-                    />
-                  }
-                />
-              </Routes>
-            </div>
-            <div className="dashboard-panel-body-wrapper">
-              <Routes>
-                <Route
-                  path="@me"
-                  element={
-                    friends && (
-                      <>
-                        <div className="friends-wrapper">
-                          <div className="friends-add-wrapper">
-                            {friendsRoutes[friends]}
+          <div className={`panel-mobile-wrapper${show2 ? " show" : ""}`}>
+            <div className="dashboard-panel">
+              <div
+                className="dashboard-panel-header-wrapper"
+                style={{ background: stream ? "rgba(0,0,0,0.8)" : "inherit" }}
+              >
+                <div
+                  style={{ width: 50, height: 50 }}
+                  className="dashboard-panel-sandwich-container"
+                >
+                  <div
+                    className="dashboard-panel-sandwich-wrapper"
+                    onClick={() => {
+                      setShow2(prv => !prv);
+                    }}
+                  >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+                <Routes>
+                  <Route
+                    path="@me"
+                    element={
+                      <FriendsHeader
+                        friends={friends}
+                        changeFriends={changeFriends}
+                      />
+                    }
+                  />
+                  <Route
+                    exact
+                    strict
+                    sensitive
+                    path={"@me/:id"}
+                    element={<FriendsChatHeader />}
+                  />
+                  <Route
+                    path={":serverID/:channelID"}
+                    element={<ServerHeader />}
+                  />
+                  <Route
+                    index
+                    element={
+                      <StoreHeader
+                        servers={friends}
+                        changeServers={changeFriends}
+                      />
+                    }
+                  />
+                </Routes>
+              </div>
+              <div className="dashboard-panel-body-wrapper">
+                <Routes>
+                  <Route
+                    path="@me"
+                    element={
+                      friends && (
+                        <>
+                          <div className="friends-wrapper">
+                            <div className="friends-add-wrapper">
+                              {friendsRoutes[friends]}
+                            </div>
+                            <Active />
                           </div>
-                          <Active />
-                        </div>
-                      </>
-                    )
-                  }
-                />
-                <Route path={"@me/:id"} element={<Chat />} />
-                <Route path={":serverID/:channelID"} element={<ServerChat />} />
-                <Route index element={<Store />} />
-              </Routes>
+                        </>
+                      )
+                    }
+                  />
+
+                  <Route path={"@me/:id"} element={<Chat />} />
+                  <Route
+                    path={":serverID/:channelID"}
+                    element={<ServerChat />}
+                  />
+                  <Route index element={<Store />} />
+                </Routes>
+              </div>
             </div>
           </div>
         </div>
