@@ -20,7 +20,7 @@ const Register = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const id = toast.loading("Please wait...");
+    const id = toast.loading("Lütfen bekleyiniz...");
 
     axios
       .post("/api/auth/register", form)

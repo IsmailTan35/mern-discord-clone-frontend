@@ -375,7 +375,7 @@
 }
 
 .dashboard-panel-sandwich-container{
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }
@@ -408,7 +408,7 @@
         width: 100%;
     }
     .dashboard-panel-sandwich-wrapper{
-        /* display: flex; */
+        display: flex;
     }
   
 }

@@ -25,7 +25,7 @@ const LoginPage = () => {
   };
 
   const handleClick = url => {
-    const id = toast.loading("Please wait...");
+    const id = toast.loading("Lütfen bekleyiniz...");
 
     axios
       .post("/api/auth/login", form, { timeout: 7500 })
