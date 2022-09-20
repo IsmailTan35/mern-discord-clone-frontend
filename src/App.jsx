@@ -29,7 +29,7 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [show2, setShow2] = useState(true);
+  const [show2, setShow2] = useState(false);
 
   useEffect(() => {
     dispatch(
