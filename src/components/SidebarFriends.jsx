@@ -2,18 +2,22 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import EmptyFriends from "./EmptyFriends";
 
-const SidebarFriends = () => {
+const SidebarFriends = ({ show2, setShow2 }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const friends = useSelector(state => state.friends.items);
 
   const openChat = id => {
     if (!id) return;
+    const rawLocation = `/channels/@me/${id}`;
     navigate(`/channels/@me/${id}`);
   };
 
   const changeHistory = e => {
     navigate(e);
+    if (location.pathname === e) {
+      setShow2(prv => !prv);
+    }
   };
 
   return (

@@ -363,7 +363,10 @@ const Store = () => {
                     </button>
                   </div>
                 </div>
-                <section style={{ display: "flex" }}>
+                <section
+                  style={{ display: "flex" }}
+                  className="store-classic-wrapper"
+                >
                   <div>
                     <Store13 />
                   </div>

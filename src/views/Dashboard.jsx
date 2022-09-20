@@ -149,6 +149,8 @@ const Dashboard = ({ show2, setShow2 }) => {
                       <SidebarFriends
                         friends={friends}
                         changeFriends={changeFriends}
+                        show2={show2}
+                        setShow2={setShow2}
                       />
                     }
                   />
@@ -157,11 +159,18 @@ const Dashboard = ({ show2, setShow2 }) => {
                     strict
                     sensitive
                     path={"@me/:id"}
-                    element={<SidebarFriends />}
+                    element={
+                      <SidebarFriends show2={show2} setShow2={setShow2} />
+                    }
                   />
                   <Route
                     path={":serverID/:channelID"}
-                    element={<SidebarServerChannels />}
+                    element={
+                      <SidebarServerChannels
+                        show2={show2}
+                        setShow2={setShow2}
+                      />
+                    }
                   />
                   <Route
                     index
@@ -169,6 +178,8 @@ const Dashboard = ({ show2, setShow2 }) => {
                       <SidebarFriends
                         servers={friends}
                         changeServers={changeFriends}
+                        show2={show2}
+                        setShow2={setShow2}
                       />
                     }
                   />

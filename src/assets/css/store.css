@@ -83,4 +83,16 @@
 	.store-cards-wrapper{
 		justify-content: center;
 	}
+	.store-classic-wrapper{
+		flex-direction: column;
+		row-gap:30px
+	}
+	.wrppp{
+		top: auto;
+	}
+	.store-hero div{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
 }
