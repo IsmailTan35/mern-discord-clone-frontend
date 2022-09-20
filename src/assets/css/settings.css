@@ -153,3 +153,23 @@
     height: 40px;
     cursor: pointer;
 }
+
+@media only screen and  (max-width : 768px){
+    .settings-primary-wrapper{
+        justify-content: center;
+    }
+    .settings-secondary-wrapper{
+        flex: inherit;
+    }
+    .settings-close-button{
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+    .settings-wrapper-active{
+        position: relative;
+    }
+    .settings-close-button div{
+        display: none;
+    }
+}
