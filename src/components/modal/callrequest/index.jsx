@@ -71,7 +71,7 @@ const CallRequest = () => {
       <div className="modal-container">
         <div
           className={`mymodal${myStoreStream.calling ? " active" : ""}`}
-          style={{ background: "transparent", width: 200 }}
+          style={{ background: "transparent", width: 220 }}
         >
           <div style={{}}>
             <div
@@ -104,7 +104,7 @@ const CallRequest = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "flex-start",
-                  color: "#",
+                  color: "white",
                 }}
               >
                 Gelen Arama
@@ -121,14 +121,15 @@ const CallRequest = () => {
                   onClick={rejectCall}
                   style={{
                     height: 50,
-                    width: 50,
-                    borderRadius: "100%",
+                    width: "max-content",
+                    borderRadius: "5px",
                     background: "#f04846",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     cursor: "pointer",
                     color: "#fff",
+                    padding: 10,
                   }}
                 >
                   Reddet
@@ -137,14 +138,15 @@ const CallRequest = () => {
                   onClick={acceptCall}
                   style={{
                     height: 50,
-                    width: 50,
-                    borderRadius: "100%",
+                    width: "max-content",
+                    borderRadius: "5px",
                     background: "#3fb17d",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     cursor: "pointer",
                     color: "#fff",
+                    padding: 10,
                   }}
                 >
                   Kabul Et

@@ -186,6 +186,11 @@ const Dashboard = ({ show2, setShow2 }) => {
                 </Routes>
               </nav>
               {channelsList.map((channel, index) => {
+                console.log(channel);
+                if (channel.onlineUser || channel.onlineUser.length === 0)
+                  return;
+                console.log(channel.onlineUser);
+
                 const rawMe = channel.onlineUser.find(
                   user => user._id === userInfo.id
                 );

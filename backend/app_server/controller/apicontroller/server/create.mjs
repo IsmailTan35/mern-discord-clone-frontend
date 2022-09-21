@@ -7,6 +7,9 @@ import path from "path";
 import fs from "fs"
 
 export default async (req,res) => {
+	try {
+		
+	
 	let io = req.app.io
 	const token = req.headers.authorization
 	const form = formidable({ multiples: true })
@@ -21,7 +24,6 @@ export default async (req,res) => {
 				token:{"$in":[token]
 			}}
 		}])
-		console.log(user,token);
 		if(user.length==0) return res.sendStatus(401)
 		const inviteCode = Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 
@@ -66,11 +68,13 @@ export default async (req,res) => {
 		chSchema1.serverID=svSchema._id
 		chSchema2.serverID=svSchema._id
 
-		svSchema.save()
-		chSchema1.save()
-		chSchema2.save()
+		await svSchema.save((err)=>{
+			if(!err) return
+			console.err(err);
+		})
+		await chSchema1.save()
+		await chSchema2.save()
 
-		console.log(svSchema);
 		if(!svSchema) return res.status(401)
 
 		const data = await userSchema.findOneAndUpdate({
@@ -93,9 +97,6 @@ export default async (req,res) => {
 
 		const rawSockets = await io.fetchSockets()
 		const sockets = rawSockets.filter(socket => socket.handshake.auth.token === token)
-		console.log(rawSockets[0].handshake.auth);
-		console.log(rawSockets[1].handshake.auth);
-		console.log(token);
 
 		if(sockets.length==0) return
 		sockets.map(socket => {
@@ -118,4 +119,7 @@ export default async (req,res) => {
 		)
 		})
 	})
+	} catch (error) {
+			console.error(error);
+	}
 }

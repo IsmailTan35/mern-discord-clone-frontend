@@ -63,7 +63,7 @@ const CallerRequest = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "flex-start",
-                  color: "#",
+                  color: "white",
                 }}
               >
                 Giden Arama

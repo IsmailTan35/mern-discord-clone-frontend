@@ -18,7 +18,10 @@ const { reducer, actions } = createSlice({
           user => user.name != value.name && user.code != value.code
         );
       } else if (type == "add") {
-        state[name].push(value);
+        state[name] = [...state[name], ...[value]];
+        state[name] = [
+          ...new Map(state[name].map(item => [item._id, item])).values(),
+        ];
       }
     },
     mutationOnlineUser(state, action) {
@@ -31,13 +34,21 @@ const { reducer, actions } = createSlice({
           onlineUser: item.onlineUser.filter(user => user._id !== _id),
         }));
       } else if (type == "add") {
-        state.items
-          .find(item => item.serverID === serverID && item._id === channelID)
-          .onlineUser.push({
+        state[name] = state[name].map(item => {
+          item.onlineUser.push({
             username,
             code,
             _id,
           });
+          return {
+            ...item,
+            onlineUser: [
+              ...new Map(
+                item.onlineUser.map(item => [item._id, item])
+              ).values(),
+            ],
+          };
+        });
       }
     },
   },

@@ -142,21 +142,20 @@ const SocketController = () => {
     });
 
     socket.on("serverList", data => {
-      console.log(data);
       dispatch(
         serversActions.refresh({ type: "add", name: "items", value: data })
       );
     });
 
     socket.on("channelList", data => {
-      console.log(data);
-
       dispatch(
         channelsActions.refresh({ type: "add", name: "items", value: data })
       );
     });
 
     socket.on("newChannel", data => {
+      console.log(2);
+
       dispatch(
         channelsActions.update({
           type: "add",
@@ -167,6 +166,7 @@ const SocketController = () => {
     });
 
     socket.on("newServer", async data => {
+      console.log(data);
       dispatch(
         serversActions.update({ type: "add", name: "items", value: data })
       );

@@ -91,7 +91,7 @@ const registerPost = async (req,res) => {
     });
 
     const data2 = await serverSchema.findOneAndUpdate({
-			inviteCode:"jruumfii"
+			inviteCode:"qza3s7l3"
 		},{
 			$push:{
 				userIDs:user._id

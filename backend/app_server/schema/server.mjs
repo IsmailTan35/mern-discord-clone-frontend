@@ -13,7 +13,6 @@ var serverSchema = new Schema({
 	},
     userIDs:{
         type:Array,
-        unique: true
     },
     channels:{
         type:Array

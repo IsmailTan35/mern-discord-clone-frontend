@@ -36,8 +36,9 @@ const friendsPost = async (req,res) => {
             })]
 
         }
+        
         try {
-            const check = await user.find(checkMe)
+            const check = await user.find(checkMe).sort({_id:-1})
             if(check.length!=2) return
             if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.info("me")
             const filter = {
