@@ -38,6 +38,8 @@ export default async (req,res) => {
 	
 		const rawSockets = await io.fetchSockets()
 		const sockets = rawSockets.filter(socket => socket.handshake.auth.token === token)
+		if(sockets.length==0) return
+
 		sockets.map(socket => {
 			socket.emit('newServer',{
 				_id:data2._id,

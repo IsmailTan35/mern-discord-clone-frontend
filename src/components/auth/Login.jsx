@@ -35,6 +35,7 @@ const LoginPage = () => {
           userActions.refresh({ name: "token", value: res.data[6].value })
         );
         socket.emit("configuration", { token: res.data[6].value });
+        axios.defaults.headers.common["Authorization"] = res.data[6].value;
         setTimeout(() => {
           navigate(url);
           toast.update(id, {

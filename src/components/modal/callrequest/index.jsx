@@ -131,7 +131,7 @@ const CallRequest = () => {
                     color: "#fff",
                   }}
                 >
-                  NO
+                  Reddet
                 </div>
                 <div
                   onClick={acceptCall}
@@ -147,7 +147,7 @@ const CallRequest = () => {
                     color: "#fff",
                   }}
                 >
-                  YES
+                  Kabul Et
                 </div>
               </div>
             </div>

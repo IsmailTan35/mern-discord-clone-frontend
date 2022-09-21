@@ -21,8 +21,8 @@ export default async (req,res) => {
 				token:{"$in":[token]
 			}}
 		}])
-
-		if(!user.length) return res.sendStatus(401)
+		console.log(user,token);
+		if(user.length==0) return res.sendStatus(401)
 		const inviteCode = Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 
 		const svSchema = new serverSchema({
@@ -31,7 +31,7 @@ export default async (req,res) => {
 			userIDs:[user[0]._id],
 		})
 
-		if(files){
+		if(files && files.serverPhoto && files.serverPhoto.filepath){
 			try {
 				let oldPath=files.serverPhoto.filepath
 				let newFileName= `${svSchema._id.toString()}.png`
@@ -42,6 +42,7 @@ export default async (req,res) => {
 				svSchema.serverpicture=newFileName
 			} catch (error) {
 				if(error) console.error(error);
+				svSchema.serverpicture=""
 			}
 		}
 		const chSchema1 =  new channelSchema({
@@ -69,6 +70,7 @@ export default async (req,res) => {
 		chSchema1.save()
 		chSchema2.save()
 
+		console.log(svSchema);
 		if(!svSchema) return res.status(401)
 
 		const data = await userSchema.findOneAndUpdate({
@@ -91,6 +93,11 @@ export default async (req,res) => {
 
 		const rawSockets = await io.fetchSockets()
 		const sockets = rawSockets.filter(socket => socket.handshake.auth.token === token)
+		console.log(rawSockets[0].handshake.auth);
+		console.log(rawSockets[1].handshake.auth);
+		console.log(token);
+
+		if(sockets.length==0) return
 		sockets.map(socket => {
 			socket.emit('newServer',{
 				_id:svSchema._id,
@@ -103,6 +110,12 @@ export default async (req,res) => {
 				inviteCode:svSchema.inviteCode,
 				serverpicture:svSchema.serverpicture
 			})
+			socket.emit("newChannel",
+				chSchema1
+			)
+			socket.emit("newChannel",
+			chSchema2
+		)
 		})
 	})
 }

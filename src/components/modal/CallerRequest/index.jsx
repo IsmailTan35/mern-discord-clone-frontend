@@ -81,17 +81,17 @@ const CallerRequest = () => {
                   style={{
                     height: 50,
                     width: "max-content",
-                    borderRadius: "100%",
+                    borderRadius: "5px",
                     background: "#f04846",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     cursor: "pointer",
                     color: "#fff",
-                    padding: 10,
+                    padding: "10px",
                   }}
                 >
-                  Sonlanadır
+                  Sonlandır
                 </div>
               </div>
             </div>

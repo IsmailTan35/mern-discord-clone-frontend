@@ -142,13 +142,27 @@ const SocketController = () => {
     });
 
     socket.on("serverList", data => {
+      console.log(data);
       dispatch(
         serversActions.refresh({ type: "add", name: "items", value: data })
       );
     });
+
     socket.on("channelList", data => {
+      console.log(data);
+
       dispatch(
         channelsActions.refresh({ type: "add", name: "items", value: data })
+      );
+    });
+
+    socket.on("newChannel", data => {
+      dispatch(
+        channelsActions.update({
+          type: "add",
+          name: "items",
+          value: data,
+        })
       );
     });
 
@@ -260,6 +274,9 @@ const SocketController = () => {
           autoClose: 1500,
         });
       }, 1000);
+      socket.emit("configuration", {
+        token: localStorage.getItem("accessToken"),
+      });
       mount = true;
     });
 

@@ -266,13 +266,14 @@ const Room = () => {
         };
         setPeers(items =>
           items.map(item => {
-            // item.peer.addTrack(videoTrack, screenStream);
-            item.peer.replaceTrack(
-              item.stream.getVideoTracks()[0],
-              screenStream.getVideoTracks()[0],
-              item.stream
-            );
-            item.stream = screenStream;
+            try {
+              item.peer.replaceTrack(
+                item.stream.getVideoTracks()[0],
+                screenStream.getVideoTracks()[0],
+                item.stream
+              );
+              item.stream = screenStream;
+            } catch (error) {}
             return item;
           })
         );
