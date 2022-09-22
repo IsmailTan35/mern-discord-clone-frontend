@@ -105,7 +105,7 @@ const Navbar = ({ show2, setShow2 }) => {
                 >
                   {server.serverpicture ? (
                     <img
-                      src={`//localhost:10000/api/icon/server/${server.serverpicture}`}
+                      src={`${REACT_APP_URL_PRODUCTION}/api/icon/server/${server.serverpicture}`}
                       style={{ width: "100%", height: "100%" }}
                     ></img>
                   ) : (
