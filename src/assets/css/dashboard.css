@@ -378,6 +378,7 @@
     display: none;
     justify-content: center;
     align-items: center;
+    margin-left: 10px;
 }
 
 .dashboard-panel-sandwich-wrapper{
@@ -410,5 +411,7 @@
     .dashboard-panel-sandwich-wrapper{
         display: flex;
     }
-  
+    .dashboard-panel-sandwich-container{
+        display: flex;
+    }
 }
