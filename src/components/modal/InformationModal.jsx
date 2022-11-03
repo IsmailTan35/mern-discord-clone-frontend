@@ -18,7 +18,17 @@ const InformationModal = ({ setShow }) => {
                 X
               </div>
             </div>
-            <div className="information-modal-header">Giriş Bilgileri</div>
+            <div
+              className="information-modal-header"
+              style={{
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div>Giriş Bilgileri</div>
+              <div>Server Şuan Kapalıdır</div>
+            </div>
             <div className="information-modal-body">
               <div className="information-auth">
                 <div className="information-auth-name">Demo 1</div>
