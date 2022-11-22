@@ -39,7 +39,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "frontend": "craco --openssl-legacy-provider start",
+    "frontend": "craco start",
     "backend": "nodemon --experimental-modules server.mjs --ignore frontend",
     "start": "node --experimental-modules server.mjs --ignore frontend"
   },
