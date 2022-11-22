@@ -13,8 +13,8 @@ const app = express()
 const port = process.env.PORT || 10000 
 const db = mongoDb()
 const server = CreateServer(app,port)
-const socket = webSocket(server)
-app.io=socket
+// const socket = webSocket(server)
+// app.io=socket
 
 controllerApi(app,"con")
-controlleWebsocket(socket,"con")
+// controlleWebsocket(socket,"con")
