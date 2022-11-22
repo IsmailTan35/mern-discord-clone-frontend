@@ -22,6 +22,9 @@ const App = () =>{
     app.use(express.json())
     app.use(cors())
     // app.use(apiRequestLimiter)
+    app.get("/",(req,res)=>{
+        res.send("sadas")
+    })
     return app
 } 
 
