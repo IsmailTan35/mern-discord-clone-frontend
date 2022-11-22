@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
-import express from"./app_server/helper/helperExpress"
+import express from"./backend/app_server/helper/helperExpress"
 import { 
     CreateServer,
     webSocket
-} from'./app_server/helper/helperProtocol'
+} from'./backend/app_server/helper/helperProtocol'
 // import controllerApi from'./app_server/controller/apicontroller/index.mjs'
 // import controlleWebsocket from'./app_server/controller/socketcontroller/index.mjs'
 // import mongoDb from"./app_server/models/mongoDb.mjs"

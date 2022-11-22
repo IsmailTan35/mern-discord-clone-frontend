@@ -41,8 +41,8 @@
   },
   "scripts": {
     "frontend": "craco start",
-    "backend": "nodemon backend/server.ts --ignore frontend",
-    "start": "node  backend/server.ts --ignore frontend"
+    "backend": "nodemon server.ts --ignore frontend",
+    "start": "node  server.ts --ignore frontend"
   },
   "browserslist": {
     "production": [
