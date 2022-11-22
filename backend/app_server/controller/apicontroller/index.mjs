@@ -24,7 +24,7 @@ import path from "path"
 
 export default (app,con) =>{
     app.get('/',(req,res) => {
-    res.send(req.headers['x-forwarded-for']?.split(',').shift()|| req.socket?.remoteAddress);
+      res.send(req.headers['x-forwarded-for']?.split(',').shift()|| req.socket?.remoteAddress);
     })
     
     app.post("/api/auth/login",loginPost)
