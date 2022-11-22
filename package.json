@@ -40,8 +40,8 @@
   },
   "scripts": {
     "frontend": "craco start",
-    "backend": "nodemon --experimental-modules server.mjs --ignore frontend",
-    "start": "node --experimental-modules server.mjs --ignore frontend"
+    "backend": "nodemon --experimental-modules backend/server.mjs --ignore frontend",
+    "start": "node --experimental-modules backend/server.mjs --ignore frontend"
   },
   "browserslist": {
     "production": [
