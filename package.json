@@ -40,8 +40,8 @@
   },
   "scripts": {
     "frontend": "craco --openssl-legacy-provider start",
-    "backend": "nodemon backend/server.ts --ignore frontend",
-    "start": "node --experimental-modules backend/server.mjs --ignore frontend"
+    "backend": "nodemon server.ts --ignore frontend",
+    "start": "nodemon --experimental-modules server.ts --ignore frontend"
   },
   "browserslist": {
     "production": [
