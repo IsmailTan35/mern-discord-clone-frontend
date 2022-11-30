@@ -1,6 +1,6 @@
-import userSchema from "../../../schema/user.mjs";
+import userSchema from "../../../schema/user";
 
-export default async (io,socket,data)=>{
+export default async (io:any, socket:any, data:any)=>{
 	const token = socket.handshake.auth.token
 	if(!token) return
 	const checkMe = {
@@ -21,10 +21,10 @@ export default async (io,socket,data)=>{
 	try {
 		
 
-	const check = await userSchema.find(checkMe)
+	const check:any = await userSchema.find(checkMe)
 	if(check.length!=2) return
 	if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.info("me")
-	const update = await userSchema.findOneAndUpdate({
+	const update:any = await userSchema.findOneAndUpdate({
 		username:check[0].username,
 		code:check[0].code,
 	},{
@@ -33,7 +33,7 @@ export default async (io,socket,data)=>{
 	},
 	{new:true})
 
-	const update2 = await userSchema.findOneAndUpdate({
+	const update2:any = await userSchema.findOneAndUpdate({
 		username:check[1].username,
 		code:check[1].code,
 	},{
@@ -41,8 +41,8 @@ export default async (io,socket,data)=>{
 			friends:check[0]._id}
 	},
 	{new:true})
-	const rawSockets = await io.fetchSockets()
-	rawSockets.map((socket)=>{
+	const rawSockets:any = await io.fetchSockets()
+	rawSockets.map((socket:any)=>{
 		if(socket.handshake.auth.userId===check[0]._id.toString()){
 			socket.emit("friendUnFriend",check[1]._id)
 

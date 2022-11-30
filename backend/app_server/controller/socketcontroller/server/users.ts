@@ -1,13 +1,13 @@
-import userSchema from "../../../schema/user.mjs";
-import serverSchema from "../../../schema/server.mjs";
+import userSchema from "../../../schema/user";
+import serverSchema from "../../../schema/server";
 import { ObjectId } from "mongodb";
 
-export default async (io,socket,data)=>{
+export default async (io:any, socket:any, data:any)=>{
 	const { serverId } = data
 	const token = socket.handshake.auth.token
 	if(!token) return
 	try {
-	const res = await userSchema.aggregate([
+	const res:any = await userSchema.aggregate([
 		{
 			$match:{
 				token:{
@@ -21,10 +21,10 @@ export default async (io,socket,data)=>{
 			},
 		},
 	])
-	const users = await serverSchema.aggregate([
+	const users:any = await serverSchema.aggregate([
 		{
 			$match:{
-				_id:ObjectId(serverId)
+				_id:new ObjectId(serverId)
 			}
 		},
 		{

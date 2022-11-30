@@ -1,13 +1,13 @@
-import userSchema from "../../../schema/user.mjs";
+import userSchema from "../../../schema/user";
 
-export default async(io,socket,data)=>{
+export default async(io:any,socket:any,data:any)=>{
 	try {
 		
 
-	var user = await userSchema.findOne({token:{"$in":[data.token]}})
+	let user:any = await userSchema.findOne({token:{"$in":[data.token]}})
 	if(!user) return
 	
-	var ids =user._id.toString()
+	let ids =user._id.toString()
 	socket.handshake.auth.name = user.username
 	socket.handshake.auth.code = user.code
 	socket.handshake.auth.userId = ids
@@ -15,14 +15,14 @@ export default async(io,socket,data)=>{
 
 	if(!socket.handshake.auth.token || !socket.handshake.auth.name)  return
 
-	const rawSockets = await io.fetchSockets()
-	const sockets = rawSockets.filter(items => items.handshake.auth.userId && 
+	const rawSockets:any = await io.fetchSockets()
+	const sockets = rawSockets.filter((items:any) => items.handshake.auth.userId && 
 		socket.handshake.auth.userId !== items.handshake.auth.userId &&
 		user.friends.includes(items.handshake.auth.userId))
-	let onlineUsers =[]
+	let onlineUsers:any =[]
 	if(!sockets) return
 
-	sockets.map(function(elem){
+	sockets.map(function(elem:any){
 		onlineUsers.push({
 				name:elem.handshake.auth.name, 
 				code:elem.handshake.auth.code,
@@ -35,14 +35,14 @@ export default async(io,socket,data)=>{
 		userId: socket.handshake.auth.userId,
 		name: socket.handshake.auth.name,
 		code: socket.handshake.auth.code,
-		messages:messages[socket.id],
+		// messages:messages[socket.id],
 		onlineUsers,
-		users,
-		socketToRoom
+		// users,
+		// socketToRoom
 	}
 	
 	socket.emit("data", datak);
-	sockets.map(s => {
+	sockets.map((s:any) => {
 		if(!s.handshake.auth.userId) return
 		s.emit("friendJoin", { 
 			userId: socket.handshake.auth.userId,

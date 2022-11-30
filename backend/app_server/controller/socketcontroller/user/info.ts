@@ -1,9 +1,9 @@
 import { ObjectId } from "mongodb";
-import userSchema from "../../../schema/user.mjs";
-export default async (io,socket,data)=>{
+import userSchema from "../../../schema/user";
+export default async (io:any, socket:any, data:any)=>{
 	const { userId } = data
 	try {
-	const res = await userSchema.findOne({_id:ObjectId(userId)})
+	const res:any = await userSchema.findOne({_id:new ObjectId(userId)})
 	socket.emit("newUserInfo",{
 		id:res._id,
 		name:res.username,

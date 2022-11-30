@@ -1,8 +1,8 @@
-import userSchema from "../../../schema/user.mjs";
+import userSchema from "../../../schema/user";
 
-export default async (req,res) => {
+export default async (req:any,res:any) => {
 	try {
-		const user = await userSchema.find({
+		const user:any = await userSchema.find({
 			$or:[
 				{sender:req.query.id,receiver:req.query.id2},
 				{sender:req.query.id,receiver:req.query.id}

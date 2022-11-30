@@ -40,7 +40,7 @@
   },
   "scripts": {
     "frontend": "craco --openssl-legacy-provider start",
-    "backend": "nodemon --experimental-modules backend/server.mjs --ignore frontend",
+    "backend": "nodemon backend/server.ts --ignore frontend",
     "start": "node --experimental-modules backend/server.mjs --ignore frontend"
   },
   "browserslist": {
@@ -56,6 +56,10 @@
     ]
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/express": "^4.17.14",
+    "@types/formidable": "^2.0.5",
+    "@types/jsonwebtoken": "^8.5.9",
     "nodemon": "^2.0.15"
   }
 }

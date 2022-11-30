@@ -2,28 +2,28 @@ import {
     loginPost,
     logoutPost,
     registerPost,
-} from './controllerAuth.mjs'
-import { verifyPost } from '../../helper/helperVerify.mjs'
+} from './controllerAuth'
+import { verifyPost } from '../../helper/helperVerify'
 
 import {
     friendsGet,
     friendsPost,
     friendsPut,
     friendsDelete,
-} from './friend/controllerFriends.mjs'
+} from './friend/controllerFriends'
 
-import userSchema from "../../schema/user.mjs";
-import serverSchema from "../../schema/server.mjs";
+import userSchema from "../../schema/user";
+import serverSchema from "../../schema/server";
 
-import joinServer from './server/join.mjs';
-import createServer from './server/create.mjs';
-import userInfo from "./user/info.mjs"
-import serverInfo from "./server/info.mjs"
-import messageAll from "./messages/all.mjs"
+import joinServer from './server/join';
+import createServer from './server/create';
+import userInfo from "./user/info"
+import serverInfo from "./server/info"
+import messageAll from "./messages/all"
 import path from "path"
 
-export default (app,con) =>{
-    app.get('/',(req,res) => {
+export default (app:any) =>{
+    app.get('/',(req:any,res:any) => {
       res.send(req.headers['x-forwarded-for']?.split(',').shift()|| req.socket?.remoteAddress);
     })
     
@@ -44,7 +44,7 @@ export default (app,con) =>{
     app.get("/api/user/getName",userInfo)
     app.get("/api/user/getMessages",messageAll)
 
-    app.get("/api/icon/server/:filename",(req,res,next)=>{
+    app.get("/api/icon/server/:filename",(req:any,res:any,next:any)=>{
         let rawPath = `backend/app_server/uploads/server`
         var options = {
             root: path.join(path.resolve(), `${rawPath}`),
@@ -55,9 +55,9 @@ export default (app,con) =>{
             }
           }
           var fileName =req.params.filename
-          res.sendFile(fileName, options, function (err) {
+          res.sendFile(fileName, options, function (err:any) {
             if (err) {
-              next(err)
+              next()
             } else {
               console.info('Sent:', fileName)
             }

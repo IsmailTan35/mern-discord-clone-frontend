@@ -1,6 +1,7 @@
-export default async (io,socket,data)=>{
+
+export default async (io:any, socket:any, data:any)=>{
 	console.warn("discord disconnected")
-	const roomID = socketToRoom[socket.id];
+	const roomID:any = socketToRoom[socket.id];
 	let room = users[roomID];
 	if (room) {
 		room = room.filter(id => id !== socket.id);

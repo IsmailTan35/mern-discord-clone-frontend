@@ -1,8 +1,8 @@
-import messageSchema from '../../../schema/message.mjs';
-export default async (io,socket,data)=>{
+import messageSchema from '../../../schema/message';
+export default async (io:any, socket:any, data:any)=>{
 
 	if(!socket.handshake.auth.userId || !data) return
-	let messages= []
+	let messages:any= []
 	try {
 		
 
@@ -44,8 +44,8 @@ export default async (io,socket,data)=>{
 		 )
 	}
 	let rawSockets =await io.fetchSockets()
-	const sockets = rawSockets.filter(s=>s.handshake.auth.userId==socket.handshake.auth.userId)
-	sockets.map(s=>{
+	const sockets = rawSockets.filter((s:any)=>s.handshake.auth.userId==socket.handshake.auth.userId)
+	sockets.map((s:any)=>{
 		s.emit("allMessage",messages)
 	})
 	} catch (error) {

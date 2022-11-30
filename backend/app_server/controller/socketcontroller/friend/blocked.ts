@@ -1,11 +1,11 @@
-import userSchema from "../../../schema/user.mjs";
+import userSchema from "../../../schema/user";
 
-const getFriendBlockeds = async (io,socket, data) => {
+const getFriendBlockeds = async (io:any, socket:any, data:any) => {
 	const token = socket.handshake.auth.token
 	if(!token) return
 	try {
 		
-	const res = await userSchema.aggregate([
+	const res:any = await userSchema.aggregate([
 		{
 			$match:{  
 				token:{

@@ -1,13 +1,13 @@
-import userSchema from "../../../schema/user.mjs";
-import serverSchema from "../../../schema/server.mjs";
+import userSchema from "../../../schema/user";
+import serverSchema from "../../../schema/server";
 
-export default async(io,socket,data)=>{
+export default async(io:any, socket:any, data:any)=>{
 	const token = socket.handshake.auth.token
 	if(!token) return
 	try {
 		
 
-	const user = await userSchema.aggregate([
+	const user:any = await userSchema.aggregate([
 		{$match:{
 			token:{"$in":[token]
 		}}
@@ -19,7 +19,7 @@ export default async(io,socket,data)=>{
 	let rawSockets =await io.fetchSockets()
 	if(socket.rooms.has(rawRoomName)) return
 	
-	socket.rooms.forEach(element => {
+	socket.rooms.forEach((element:any) => {
 		io.to(element).emit("leftUserVoiceChannelInChannel",{
 			_id:user[0]._id,
 			username:user[0].username,
@@ -32,9 +32,9 @@ export default async(io,socket,data)=>{
 	});
 	socket.join(rawRoomName)
 
-	const server = await serverSchema.findById(data.serverID)
+	const server:any = await serverSchema.findById(data.serverID)
 
-	const sockets = rawSockets.map(socket=>{
+	const sockets = rawSockets.map((socket:any)=>{
 		if(server.userIDs.includes(socket.handshake.auth.userId)){
 			socket.emit("leftUserVoiceChannelInChannel",{
 				_id:user[0]._id,

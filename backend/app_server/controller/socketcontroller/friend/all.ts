@@ -1,11 +1,11 @@
-import userSchema from "../../../schema/user.mjs";
+import userSchema from "../../../schema/user";
 
-export default async (io,socket,data) => {
+export default async (io:any, socket:any, data:any) => {
 	try {
 		
 		const token = socket.handshake.auth.token
 		if(!token) return
-	const res = await userSchema.aggregate([
+	const res:any = await userSchema.aggregate([
 		{
 			$match:{  
 				token:{

@@ -1,12 +1,12 @@
-import user from "../../../schema/user.mjs"
+import user from "../../../schema/user"
 
-const friendsGet = (req,res) => {
+const friendsGet = (req:any,res:any) => {
     const { token } = req.query
     user.findOne({token:{
         $elemMatch:{
             $eq:token
         }
-    }},(err,result) => {
+    }},(err: any,result: any) => {
         if(err){
             res.status(500).json(err)
         }
@@ -17,7 +17,7 @@ const friendsGet = (req,res) => {
 
 }
 
-const friendsPost = async (req,res) => {
+const friendsPost = async (req:any,res:any) => {
     const { token,to } = req.body
     if(!token || !to) return
     let io = req.app.io
@@ -38,7 +38,7 @@ const friendsPost = async (req,res) => {
         }
         
         try {
-            const check = await user.find(checkMe).sort({_id:-1})
+            const check:any = await user.find(checkMe).sort({_id:-1})
             if(check.length!=2) return
             if(check[0].username+"#"+check[0].code===check[1].username+"#"+check[1].code) return console.info("me")
             const filter = {
@@ -99,7 +99,7 @@ const friendsPost = async (req,res) => {
                 }
             }
             
-            const fromUpdated = await user.findOneAndUpdate(filter,{
+            const fromUpdated:any = await user.findOneAndUpdate(filter,{
                 $push:{
                     request:{
                         type:"outgoing",
@@ -110,7 +110,7 @@ const friendsPost = async (req,res) => {
         
             if(!fromUpdated) return res.status(400).json("User not found!");
         
-            const toUpdated = await user.findOneAndUpdate(filter2,{
+            const toUpdated:any = await user.findOneAndUpdate(filter2,{
                 $push:{
                     request:{
                         type:"incoming",
@@ -119,9 +119,9 @@ const friendsPost = async (req,res) => {
                 }
             })
         
-            const rawSockets = await io.fetchSockets()
+            const rawSockets:any = await io.fetchSockets()
         
-            const sockets =rawSockets.filter(items =>
+            const sockets =rawSockets.filter((items: { handshake: { auth: { userId: string } } }) =>
                 items.handshake.auth.userId === check[0]._id.toString() || items.handshake.auth.userId === check[1]._id.toString()
                 )
             if(!sockets || sockets.length<=0) return
@@ -149,11 +149,11 @@ const friendsPost = async (req,res) => {
 
 }
 
-const friendsPut = (req,res) => {
+const friendsPut = (req:any,res:any) => {
 
 }
 
-const friendsDelete = (req,res) => {
+const friendsDelete = (req:any,res:any) => {
 
 }
 

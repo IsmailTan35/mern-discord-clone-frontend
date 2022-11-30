@@ -1,15 +1,15 @@
-import userSchema from "../../../schema/user.mjs";
-import serverSchema from "../../../schema/server.mjs";
-import server from "../../../schema/server.mjs";
+import userSchema from "../../../schema/user";
+import serverSchema from "../../../schema/server";
+import server from "../../../schema/server";
 
-export default async (io,socket,data)=>{
+export default async (io:any, socket:any, data:any)=>{
 	const token = socket.handshake.auth.token
 	try {
 		
 		let rawSockets =await io.fetchSockets()
-		function findOnlineUser(serverID,channelID){
+		const findOnlineUser=(serverID:any,channelID:any)=>{
 			const rawRoomName =`server-${serverID}-${channelID}`
-			const online = rawSockets.map(socket=>{
+			const online = rawSockets.map((socket:any)=>{
 				if(socket.rooms.has(rawRoomName)){
 					const {name,code,userId}=socket.handshake.auth
 					return {
@@ -17,13 +17,13 @@ export default async (io,socket,data)=>{
 						code:code,
 						_id:userId
 					}
-				}}).filter(item=> item!==undefined)
+				}}).filter((item:any)=> item!==undefined)
 			return online
 		}
 		
 
 	if(!token) return
-	const res = await userSchema.aggregate([
+	const res:any = await userSchema.aggregate([
 		{
 			$match:{  
 				token:{
@@ -71,7 +71,7 @@ export default async (io,socket,data)=>{
 	if(res.length<=0) return
 
 	
-	const res1 = await serverSchema.aggregate([
+	const res1:any = await serverSchema.aggregate([
 		{
 			$lookup:{
 				from:"discordchannels",
@@ -110,7 +110,7 @@ export default async (io,socket,data)=>{
 		}
 	])
 
-	const denem1 = res1.map(channel=>(
+	const denem1 = res1.map((channel:any)=>(
 		{
 			...channel,
 			onlineUser:findOnlineUser(channel.serverID,channel._id)
