@@ -41,7 +41,7 @@
   "scripts": {
     "frontend": "craco --openssl-legacy-provider start",
     "backend": "nodemon server.ts --ignore frontend",
-    "start": "nodemon --experimental-modules server.ts --ignore frontend"
+    "start": "nodemon server.ts"
   },
   "browserslist": {
     "production": [
