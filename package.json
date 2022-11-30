@@ -40,7 +40,7 @@
   },
   "scripts": {
     "frontend": "craco --openssl-legacy-provider start",
-    "backend": "nodemon server.ts --ignore frontend",
+    "backend": "nodemon server2.ts --ignore frontend",
     "start": "nodemon server.ts"
   },
   "browserslist": {
