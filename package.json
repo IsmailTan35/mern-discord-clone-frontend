@@ -13,15 +13,11 @@
     "date-fns": "^2.28.0",
     "debug": "^4.3.2",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "express-router": "0.0.1",
     "formidable": "^2.0.1",
     "fs": "0.0.1-security",
     "hark": "^1.2.3",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^4.3.1",
-    "mongoose": "^6.1.8",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.4",
     "react-dom": "^17.0.2",
@@ -32,16 +28,13 @@
     "react-toastify": "^8.2.0",
     "redux-logger": "^3.0.6",
     "simple-peer": "^9.11.0",
-    "simple-peer-server": "^0.0.8",
-    "simple-peer-wrapper": "^0.0.3",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
     "frontend": "craco --openssl-legacy-provider start",
-    "backend": "nodemon server2.ts --ignore frontend",
-    "start": "nodemon server.ts"
+    "build": "craco --openssl-legacy-provider build"
   },
   "browserslist": {
     "production": [
