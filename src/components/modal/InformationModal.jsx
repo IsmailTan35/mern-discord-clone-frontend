@@ -27,7 +27,7 @@ const InformationModal = ({ setShow }) => {
               }}
             >
               <div>Giriş Bilgileri</div>
-              <div>Server Şuan Kapalıdır</div>
+              <div>Server Çalışır Duruma Getirilmiştir.</div>
             </div>
             <div className="information-modal-body">
               <div className="information-auth">
