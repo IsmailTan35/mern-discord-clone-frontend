@@ -3,9 +3,10 @@ import { io } from "socket.io-client";
 const hostname = window.location.hostname;
 const parsed = window.location.hostname.split(".");
 const protocol = window.location.protocol;
-export const url = parsed.includes("ismailtan")
-  ? process.env.REACT_APP_URL_PRODUCTION
-  : `${protocol}//${hostname}:10000/api/`;
+export const url =
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_URL_PRODUCTION
+    : `${protocol}//${hostname}:10000/api/`;
 
 export const client = io.connect(
   url.replace("http://", "").replace("https://", ""),
