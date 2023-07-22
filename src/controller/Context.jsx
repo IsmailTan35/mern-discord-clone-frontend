@@ -5,7 +5,7 @@ const parsed = window.location.hostname.split(".");
 const protocol = window.location.protocol;
 export const url = parsed.includes("ismailtan")
   ? process.env.REACT_APP_URL_PRODUCTION
-  : `${protocol}//${hostname}:10000`;
+  : `${protocol}//${hostname}:10000/api/`;
 
 export const client = io.connect(
   url.replace("http://", "").replace("https://", ""),
