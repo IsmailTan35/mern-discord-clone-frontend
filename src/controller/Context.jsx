@@ -9,7 +9,7 @@ export const url =
     : `${protocol}//${hostname}:10000/api/`;
 
 export const client = io.connect(
-  url.replace("http://", "").replace("https://", ""),
+  url.replace("http://", "").replace("https://", "").replace("/api/", ""),
   {
     reconnection: true,
     reconnectionDelay: 2500,
