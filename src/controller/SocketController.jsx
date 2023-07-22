@@ -171,7 +171,7 @@ const SocketController = () => {
         serversActions.update({ type: "add", name: "items", value: data })
       );
       try {
-        const res = await axios.get("/api/icon/server", {
+        const res = await axios.get("/icon/server", {
           params: { picture: data.picture },
           responseType: "arraybuffer",
         });

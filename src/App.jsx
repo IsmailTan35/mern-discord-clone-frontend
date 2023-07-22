@@ -50,7 +50,7 @@ const App = () => {
   }, []);
   useEffect(() => {
     axios
-      .post("/api/auth/check", {
+      .post("/auth/check", {
         userAccessToken: localStorage.getItem("accessToken"),
       })
       .then(res => {})

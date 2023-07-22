@@ -28,7 +28,7 @@ const LoginPage = () => {
     const id = toast.loading("Lütfen bekleyiniz...");
 
     axios
-      .post("/api/auth/login", form, { timeout: 7500 })
+      .post("/auth/login", form, { timeout: 7500 })
       .then(res => {
         localStorage.setItem("accessToken", res.data[6].value);
         dispatch(

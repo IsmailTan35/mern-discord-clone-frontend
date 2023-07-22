@@ -15,7 +15,7 @@ const Add = () => {
   const handleAdd = e => {
     e.preventDefault();
     axios
-      .post("/api/friend", {
+      .post("/friend", {
         to: name,
         token: localStorage.getItem("accessToken"),
       })

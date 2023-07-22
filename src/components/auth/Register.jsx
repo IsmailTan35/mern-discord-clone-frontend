@@ -23,7 +23,7 @@ const Register = () => {
     const id = toast.loading("Lütfen bekleyiniz...");
 
     axios
-      .post("/api/auth/register", form)
+      .post("/auth/register", form)
       .then(res => {
         setTimeout(() => {
           toast.update(id, {

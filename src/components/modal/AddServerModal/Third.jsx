@@ -17,7 +17,7 @@ const Third = ({ setStep, setShow }) => {
     formData.set("serverPhoto", e.target.serverPhoto.files[0]);
 
     try {
-      await axios.post("/api/server", formData, {
+      await axios.post("/server", formData, {
         headers: {
           "content-type": "multipart/form-data",
         },

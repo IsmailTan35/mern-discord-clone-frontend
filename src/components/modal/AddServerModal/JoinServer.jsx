@@ -16,7 +16,7 @@ const JoinServer = ({ setStep, setShow }) => {
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .post("/api/server/join", {
+      .post("/server/join", {
         inviteCode: e.target.inviteCode.value,
       })
       .then(res => {
