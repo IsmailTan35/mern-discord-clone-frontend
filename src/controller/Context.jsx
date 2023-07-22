@@ -8,7 +8,7 @@ export const url = parsed.includes("ismailtan")
   : `${protocol}//${hostname}:10000`;
 
 export const client = io.connect(
-  url.replace("http://", "").replace("https://", "").replace("/", ""),
+  url.replace("http://", "").replace("https://", ""),
   {
     reconnection: true,
     reconnectionDelay: 2500,
