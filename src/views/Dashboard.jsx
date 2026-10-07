@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useContext } from "react";
 import { SocketContext } from "controller/Context";
+import { stopVoiceChannel } from "controller/voiceChannel";
 
 import { ReactComponent as HangUp } from "assets/img/hangUp.svg";
 const delay = { show: 50, hide: 0 };
@@ -66,6 +67,7 @@ const Dashboard = ({ show2, setShow2 }) => {
   };
 
   const leaveChannel = () => {
+    stopVoiceChannel();
     socket.emit("leaveAllChannels");
   };
 
