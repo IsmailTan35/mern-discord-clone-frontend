@@ -1,15 +1,23 @@
+import { useContext, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { SocketContext } from "controller/Context";
 import EmptyFriends from "./EmptyFriends";
 
 const SidebarFriends = ({ show2, setShow2 }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const friends = useSelector(state => state.friends.items);
+  const socket = useContext(SocketContext);
+  const token = useSelector(state => state.user.token);
+  const friends = useSelector(state => state.friends.all);
+
+  useEffect(() => {
+    if (!token) return;
+    socket.emit("getFriendAll");
+  }, [token, socket.connected]);
 
   const openChat = id => {
     if (!id) return;
-    const rawLocation = `/channels/@me/${id}`;
     navigate(`/channels/@me/${id}`);
   };
 
@@ -89,12 +97,12 @@ const SidebarFriends = ({ show2, setShow2 }) => {
                   className="dashboard-sidebar-chat-item-wrapper"
                   key={index}
                   onClick={() => {
-                    openChat(friend.id);
+                    openChat(friend._id);
                   }}
                 >
                   <div className="dashboard-sidebar-chat-item-avatar"></div>
                   <div className="dashboard-sidebar-chat-item-name">
-                    {friend.name}
+                    {friend.username}
                   </div>
                 </div>
               );

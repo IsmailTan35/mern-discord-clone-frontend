@@ -3,6 +3,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { ReactComponent as AddFriend } from "assets/img/addFriend.svg";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 const Add = () => {
   const ref = useRef();
   const [name, setName] = useState("demo2#6846");
@@ -19,8 +20,16 @@ const Add = () => {
         to: name,
         token: localStorage.getItem("accessToken"),
       })
-      .then(res => {})
-      .catch(err => {});
+      .then(res => {
+        toast.success("Arkadaşlık isteği gönderildi.");
+      })
+      .catch(err => {
+        const message =
+          err.response && typeof err.response.data === "string" && err.response.data
+            ? err.response.data
+            : "Arkadaşlık isteği gönderilemedi.";
+        toast.error(message);
+      });
   };
 
   return (

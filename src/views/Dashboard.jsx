@@ -35,13 +35,15 @@ const Dashboard = ({ show2, setShow2 }) => {
   const serverList = useSelector(state => state.server.items);
   const channelsList = useSelector(state => state.channels.items);
 
-  useEffect(async () => {
-    window.addEventListener("streamStart", () => {
-      setStream(true);
-    });
-    window.addEventListener("streamEnd", () => {
-      setStream(false);
-    });
+  useEffect(() => {
+    const handleStreamStart = () => setStream(true);
+    const handleStreamEnd = () => setStream(false);
+    window.addEventListener("streamStart", handleStreamStart);
+    window.addEventListener("streamEnd", handleStreamEnd);
+    return () => {
+      window.removeEventListener("streamStart", handleStreamStart);
+      window.removeEventListener("streamEnd", handleStreamEnd);
+    };
   }, []);
 
   useEffect(() => {
@@ -186,10 +188,8 @@ const Dashboard = ({ show2, setShow2 }) => {
                 </Routes>
               </nav>
               {channelsList.map((channel, index) => {
-                console.log(channel);
-                if (channel.onlineUser || channel.onlineUser.length === 0)
-                  return;
-                console.log(channel.onlineUser);
+                if (!channel.onlineUser || channel.onlineUser.length === 0)
+                  return null;
 
                 const rawMe = channel.onlineUser.find(
                   user => user._id === userInfo.id

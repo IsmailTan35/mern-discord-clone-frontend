@@ -28,14 +28,14 @@ const ChatBody = ({ user }) => {
   useEffect(() => {
     const parsedLocation = location.pathname.split("/");
     if (parsedLocation.includes("@me")) {
-      const res = userList.find(user => user.id === parsedLocation[3]);
-      if (!res) socket.emit("getUserInfo", { userId: parsedLocation[3] });
+      const friendId = parsedLocation[3];
+      const res = userList.find(user => user.id === friendId);
+      if (!res) socket.emit("getUserInfo", { userId: friendId });
+      // Only the conversation between me and this friend
       const data = rawMessages.filter(
         message =>
-          message.sender === parsedLocation[3] ||
-          message.receiver === parsedLocation[3] ||
-          message.sender === myUser.id ||
-          message.receiver === myUser.id
+          (message.sender === friendId && message.receiver === myUser.id) ||
+          (message.sender === myUser.id && message.receiver === friendId)
       );
       setMessages(data);
     } else {
@@ -46,7 +46,7 @@ const ChatBody = ({ user }) => {
       );
       setMessages(data);
     }
-  }, [rawMessages, location]);
+  }, [rawMessages, location, myUser.id]);
 
   return (
     <>

@@ -1,14 +1,16 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
+const initialState = {
+  id:null,
+  name:null,
+  code:null,
+  token:null,
+  message:[],
+};
 
 const { reducer, actions } = createSlice({
   name: 'user',
-  initialState: {
-      id:null,
-      name:null,
-      code:null,
-      token:null,
-      message:[],
-  },
+  initialState,
   reducers: {
     refresh(state, action) {
       const {name, value } = action.payload;
@@ -18,8 +20,8 @@ const { reducer, actions } = createSlice({
       const {name, value } = action.payload;
       state[name].push(value)
     },
-    delete(state, action) {
-      // delete state.items[action.payload];
+    delete() {
+      return initialState;
     }
   }
 });

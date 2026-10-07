@@ -14,7 +14,10 @@ const Third = ({ setStep, setShow }) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("serverName", e.target.serverName.value);
-    formData.set("serverPhoto", e.target.serverPhoto.files[0]);
+    // Without a selected file FormData would send the string "undefined"
+    if (e.target.serverPhoto.files[0]) {
+      formData.set("serverPhoto", e.target.serverPhoto.files[0]);
+    }
 
     try {
       await axios.post("/server", formData, {

@@ -75,14 +75,6 @@ const LoginPage = () => {
 
   const handleUrl = url => {
     navigate(url);
-    setTimeout(() => {
-      toast.update(id, {
-        render: "All is good",
-        type: toast.TYPE.ERROR,
-        isLoading: false,
-        autoClose: 1500,
-      });
-    }, 1000);
   };
 
   return (

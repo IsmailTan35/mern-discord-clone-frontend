@@ -55,6 +55,8 @@ const App = () => {
       })
       .then(res => {})
       .catch(err => {
+        // Network errors have no response
+        if (!err.response) return;
         if (location.pathname !== "/" && !location.pathname.includes("auth")) {
           switch (err.response.status) {
             case 401:

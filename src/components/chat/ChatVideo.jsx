@@ -64,6 +64,9 @@ const Room = () => {
   const dispatch = useDispatch();
   const socket = useContext(SocketContext);
   const [peers, setPeers] = useState([]);
+  // Socket handlers are registered once, so they read the live list from here
+  const peersRef = useRef([]);
+  peersRef.current = peers;
   const [mute, setMute] = useState(false);
   const [headphone, setHeadphone] = useState(false);
   const myStoreStream = useSelector(state => state.stream.items);
@@ -92,23 +95,21 @@ const Room = () => {
     }
   }, [peers]);
   useEffect(() => {
-    socket.on("acceptedCall", data => {});
-
-    socket.on("user joined", data => {
+    const handleUserJoined = data => {
       addPeer(data.signal, data.from, data.chatType);
-    });
+    };
 
-    socket.on("all users", data => {
-      data.users.map(userID => {
+    const handleAllUsers = data => {
+      data.users.forEach(userID => {
         createPeer(userID, data.chatType);
       });
-    });
+    };
 
-    socket.on("hangup", payload => {
+    const handleHangup = payload => {
       removePeer(payload.from);
-    });
+    };
 
-    socket.on("receiving returned signal", payload => {
+    const handleReturnedSignal = payload => {
       setPeers(items =>
         items.map(item => {
           if (item.peerID == payload.from) {
@@ -117,7 +118,18 @@ const Room = () => {
           return item;
         })
       );
-    });
+    };
+
+    socket.on("user joined", handleUserJoined);
+    socket.on("all users", handleAllUsers);
+    socket.on("hangup", handleHangup);
+    socket.on("receiving returned signal", handleReturnedSignal);
+    return () => {
+      socket.off("user joined", handleUserJoined);
+      socket.off("all users", handleAllUsers);
+      socket.off("hangup", handleHangup);
+      socket.off("receiving returned signal", handleReturnedSignal);
+    };
   }, []);
 
   const createPeer = async (receiver, chatType) => {
@@ -137,7 +149,7 @@ const Room = () => {
     navigator.mediaDevices
       .getUserMedia({ video: booleanChatType, audio: true })
       .then(stream => {
-        const item = peers.find(p => p.peerID == receiver);
+        const item = peersRef.current.find(p => p.peerID == receiver);
         if (item) return;
         const peer = new Peer({
           initiator: true,
@@ -177,7 +189,7 @@ const Room = () => {
     navigator.mediaDevices
       .getUserMedia({ video: booleanChatType, audio: true })
       .then(stream => {
-        const item = peers.find(p => p.peerID == receiver);
+        const item = peersRef.current.find(p => p.peerID == receiver);
         if (item) return;
 
         const peer = new Peer({

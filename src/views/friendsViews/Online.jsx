@@ -81,7 +81,9 @@ const Online = () => {
                         </svg>
                       </div>
                       <div
-                        onClick={() => {
+                        onClick={e => {
+                          // Don't let the row's click open the chat as well
+                          e.stopPropagation();
                           handleUnfriend(friend);
                         }}
                       >

@@ -2,10 +2,9 @@ import React, { useState, useEffect, useContext, useLayoutEffect } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { SocketContext } from "controller/Context";
+import { SocketContext, url } from "controller/Context";
 
 import "assets/css/navbar.css";
-import axios from "axios";
 
 const Navbar = ({ show2, setShow2 }) => {
   const socket = useContext(SocketContext);
@@ -29,10 +28,6 @@ const Navbar = ({ show2, setShow2 }) => {
     if (location.pathname === rawNavigate) {
       setShow2(prv => !prv);
     }
-  };
-
-  const handleAddServerModal = e => {
-    setAddServerModal(true);
   };
 
   useEffect(() => {
@@ -105,7 +100,7 @@ const Navbar = ({ show2, setShow2 }) => {
                 >
                   {server.serverpicture ? (
                     <img
-                      src={`${process.env.REACT_APP_URL_PRODUCTION}/icon/server/${server.serverpicture}`}
+                      src={`${url}icon/server/${server.serverpicture}`}
                       style={{ width: "100%", height: "100%" }}
                     ></img>
                   ) : (

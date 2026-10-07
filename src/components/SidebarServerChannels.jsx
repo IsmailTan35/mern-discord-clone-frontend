@@ -25,7 +25,39 @@ const SidebarServerChannels = () => {
   const [server, setServer] = useState({});
   const serverId = location.pathname.split("/")[2];
 
-  async function addPeer(data, user, serverID, channel) {
+  // Every peer (and its microphone stream) of the current voice channel
+  const voicePeers = useRef([]);
+
+  const stopVoicePeers = () => {
+    voicePeers.current.forEach(({ peer, stream }) => {
+      stream.getTracks().forEach(track => track.stop());
+      peer.destroy();
+    });
+    voicePeers.current = [];
+  };
+
+  const trackVoicePeer = (peer, stream) => {
+    voicePeers.current.push({ peer, stream });
+    peer.on("stream", remoteStream => {
+      const audio = document.createElement("video");
+      audio.srcObject = remoteStream;
+      audio.play().catch(() => {});
+    });
+    peer.on("connect", () => {
+      console.info("connected");
+    });
+    // simple-peer throws on an "error" event nobody listens to
+    peer.on("error", error => {
+      console.error(error);
+    });
+    peer.on("close", () => {
+      stream.getTracks().forEach(track => track.stop());
+      voicePeers.current = voicePeers.current.filter(item => item.peer !== peer);
+    });
+  };
+
+  // Answers the offer of a member who joined after us
+  async function addPeer(data, serverID, channel) {
     try {
       const myPeerStream = await navigator.mediaDevices.getUserMedia({
         video: false,
@@ -36,13 +68,7 @@ const SidebarServerChannels = () => {
         trickle: false,
         stream: myPeerStream,
       });
-
-      peer.signal(data.signal);
-      peer.on("stream", stream => {
-        const audio = document.createElement("video");
-        audio.srcObject = stream;
-        audio.play();
-      });
+      trackVoicePeer(peer, myPeerStream);
 
       peer.on("signal", signal => {
         socket.emit("channelReturningSignal", {
@@ -53,9 +79,7 @@ const SidebarServerChannels = () => {
         });
       });
 
-      peer.on("connect", () => {
-        console.info("connected");
-      });
+      peer.signal(data.signal);
     } catch (error) {
       console.error(error);
     }
@@ -63,6 +87,9 @@ const SidebarServerChannels = () => {
 
   async function createPeer(serverID, channel) {
     try {
+      // Switching channels: drop the peers of the previous one
+      stopVoicePeers();
+
       socket.emit("joinVoiceChannel", {
         serverID,
         channelID: channel._id,
@@ -78,37 +105,28 @@ const SidebarServerChannels = () => {
         trickle: false,
         stream: myPeerStream,
       });
+      trackVoicePeer(peer, myPeerStream);
+      let answered = false;
 
-      socket.on("closeStreamDevices", data => {
-        peer.removeListener("stream", () => {});
-        peer.removeListener("signal", () => {});
-        peer.removeListener("stream", () => {});
+      // Replace the handlers of a previously joined channel instead of stacking them
+      socket.off("closeStreamDevices");
+      socket.off("userJoinedChannel");
+      socket.off("channelReturningSignalListener");
 
-        myPeerStream.getTracks().map(track => track.stop());
-        peer.streams[0].getTracks().map(track => track.stop());
-        peer.destroy();
-      });
-
-      peer.on("connect", () => {
-        console.info("connected");
+      socket.on("closeStreamDevices", () => {
+        stopVoicePeers();
       });
 
       socket.on("userJoinedChannel", data => {
         if (user.id == data._id) return;
-        addPeer(data, user, serverID, channel);
-
-        peer.signal(data.signal);
+        addPeer(data, serverID, channel);
       });
 
+      // A member already in the channel answered our offer
       socket.on("channelReturningSignalListener", data => {
-        if (user.id == data._id) return;
-        addPeer(data, user, serverID, channel);
-      });
-
-      peer.on("stream", stream => {
-        const audio = document.createElement("video");
-        audio.srcObject = stream;
-        audio.play();
+        if (user.id == data._id || answered || peer.destroyed) return;
+        answered = true;
+        peer.signal(data.signal);
       });
 
       peer.on("signal", signal => {
@@ -130,6 +148,10 @@ const SidebarServerChannels = () => {
       navigate(direction);
       return;
     }
+    const alreadyJoined = (channel.onlineUser || []).some(
+      onlineUser => onlineUser._id === user.id
+    );
+    if (alreadyJoined) return;
     createPeer(serverID, channel);
   };
 
@@ -229,7 +251,7 @@ const SidebarServerChannels = () => {
                             textTransform: "none",
                           }}
                         >
-                          {channel.onlineUser.map((user, index) => (
+                          {(channel.onlineUser || []).map((user, index) => (
                             <div key={index}>{user.username}</div>
                           ))}
                         </div>

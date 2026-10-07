@@ -72,7 +72,7 @@ const Panel = ({ show2, setShow2 }) => {
         .removeEventListener("mousedown", handler);
       document
         .getElementById("addServerModal")
-        .addEventListener("mousedown", handleAddServerModal);
+        .removeEventListener("mousedown", handleAddServerModal);
 
       document.removeEventListener("keydown", handler2);
     };

@@ -14,34 +14,23 @@ const FriendsChatHeader = () => {
   const [user, setUser] = useState({});
   const delay = { show: 50, hide: 0 };
 
+  // /channels/@me/:userId
   useEffect(() => {
     const parsedLocation = location.pathname.split("/");
-    const userId = parsedLocation[2];
-
-    if (parsedLocation.length != 4) return;
-    const data = userList.filter(user => user.id !== userId);
-
-    if (!data || data.length === 0) return;
-    setUser(data[0]);
-  }, [location, userList]);
-
-  useEffect(() => {
-    const parsedLocation = location.pathname.split("/");
-    const messageType = parsedLocation.includes("@me");
-    const hasUser = userList.filter(user => user.id !== parsedLocation[2]);
-
-    if (!messageType) return;
-    if (!hasUser || hasUser.length !== 0) return setUser(hasUser[0]);
+    if (parsedLocation.length != 4 || !parsedLocation.includes("@me")) return;
 
     const userId = parsedLocation[3];
+    const data = userList.find(user => user.id === userId);
+    if (data) return setUser(data);
 
+    setUser({});
     socket.emit("getUserInfo", {
       userId: userId,
     });
-  }, [location]);
+  }, [location, userList]);
 
   const startChat = chatType => {
-    if (!location.pathname.split("/").length == 3) return;
+    if (location.pathname.split("/").length !== 4) return;
     // const friend=friends.filter(friend => friend.id==location.pathname.split("/")[3])
     // if(friend.length>0){
     // }

@@ -11,6 +11,7 @@ import { RiLoginBoxFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userActions } from 'store';
+import axios from 'axios';
 
 const ESCAPE_KEYS = ['27', 'Escape'];
 
@@ -20,8 +21,11 @@ const Settings = ({data,setData}) => {
     const dispatch = useDispatch();
 
     const handleLogout = () => {
+        const token = localStorage.getItem("accessToken");
+        if (token) axios.post("/auth/logout", { token }).catch(() => {});
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        delete axios.defaults.headers.common["Authorization"];
         dispatch(userActions.delete())
         navigate("/auth/login");
     }

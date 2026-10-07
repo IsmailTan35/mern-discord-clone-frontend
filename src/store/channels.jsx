@@ -14,9 +14,7 @@ const { reducer, actions } = createSlice({
     update(state, action) {
       const { type, name, value } = action.payload;
       if (type == "remove") {
-        state[name] = state[name].filter(
-          user => user.name != value.name && user.code != value.code
-        );
+        state[name] = state[name].filter(item => item._id !== value._id);
       } else if (type == "add") {
         state[name] = [...state[name], ...[value]];
         state[name] = [
@@ -28,24 +26,20 @@ const { reducer, actions } = createSlice({
       const { type, name, value } = action.payload;
       const { serverID, channelID, username, code, _id } = value;
 
+      // A user can only be in one voice channel, so "remove" clears them everywhere
       if (type == "remove") {
         state[name] = state[name].map(item => ({
           ...item,
-          onlineUser: item.onlineUser.filter(user => user._id !== _id),
+          onlineUser: (item.onlineUser || []).filter(user => user._id !== _id),
         }));
       } else if (type == "add") {
         state[name] = state[name].map(item => {
-          item.onlineUser.push({
-            username,
-            code,
-            _id,
-          });
+          if (item._id !== channelID) return item;
+          const onlineUser = [...(item.onlineUser || []), { username, code, _id }];
           return {
             ...item,
             onlineUser: [
-              ...new Map(
-                item.onlineUser.map(item => [item._id, item])
-              ).values(),
+              ...new Map(onlineUser.map(user => [user._id, user])).values(),
             ],
           };
         });

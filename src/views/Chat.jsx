@@ -18,25 +18,22 @@ const Chat = () => {
   const channelList = useSelector(state => state.channels.items);
 
   useEffect(() => {
-    const userID = location.pathname.split("/")[2];
-    const channelID = location.pathname.split("/")[3];
+    // /channels/@me/:userId or /channels/:serverID/:channelID
     const parsedLocation = location.pathname.split("/");
+    const id = parsedLocation[3];
 
-    let data = {};
-    if (parsedLocation.includes("@me")) {
-      data = channelList.filter(user => user.id !== channelID);
-    } else {
-      data = userList.filter(user => user.id !== userID);
-    }
-    if (!data || data.length === 0) return;
-    setUser(data[0]);
+    const data = parsedLocation.includes("@me")
+      ? userList.find(user => user.id === id)
+      : channelList.find(channel => channel._id === id);
+    if (!data) return;
+    setUser(data);
   }, [location, userList, channelList]);
 
   useLayoutEffect(() => {
     const rawLocation = location.pathname.split("/");
     const messageType = rawLocation.includes("@me");
 
-    const userId = rawLocation[2];
+    const userId = rawLocation[3];
     const serverID = rawLocation[2];
     const channelID = rawLocation[3];
 

@@ -1,4 +1,4 @@
-import { createSlice, current  } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const { reducer, actions } = createSlice({
   name: 'message',
@@ -15,9 +15,7 @@ const { reducer, actions } = createSlice({
     update(state, action) {
       const {type, name, value } = action.payload;
         if(type=='remove'){
-            state[name]=state[name].filter(user => 
-              user.name != value.name && user.code != value.code
-            )
+            state[name]=state[name].filter(message => message._id !== value._id)
         }
         else if(type=='add'){
             state[name].push(value)
@@ -26,7 +24,9 @@ const { reducer, actions } = createSlice({
     overWrite(state, action) {
       const {name, value } = action.payload;
         state[name] = [...state[name], ...value]
-        state[name] = [...new Map(state[name].map(item=> [item.timestamps,item])).values()]
+        // Messages fetched later (history) may be older than the ones already shown
+        state[name] = [...new Map(state[name].map(item=> [item._id || item.messageId,item])).values()]
+          .sort((a, b) => new Date(a.timestamps) - new Date(b.timestamps))
     }
 
   }

@@ -14,7 +14,7 @@ const ChatMessage = ({ message }) => {
   const userList = useSelector(state => state.userList.items);
 
   useEffect(() => {
-    if (!myUser.id || !message.sender || userList.length <= 0) return;
+    if (!myUser.id || !message.sender) return;
     if (message.sender == myUser.id) {
       setUserName(myUser.name);
     } else {

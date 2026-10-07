@@ -32,6 +32,7 @@ const Register = () => {
             isLoading: false,
             autoClose: 1500,
           });
+          navigate("/auth/login");
         }, 500);
       })
       .catch(err => {

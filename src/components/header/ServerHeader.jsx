@@ -46,11 +46,7 @@ const ServerHeader = () => {
           delay={delay}
           overlay={props => <Tooltip {...props}>{`Alt Başlık`}</Tooltip>}
         >
-          <div
-            onClick={() => {
-              voiceChat();
-            }}
-          >
+          <div>
             <svg
               x="0"
               y="0"
@@ -77,11 +73,7 @@ const ServerHeader = () => {
           delay={delay}
           overlay={props => <Tooltip {...props}>{`Bildirim Ayarları`}</Tooltip>}
         >
-          <div
-            onClick={() => {
-              videoChat();
-            }}
-          >
+          <div>
             <svg
               x="0"
               y="0"

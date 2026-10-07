@@ -12,13 +12,21 @@ const CallerRequest = () => {
   const [receiver, setReceiver] = useState(null);
 
   useEffect(() => {
-    socket.on("callStarted", data => {
+    const handleCallStarted = data => {
       setReceiver(data);
-    });
-    socket.on("acceptedCall", data => {
+    };
+    const handleCallEnded = () => {
       setReceiver(null);
-    });
-  });
+    };
+    socket.on("callStarted", handleCallStarted);
+    socket.on("acceptedCall", handleCallEnded);
+    socket.on("rejectedCall", handleCallEnded);
+    return () => {
+      socket.off("callStarted", handleCallStarted);
+      socket.off("acceptedCall", handleCallEnded);
+      socket.off("rejectedCall", handleCallEnded);
+    };
+  }, []);
 
   const callCancel = () => {
     socket.emit("callCancel", receiver);

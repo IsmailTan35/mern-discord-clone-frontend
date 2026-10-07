@@ -17,9 +17,10 @@ const useAudio = url => {
   }, [playing]);
 
   useEffect(() => {
-    audio.addEventListener("ended", () => setPlaying(false));
+    const handleEnded = () => setPlaying(false);
+    audio.addEventListener("ended", handleEnded);
     return () => {
-      audio.removeEventListener("ended", () => setPlaying(false));
+      audio.removeEventListener("ended", handleEnded);
     };
   }, []);
 
@@ -58,14 +59,19 @@ const CallRequest = () => {
   }, [myStoreStream.calling]);
 
   useEffect(() => {
-    socket.on("callStarted", data => {
+    const handleCallStarted = data => {
       setReceiver(data);
-    });
-
-    socket.on("callCanceled", data => {
+    };
+    const handleCallCanceled = () => {
       dispatch(streamActions.delete());
-    });
-  });
+    };
+    socket.on("callStarted", handleCallStarted);
+    socket.on("callCanceled", handleCallCanceled);
+    return () => {
+      socket.off("callStarted", handleCallStarted);
+      socket.off("callCanceled", handleCallCanceled);
+    };
+  }, []);
   return (
     <>
       <div className="modal-container">
