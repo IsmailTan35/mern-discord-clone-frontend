@@ -13,6 +13,22 @@ import { ReactComponent as ScreenShareIcon } from "assets/img/stream/stream-2.sv
 import { ReactComponent as MicrophoneIcon } from "assets/img/stream/stream-3.svg";
 import { ReactComponent as HangupIcon } from "assets/img/stream/stream-4.svg";
 import hark from "hark";
+import {
+  applyOutputSettings,
+  getAudioConstraints,
+  getVideoConstraints,
+  getVoiceSettings,
+  requestUserMedia,
+  subscribeVoiceSettings,
+} from "common/voiceSettings";
+
+// Changing any of these in Settings swaps the microphone during a call
+const MICROPHONE_SETTINGS = [
+  "inputDeviceId",
+  "echoCancellation",
+  "noiseSuppression",
+  "autoGainControl",
+];
 
 import "assets/css/stream.css";
 
@@ -27,6 +43,14 @@ const streamEndEvent = new Event("streamEnd");
 const Video = ({ peer, mute }) => {
   const ref = useRef();
   const [speaking, setSpeaking] = useState(false);
+
+  // Speaker and volume from Settings > Voice & Video, also when they change mid-call
+  useEffect(() => {
+    applyOutputSettings(ref.current);
+    return subscribeVoiceSettings(settings =>
+      applyOutputSettings(ref.current, settings)
+    );
+  }, []);
 
   useEffect(() => {
     let isApiSubscribed = true;
@@ -94,6 +118,59 @@ const Room = () => {
       // close all media stream
     }
   }, [peers]);
+
+  // Replaces our outgoing microphone or camera on every connection without
+  // renegotiating, keeping its mute state
+  const switchLocalTrack = async kind => {
+    let replacement;
+    try {
+      replacement = await requestUserMedia(
+        kind === "audio"
+          ? { audio: getAudioConstraints(), video: false }
+          : { audio: false, video: getVideoConstraints() }
+      );
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+
+    const newTrack = replacement.getTracks()[0];
+    let used = false;
+    peersRef.current.forEach(item => {
+      const oldTrack = item.stream
+        .getTracks()
+        .find(track => track.kind === kind);
+      if (!oldTrack || item.peer.destroyed) return;
+      const track = used ? newTrack.clone() : newTrack;
+      track.enabled = oldTrack.enabled;
+      try {
+        item.peer.replaceTrack(oldTrack, track, item.stream);
+      } catch (error) {
+        console.error(error);
+        if (track !== newTrack) track.stop();
+        return;
+      }
+      used = true;
+      item.stream.removeTrack(oldTrack);
+      item.stream.addTrack(track);
+      oldTrack.stop();
+    });
+    if (!used) newTrack.stop();
+  };
+
+  useEffect(() => {
+    let last = getVoiceSettings();
+    return subscribeVoiceSettings(settings => {
+      const microphoneChanged = MICROPHONE_SETTINGS.some(
+        key => settings[key] !== last[key]
+      );
+      const cameraChanged = settings.videoDeviceId !== last.videoDeviceId;
+      last = settings;
+      if (peersRef.current.length === 0) return;
+      if (microphoneChanged) switchLocalTrack("audio");
+      if (cameraChanged) switchLocalTrack("video");
+    });
+  }, []);
   useEffect(() => {
     const handleUserJoined = data => {
       addPeer(data.signal, data.from, data.chatType);
@@ -146,8 +223,10 @@ const Room = () => {
       }
     }
 
-    navigator.mediaDevices
-      .getUserMedia({ video: booleanChatType, audio: true })
+    requestUserMedia({
+      video: booleanChatType ? getVideoConstraints() : false,
+      audio: getAudioConstraints(),
+    })
       .then(stream => {
         const item = peersRef.current.find(p => p.peerID == receiver);
         if (item) return;
@@ -186,8 +265,10 @@ const Room = () => {
         console.error(error);
       }
     }
-    navigator.mediaDevices
-      .getUserMedia({ video: booleanChatType, audio: true })
+    requestUserMedia({
+      video: booleanChatType ? getVideoConstraints() : false,
+      audio: getAudioConstraints(),
+    })
       .then(stream => {
         const item = peersRef.current.find(p => p.peerID == receiver);
         if (item) return;
@@ -240,31 +321,25 @@ const Room = () => {
     setMute(prv => !prv);
   };
 
-  const handleDisableMicrophone = () => {
+  // Mute/unmute our own outgoing tracks (peer.streams holds the remote side)
+  const toggleLocalTracks = kind => {
     if (!peers) return;
-
-    peers.map(item => {
-      if (!item.peer || !item.peer.streams || item.peer.streams.length <= 0)
-        return;
-      item.peer.streams[0].getTracks().map(track => {
-        if (track.kind === "audio") {
+    peers.forEach(item => {
+      if (!item.stream) return;
+      item.stream.getTracks().forEach(track => {
+        if (track.kind === kind) {
           track.enabled = !track.enabled;
         }
       });
     });
   };
 
+  const handleDisableMicrophone = () => {
+    toggleLocalTracks("audio");
+  };
+
   const handleDisableCamera = () => {
-    if (!peers) return;
-    peers.map(item => {
-      if (!item.peer || !item.peer.streams || item.peer.streams.length <= 0)
-        return;
-      item.peer.streams[0].getTracks().map(track => {
-        if (track.kind === "video") {
-          track.enabled = !track.enabled;
-        }
-      });
-    });
+    toggleLocalTracks("video");
   };
 
   const handleShareScreen = () => {

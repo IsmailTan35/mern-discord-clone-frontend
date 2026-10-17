@@ -13,6 +13,7 @@ import leaveSound from "assets/audio/discordLeave.mp3";
 
 import { channelsActions } from "store";
 import { toast } from "react-toastify";
+import { clearSpeaking, setSpeaking } from "controller/speaking";
 
 // Browsers reject play() until the user has interacted with the page
 const playSound = audio => {
@@ -214,6 +215,7 @@ const SocketController = () => {
       },
 
       leftUserVoiceChannelInChannel: data => {
+        setSpeaking(data._id, false);
         dispatch(
           channelsActions.mutationOnlineUser({
             type: "remove",
@@ -222,6 +224,21 @@ const SocketController = () => {
           })
         );
         playSound(discordLeave);
+      },
+
+      voiceSpeaking: data => {
+        // Our own ring is driven by the microphone directly, without the round trip
+        if (data.userId === userID) return;
+        setSpeaking(data.userId, data.speaking);
+      },
+
+      voiceScreenShare: data => {
+        dispatch(
+          channelsActions.setStreaming({
+            userId: data.userId,
+            streaming: data.sharing,
+          })
+        );
       },
     });
   }, [token, socket.connected, userID]);
@@ -232,6 +249,8 @@ const SocketController = () => {
 
     const unsubscribeSocket = subscribe(socket, {
       disconnect: () => {
+        // We no longer hear about others stopping, so drop every ring
+        clearSpeaking();
         toast.error("Server ile bağlantı kesildi.", {
           position: "bottom-right",
           autoClose: 5000,

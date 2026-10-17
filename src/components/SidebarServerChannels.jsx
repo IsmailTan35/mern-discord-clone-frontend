@@ -6,10 +6,43 @@ import { ReactComponent as VoiceIcon } from "assets/img/voiceIcon.svg";
 import { ReactComponent as AddIcon } from "assets/img/addIcon.svg";
 import { ReactComponent as ArrowIcon } from "assets/img/arrowIcon.svg";
 
+import { ReactComponent as Logo } from "assets/img/discordLogo.svg";
+
 import "assets/css/channels.css";
 import { useContext } from "react";
 import { SocketContext } from "controller/Context";
-import { joinVoiceChannel } from "controller/voiceChannel";
+import { joinVoiceChannel, watchStream } from "controller/voiceChannel";
+import { useSpeaking } from "controller/speaking";
+
+// Discord's default avatar colours, picked by the user's tag
+const AVATAR_COLORS = ["#5865f2", "#757e8a", "#3ba55c", "#faa61a", "#ed4245"];
+const avatarColor = code => AVATAR_COLORS[Math.abs(Number(code) || 0) % 5];
+
+const VoiceUser = ({ user, serverID, channelID }) => {
+  const speaking = useSpeaking(user._id);
+
+  const watch = () => {
+    if (!user.streaming) return;
+    watchStream({ userId: user._id, username: user.username, serverID, channelID });
+  };
+
+  return (
+    <div
+      className={`voice-user${user.streaming ? " streaming" : ""}`}
+      title={user.streaming ? "Yayını izle" : undefined}
+      onClick={watch}
+    >
+      <div
+        className={`voice-user-avatar${speaking ? " speaking" : ""}`}
+        style={{ backgroundColor: avatarColor(user.code) }}
+      >
+        <Logo />
+      </div>
+      <div className="voice-user-name">{user.username}</div>
+      {user.streaming && <div className="voice-user-live">CANLI</div>}
+    </div>
+  );
+};
 
 const SidebarServerChannels = () => {
   const location = useLocation();
@@ -17,6 +50,7 @@ const SidebarServerChannels = () => {
   const navigate = useNavigate();
   const serverList = useSelector(state => state.server.items);
   const channelList = useSelector(state => state.channels.items);
+  const userId = useSelector(state => state.user.id);
   const [server, setServer] = useState({});
   const serverId = location.pathname.split("/")[2];
 
@@ -26,7 +60,7 @@ const SidebarServerChannels = () => {
       navigate(direction);
       return;
     }
-    joinVoiceChannel(socket, serverID, channel._id);
+    joinVoiceChannel(socket, serverID, channel._id, userId);
   };
 
   useEffect(() => {
@@ -115,19 +149,18 @@ const SidebarServerChannels = () => {
                             {channel.channelname}
                           </div>
                         </div>
-                        <div
-                          style={{
-                            paddingLeft: 40,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 5,
-                            textTransform: "none",
-                          }}
-                        >
-                          {(channel.onlineUser || []).map((user, index) => (
-                            <div key={index}>{user.username}</div>
-                          ))}
-                        </div>
+                        {(channel.onlineUser || []).length > 0 && (
+                          <div className="voice-users">
+                            {channel.onlineUser.map(user => (
+                              <VoiceUser
+                                key={user._id}
+                                user={user}
+                                serverID={serverId}
+                                channelID={channel._id}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
                     );
                   })}

@@ -9,6 +9,7 @@ import Settings from "views/settings";
 import AddServerModal from "components/modal/AddServerModal";
 import CallRequest from "components/modal/callrequest";
 import CallerRequest from "components/modal/CallerRequest";
+import StreamViewer from "components/StreamViewer";
 
 const ESCAPE_KEYS = ["27", "Escape"];
 
@@ -88,6 +89,7 @@ const Panel = ({ show2, setShow2 }) => {
       <AddServerModal show={showAddServerModal} setShow={handleClick} />
       <CallRequest />
       <CallerRequest />
+      <StreamViewer />
     </>
   );
 };

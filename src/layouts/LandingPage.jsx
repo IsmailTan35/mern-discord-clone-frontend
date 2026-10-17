@@ -60,10 +60,8 @@ const LandingPage = () => {
                 {`...bir okul kulübünün, oyun grubunun veya dünya çapında bir sanat topluluğunun bir üyesi olabilirsin. Sadece sen ve arkadaşlarının vakit geçirebileceği bir yer. Her gün konuşmayı ve daha sık takılmayı kolaylaştıran bir ortam.`}
               </div>
               <div className="landing-buttons-wrapper">
-                <a
-                  href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
-                  target={"_blank"}
-                >
+                {/* Downloads are disabled: the button is only for show */}
+                <a>
                   <button className="landing-01-download-button">
                     Windows İçin İndir
                   </button>
@@ -144,10 +142,8 @@ const LandingPage = () => {
               style={{ flexDirection: "column", textAlign: "center" }}
             >
               <h4>{`Yolculuğuna başlamaya hazır mısın?`}</h4>
-              <a
-                href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
-                target={"_blank"}
-              >
+              {/* Downloads are disabled: the button is only for show */}
+              <a>
                 <button>{`Windows için indir`}</button>
               </a>
             </div>

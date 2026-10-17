@@ -62,3 +62,82 @@
 	background:rgba(79,84,92,0.6);
 	color:#fff;
 }
+
+/* Users connected to a voice channel */
+
+.voice-users{
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 2px 0 6px 28px;
+	text-transform: none;
+}
+
+.voice-user{
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	height: 30px;
+	padding: 0 8px;
+	border-radius: 4px;
+	color: #8e9297;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 18px;
+}
+
+.voice-user:hover{
+	background: rgba(79,84,92,0.32);
+	color: #dcddde;
+}
+
+.voice-user.streaming{
+	cursor: pointer;
+}
+
+.voice-user-avatar{
+	position: relative;
+	flex: 0 0 24px;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.voice-user-avatar svg{
+	width: 14px;
+	height: 10px;
+}
+
+/* Discord's speaking ring: green, with a thin gap in the sidebar colour */
+.voice-user-avatar.speaking::after{
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+	box-shadow: inset 0 0 0 2px #3ba55d, inset 0 0 0 3px #2f3136;
+}
+
+.voice-user-name{
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.voice-user-live{
+	flex: 0 0 auto;
+	height: 16px;
+	padding: 0 6px;
+	border-radius: 8px;
+	background: #ed4245;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 16px;
+	letter-spacing: .02em;
+	text-transform: uppercase;
+}

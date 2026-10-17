@@ -42,7 +42,7 @@
 
 .settings-primary-wrapper{
     background:#2F3136;
-    flex:1;
+    flex:1 0 218px;
     display: flex;
     justify-content: flex-end;
     padding-right: 10px;
@@ -69,8 +69,27 @@
 }
 
 .settings-secondary-wrapper{
-    flex:1 0 218px;
+    flex:1 1 800px;
     background:#36393F;
+    display: flex;
+    align-items: flex-start;
+    overflow-y: auto;
+}
+
+.settings-secondary-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.settings-secondary-wrapper::-webkit-scrollbar-thumb {
+    background: #202225;
+    border-radius: 4px;
+}
+
+.settings-secondary{
+    flex: 1 1 auto;
+    max-width: 740px;
+    min-width: 0;
+    padding: 60px 40px 80px;
 }
 
 .settings-divider{
@@ -146,6 +165,10 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    flex: 0 0 72px;
+    padding-top: 60px;
+    position: sticky;
+    top: 0;
 }
 
 .settings-close-icon{
@@ -165,6 +188,7 @@
         position: absolute;
         right: 20px;
         top: 20px;
+        padding-top: 0;
     }
     .settings-wrapper-active{
         position: relative;

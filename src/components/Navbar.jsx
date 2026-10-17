@@ -160,10 +160,8 @@ const Navbar = ({ show2, setShow2 }) => {
             )}
           >
             <div className="navbarAddUser">
-              <a
-                href="//discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86"
-                target={"_blank"}
-              >
+              {/* Downloads are disabled: the icon is only for show */}
+              <a>
                 <svg
                   aria-hidden="false"
                   width="24"

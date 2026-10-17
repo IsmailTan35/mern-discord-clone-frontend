@@ -21,7 +21,12 @@ import { useSelector } from "react-redux";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useContext } from "react";
 import { SocketContext } from "controller/Context";
-import { stopVoiceChannel } from "controller/voiceChannel";
+import {
+  startScreenShare,
+  stopScreenShare,
+  stopVoiceChannel,
+  useVoiceState,
+} from "controller/voiceChannel";
 
 import { ReactComponent as HangUp } from "assets/img/hangUp.svg";
 const delay = { show: 50, hide: 0 };
@@ -35,6 +40,7 @@ const Dashboard = ({ show2, setShow2 }) => {
   const userInfo = useSelector(state => state.user);
   const serverList = useSelector(state => state.server.items);
   const channelsList = useSelector(state => state.channels.items);
+  const voice = useVoiceState();
 
   useEffect(() => {
     const handleStreamStart = () => setStream(true);
@@ -219,7 +225,9 @@ const Dashboard = ({ show2, setShow2 }) => {
                   >
                     <div style={{ display: "flex", color: "#96989d" }}>
                       <div style={{ flex: "1 1" }}>
-                        <div style={{ color: "#3BA55D" }}>Voice Connected</div>
+                        <div style={{ color: "#3BA55D" }}>
+                          Ses Bağlantısı Kuruldu
+                        </div>
                         <div style={{ display: "flex", gap: 3 }}>
                           <div>{rawServer.servername}</div>
                           <div>/</div>
@@ -261,13 +269,22 @@ const Dashboard = ({ show2, setShow2 }) => {
                           flex: "1 1",
                           justifyContent: "center",
                           alignItems: "center",
-                          background: "#393C43",
+                          background: voice.sharing ? "#3BA55D" : "#393C43",
+                          color: voice.sharing ? "#fff" : undefined,
                           borderRadius: 5,
                           cursor: "pointer",
                           display: "flex",
                         }}
+                        title={
+                          voice.sharing
+                            ? "Ekran paylaşımını durdur"
+                            : "Ekranını paylaş"
+                        }
+                        onClick={
+                          voice.sharing ? stopScreenShare : startScreenShare
+                        }
                       >
-                        Screen
+                        {voice.sharing ? "Yayını Durdur" : "Ekran"}
                       </div>
                     </div>
                   </div>

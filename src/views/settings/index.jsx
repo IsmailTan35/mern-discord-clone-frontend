@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userActions } from 'store';
 import axios from 'axios';
+import VoiceVideo from './VoiceVideo';
 
 const ESCAPE_KEYS = ['27', 'Escape'];
 
@@ -128,6 +129,8 @@ const Settings = ({data,setData}) => {
                     </div>
                     <div className="settings-secondary-wrapper">
                         <div className="settings-secondary">
+                            {/* Mounted only while visible: the page holds the microphone open */}
+                            {data && selected === 12 && <VoiceVideo />}
                         </div>
                         <div className='settings-close-button'>
                             <IoCloseCircleOutline className='settings-close-icon' onClick={setData}/>

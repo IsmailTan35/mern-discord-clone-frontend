@@ -22,6 +22,16 @@ const { reducer, actions } = createSlice({
         ];
       }
     },
+    // Screen sharing in a voice channel ("LIVE" badge)
+    setStreaming(state, action) {
+      const { userId, streaming } = action.payload;
+      state.items = state.items.map(item => ({
+        ...item,
+        onlineUser: (item.onlineUser || []).map(user =>
+          user._id === userId ? { ...user, streaming } : user
+        ),
+      }));
+    },
     mutationOnlineUser(state, action) {
       const { type, name, value } = action.payload;
       const { serverID, channelID, username, code, _id } = value;
@@ -35,7 +45,10 @@ const { reducer, actions } = createSlice({
       } else if (type == "add") {
         state[name] = state[name].map(item => {
           if (item._id !== channelID) return item;
-          const onlineUser = [...(item.onlineUser || []), { username, code, _id }];
+          const onlineUser = [
+            ...(item.onlineUser || []),
+            { username, code, _id, streaming: !!value.streaming },
+          ];
           return {
             ...item,
             onlineUser: [
