@@ -51,12 +51,14 @@ const StreamViewer = () => {
     if (stream) video.play().catch(() => {});
   }, [stream]);
 
-  // The stream's sound follows the chosen speaker and volume
+  // The stream's sound follows the chosen speaker, volume and deafen button;
+  // our own stream stays muted so we do not hear ourselves twice
   useEffect(() => {
     if (!watching) return;
-    applyOutputSettings(videoRef.current);
+    const options = { muted: isMe };
+    applyOutputSettings(videoRef.current, undefined, options);
     return subscribeVoiceSettings(settings =>
-      applyOutputSettings(videoRef.current, settings)
+      applyOutputSettings(videoRef.current, settings, options)
     );
   }, [watching]);
 

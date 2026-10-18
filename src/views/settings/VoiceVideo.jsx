@@ -489,7 +489,8 @@ const MicTest = ({ mic, settings, disabled }) => {
     if (!testing || !mic) return;
     const audio = new Audio();
     audio.srcObject = mic.stream;
-    applyOutputSettings(audio, getVoiceSettings());
+    // The test is meant to be heard, even while deafened
+    applyOutputSettings(audio, getVoiceSettings(), { ignoreDeafen: true });
     audio.play().catch(() => {});
     audioRef.current = audio;
     return () => {
@@ -500,7 +501,7 @@ const MicTest = ({ mic, settings, disabled }) => {
   }, [testing, mic]);
 
   useEffect(() => {
-    applyOutputSettings(audioRef.current, settings);
+    applyOutputSettings(audioRef.current, settings, { ignoreDeafen: true });
   }, [settings.outputVolume, settings.outputDeviceId]);
 
   return (

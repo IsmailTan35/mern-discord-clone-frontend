@@ -18,9 +18,18 @@ import {
   getAudioConstraints,
   getVideoConstraints,
   getVoiceSettings,
+  isSelfMuted,
   requestUserMedia,
   subscribeVoiceSettings,
+  toggleSelfMute,
 } from "common/voiceSettings";
+
+// The user panel's mute / deafen buttons also apply to calls
+const applySelfMute = (stream, settings = getVoiceSettings()) => {
+  stream.getAudioTracks().forEach(track => {
+    track.enabled = !isSelfMuted(settings);
+  });
+};
 
 // Changing any of these in Settings swaps the microphone during a call
 const MICROPHONE_SETTINGS = [
@@ -165,8 +174,16 @@ const Room = () => {
         key => settings[key] !== last[key]
       );
       const cameraChanged = settings.videoDeviceId !== last.videoDeviceId;
+      const muteChanged =
+        settings.selfMute !== last.selfMute ||
+        settings.selfDeaf !== last.selfDeaf;
       last = settings;
       if (peersRef.current.length === 0) return;
+      if (muteChanged) {
+        peersRef.current.forEach(item => {
+          if (item.stream) applySelfMute(item.stream, settings);
+        });
+      }
       if (microphoneChanged) switchLocalTrack("audio");
       if (cameraChanged) switchLocalTrack("video");
     });
@@ -230,6 +247,7 @@ const Room = () => {
       .then(stream => {
         const item = peersRef.current.find(p => p.peerID == receiver);
         if (item) return;
+        applySelfMute(stream);
         const peer = new Peer({
           initiator: true,
           trickle: false,
@@ -272,6 +290,7 @@ const Room = () => {
       .then(stream => {
         const item = peersRef.current.find(p => p.peerID == receiver);
         if (item) return;
+        applySelfMute(stream);
 
         const peer = new Peer({
           initiator: false,
@@ -334,8 +353,9 @@ const Room = () => {
     });
   };
 
+  // Same as the mute button in the user panel, like in Discord
   const handleDisableMicrophone = () => {
-    toggleLocalTracks("audio");
+    toggleSelfMute();
   };
 
   const handleDisableCamera = () => {

@@ -232,6 +232,16 @@ const SocketController = () => {
         setSpeaking(data.userId, data.speaking);
       },
 
+      voiceState: data => {
+        dispatch(
+          channelsActions.setVoiceState({
+            userId: data.userId,
+            selfMute: data.selfMute,
+            selfDeaf: data.selfDeaf,
+          })
+        );
+      },
+
       voiceScreenShare: data => {
         dispatch(
           channelsActions.setStreaming({

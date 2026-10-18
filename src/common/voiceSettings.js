@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 const STORAGE_KEY = "voiceSettings";
 
 export const defaultVoiceSettings = {
@@ -14,6 +16,8 @@ export const defaultVoiceSettings = {
   echoCancellation: true,
   noiseSuppression: true,
   autoGainControl: true,
+  selfMute: false, // the microphone button in the user panel
+  selfDeaf: false, // the headphones button; also keeps the microphone off
 };
 
 // Threshold used while "determine input sensitivity automatically" is on
@@ -45,11 +49,38 @@ export const getVoiceSettings = () => settings;
 
 export const updateVoiceSettings = patch => commit({ ...settings, ...patch });
 
-export const resetVoiceSettings = () => commit({ ...defaultVoiceSettings });
+// Resetting the voice settings does not touch the mute/deafen buttons
+export const resetVoiceSettings = () =>
+  commit({
+    ...defaultVoiceSettings,
+    selfMute: settings.selfMute,
+    selfDeaf: settings.selfDeaf,
+  });
+
+export const isSelfMuted = (s = settings) => s.selfMute || s.selfDeaf;
+
+// Like Discord, un-muting while deafened also undeafens
+export const toggleSelfMute = () =>
+  settings.selfDeaf
+    ? updateVoiceSettings({ selfMute: false, selfDeaf: false })
+    : updateVoiceSettings({ selfMute: !settings.selfMute });
+
+// Undeafening brings the microphone back to how it was before
+export const toggleSelfDeaf = () =>
+  updateVoiceSettings({ selfDeaf: !settings.selfDeaf });
 
 export const subscribeVoiceSettings = listener => {
   listeners.add(listener);
   return () => listeners.delete(listener);
+};
+
+export const useVoiceSettings = () => {
+  const [value, setValue] = useState(getVoiceSettings);
+  useEffect(() => {
+    setValue(getVoiceSettings());
+    return subscribeVoiceSettings(setValue);
+  }, []);
+  return value;
 };
 
 // `exact` is required: Chrome treats an `ideal` deviceId as a mere preference
@@ -106,9 +137,16 @@ export const canChooseOutputDevice = () =>
 // Media elements top out at 100%, so the upper half of the 200% slider is
 // capped here. Boosting through Web Audio would bypass the browser's echo
 // cancellation for remote voices.
-export const applyOutputSettings = (element, s = settings) => {
+// Deafened, every incoming sound is silenced. `muted` keeps an element silent
+// anyway (e.g. our own stream preview); `ignoreDeafen` is for the mic test.
+export const applyOutputSettings = (
+  element,
+  s = settings,
+  { muted = false, ignoreDeafen = false } = {}
+) => {
   if (!element) return;
   element.volume = Math.min(s.outputVolume, 100) / 100;
+  element.muted = muted || (!ignoreDeafen && !!s.selfDeaf);
   if (canChooseOutputDevice()) {
     element
       .setSinkId(s.outputDeviceId === "default" ? "" : s.outputDeviceId)

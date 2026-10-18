@@ -191,15 +191,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    margin-right: 5px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 4px;
     cursor: pointer;
-    
+    color: #b9bbbe;
+}
+.dashboard-sidebar-section-buttons button:hover{
+    background: rgba(79,84,92,0.32);
+    color: #dcddde;
 }
 .dashboard-sidebar-section-buttons button svg{
-    color: #72767D;
+    color: inherit;
 }
 
 .dashboard-panel-header-absolute-button{

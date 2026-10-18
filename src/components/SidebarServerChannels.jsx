@@ -13,6 +13,7 @@ import { useContext } from "react";
 import { SocketContext } from "controller/Context";
 import { joinVoiceChannel, watchStream } from "controller/voiceChannel";
 import { useSpeaking } from "controller/speaking";
+import { HeadphonesIcon, MicrophoneIcon } from "components/VoiceIcons";
 
 // Discord's default avatar colours, picked by the user's tag
 const AVATAR_COLORS = ["#5865f2", "#757e8a", "#3ba55c", "#faa61a", "#ed4245"];
@@ -40,6 +41,18 @@ const VoiceUser = ({ user, serverID, channelID }) => {
       </div>
       <div className="voice-user-name">{user.username}</div>
       {user.streaming && <div className="voice-user-live">CANLI</div>}
+      {(user.selfMute || user.selfDeaf) && (
+        <div className="voice-user-icons">
+          <span title="Susturuldu">
+            <MicrophoneIcon muted size={16} strike="currentColor" />
+          </span>
+          {user.selfDeaf && (
+            <span title="Sağırlaştırıldı">
+              <HeadphonesIcon deafened size={16} strike="currentColor" />
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 };

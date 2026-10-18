@@ -22,6 +22,16 @@ const { reducer, actions } = createSlice({
         ];
       }
     },
+    // Mute / deafen icons of a user in a voice channel
+    setVoiceState(state, action) {
+      const { userId, selfMute, selfDeaf } = action.payload;
+      state.items = state.items.map(item => ({
+        ...item,
+        onlineUser: (item.onlineUser || []).map(user =>
+          user._id === userId ? { ...user, selfMute, selfDeaf } : user
+        ),
+      }));
+    },
     // Screen sharing in a voice channel ("LIVE" badge)
     setStreaming(state, action) {
       const { userId, streaming } = action.payload;
@@ -47,7 +57,14 @@ const { reducer, actions } = createSlice({
           if (item._id !== channelID) return item;
           const onlineUser = [
             ...(item.onlineUser || []),
-            { username, code, _id, streaming: !!value.streaming },
+            {
+              username,
+              code,
+              _id,
+              streaming: !!value.streaming,
+              selfMute: !!value.selfMute,
+              selfDeaf: !!value.selfDeaf,
+            },
           ];
           return {
             ...item,

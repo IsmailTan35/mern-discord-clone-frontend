@@ -141,3 +141,14 @@
 	letter-spacing: .02em;
 	text-transform: uppercase;
 }
+
+.voice-user-icons{
+	flex: 0 0 auto;
+	display: flex;
+	gap: 4px;
+	color: #b9bbbe;
+}
+
+.voice-user-icons span{
+	display: flex;
+}

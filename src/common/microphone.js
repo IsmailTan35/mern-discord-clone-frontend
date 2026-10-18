@@ -91,6 +91,13 @@ export const attachInputMode = (mic, onSpeakingChange = () => {}) => {
 
   const tick = setInterval(() => {
     const s = getVoiceSettings();
+    // Muted or deafened with the user panel buttons: send nothing
+    if (s.selfMute || s.selfDeaf) {
+      mic.setTransmitting(false);
+      lastVoiceAt = 0;
+      report(false);
+      return;
+    }
     const now = Date.now();
     const level = mic.getLevel();
     if (s.inputMode === "pushToTalk") {

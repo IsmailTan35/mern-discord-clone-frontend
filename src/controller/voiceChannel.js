@@ -192,7 +192,17 @@ const handleSettingsChange = settings => {
   const microphoneChanged = MICROPHONE_SETTINGS.some(
     key => settings[key] !== lastSettings[key]
   );
+  const muteChanged =
+    settings.selfMute !== lastSettings.selfMute ||
+    settings.selfDeaf !== lastSettings.selfDeaf;
   lastSettings = settings;
+  // Shown to the others as icons next to our name
+  if (muteChanged && voiceSocket && current) {
+    voiceSocket.emit("voiceState", {
+      selfMute: settings.selfMute,
+      selfDeaf: settings.selfDeaf,
+    });
+  }
   if (microphoneChanged) restartMicrophone(settings);
 };
 
@@ -353,6 +363,11 @@ export const joinVoiceChannel = async (socket, serverID, channelID, userId) => {
   unsubscribeSettings = subscribeVoiceSettings(handleSettingsChange);
 
   current = { serverID, channelID };
-  socket.emit("joinVoiceChannel", { serverID, channelID });
+  socket.emit("joinVoiceChannel", {
+    serverID,
+    channelID,
+    selfMute: lastSettings.selfMute,
+    selfDeaf: lastSettings.selfDeaf,
+  });
   notify();
 };
