@@ -1,0 +1,154 @@
+.account{
+    max-width: 660px;
+    padding: 60px 40px 80px;
+    color: #b9bbbe;
+}
+
+.account-title{
+    margin: 0 0 20px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.account-card{
+    overflow: hidden;
+    background: #202225;
+    border-radius: 8px;
+}
+
+.account-banner{
+    height: 100px;
+    background: #5865f2;
+}
+
+.account-profile{
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    padding: 0 16px;
+    margin-top: -38px;
+}
+
+.account-avatar{
+    padding: 6px;
+    background: #202225;
+    border-radius: 50%;
+}
+
+.account-avatar .dashboard-sidebar-section-avatar{
+    width: 80px;
+    height: 80px;
+    margin: 0;
+}
+
+.account-avatar .dashboard-sidebar-section-avatar svg{
+    width: 44px !important;
+    height: 32px !important;
+}
+
+.account-avatar .dashboard-sidebar-section-avatar-state{
+    width: 20px;
+    height: 20px;
+    right: 2px;
+    bottom: 2px;
+    box-shadow: 0 0 0 5px #202225;
+}
+
+.account-name{
+    padding-bottom: 12px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.account-code{
+    color: #b9bbbe;
+    font-weight: 400;
+}
+
+.account-fields{
+    margin: 16px;
+    padding: 16px;
+    background: #2f3136;
+    border-radius: 8px;
+}
+
+.account-field{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.account-field + .account-field{
+    margin-top: 24px;
+}
+
+.account-field-label{
+    margin-bottom: 4px;
+    color: #b9bbbe;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.account-field-value{
+    color: #fff;
+    font-size: 16px;
+    overflow-wrap: anywhere;
+}
+
+.account-reveal{
+    margin-left: 6px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #00aff4;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.account-reveal:hover{
+    text-decoration: underline;
+}
+
+.account-edit{
+    flex: 0 0 auto;
+    height: 32px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 3px;
+    background: #4f545c;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.account-edit:hover{
+    background: #5d6269;
+}
+
+.account-divider{
+    height: 1px;
+    margin: 40px 0;
+    background: rgba(79, 84, 92, .48);
+}
+
+.account-heading{
+    margin: 0 0 16px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.account-note{
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.account-form-error{
+    color: #fa777c;
+    font-size: 14px;
+}

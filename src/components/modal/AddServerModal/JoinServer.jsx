@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactComponent as ArrowIcon } from "assets/img/arrowIcon.svg";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const JoinServer = ({ setStep, setShow }) => {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const example = `${window.location.origin}/invite/hTKzmak`;
   const handleBack = e => {
     e.preventDefault();
     setStep(step => step - 1);
@@ -21,9 +25,19 @@ const JoinServer = ({ setStep, setShow }) => {
       })
       .then(res => {
         e.target.reset();
+        setError("");
         setShow(false);
+        if (res.data && res.data.serverID && res.data.channelID)
+          navigate(`/channels/${res.data.serverID}/${res.data.channelID}`);
       })
-      .catch(err => {});
+      .catch(err => {
+        const message = err.response && err.response.data;
+        setError(
+          message === "Already a member"
+            ? "Zaten bu sunucunun üyesisin."
+            : "Davet geçersiz ya da süresi dolmuş."
+        );
+      });
   };
 
   return (
@@ -40,12 +54,14 @@ const JoinServer = ({ setStep, setShow }) => {
           </div>
 
           <div className="modal-input-wrapper">
-            <h5 className="modal-input-label">Davet Bağlantısı</h5>
+            <h5 className="modal-input-label" style={error ? { color: "#ed4245" } : undefined}>
+              Davet Bağlantısı{error ? ` - ${error}` : ""}
+            </h5>
             <div>
               <input
                 name="inviteCode"
                 type="text"
-                placeholder="https://discord.gg/hTKzmak"
+                placeholder={example}
                 className="modal-input"
                 // onChange={handleChange}
               />
@@ -54,8 +70,7 @@ const JoinServer = ({ setStep, setShow }) => {
           <div className="modal-term" style={{ flexDirection: "column" }}>
             <h5>Davetler Şöyle Görünür</h5>
             <div>hTKzmak</div>
-            <div>https://discord.gg/hTKzmak</div>
-            <div>https://discord.gg/cool-people</div>
+            <div>{example}</div>
           </div>
           <div className="modal-create-buttons" style={{ height: "auto" }}>
             <button

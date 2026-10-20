@@ -10,22 +10,22 @@ import {
   updateVoiceSettings,
 } from "common/voiceSettings";
 import {
+  attachInputMode,
   getSensitivityThreshold,
   MIN_DB,
   openMicrophone,
 } from "common/microphone";
 
+import { defaultOption, useMediaDevices, watchInputDevice } from "common/mediaDevices";
+import {
+  CameraIcon,
+  HeadphonesIcon,
+  MicrophoneIcon,
+} from "components/VoiceIcons";
+
 import "assets/css/voicevideo.css";
 
 const NOTCH_COUNT = 50;
-
-// Chrome labels the system default as "Default - <device>"; show which device
-// that really is, since a wrong Windows default is easy to miss otherwise
-const DEFAULT_PREFIX = /^(default|varsayılan)\s*-\s*/i;
-const defaultOption = deviceName => ({
-  value: "default",
-  label: deviceName ? `Varsayılan (${deviceName})` : "Varsayılan",
-});
 
 // Devices that record what the computer plays instead of a microphone
 const LOOPBACK_DEVICE =
@@ -41,76 +41,20 @@ const useVoiceSettings = () => {
   return settings;
 };
 
-// Device labels are only visible once the page has media permission, so the
-// list is read again whenever `refreshKey` changes
-const useMediaDevices = refreshKey => {
-  const [devices, setDevices] = useState({
-    audioinput: [],
-    audiooutput: [],
-    videoinput: [],
-    defaults: {},
-  });
-
-  useEffect(() => {
-    const mediaDevices = navigator.mediaDevices;
-    if (!mediaDevices || !mediaDevices.enumerateDevices) return;
-    let active = true;
-
-    const load = () => {
-      mediaDevices
-        .enumerateDevices()
-        .then(list => {
-          if (!active) return;
-          const grouped = {
-            audioinput: [],
-            audiooutput: [],
-            videoinput: [],
-            defaults: {},
-          };
-          list.forEach(device => {
-            const group = grouped[device.kind];
-            if (!group || !device.deviceId) return;
-            // Chrome adds the system defaults as extra "default"/"communications" entries
-            if (device.deviceId === "default") {
-              grouped.defaults[device.kind] = device.label.replace(
-                DEFAULT_PREFIX,
-                ""
-              );
-              return;
-            }
-            if (device.deviceId === "communications") return;
-            group.push({
-              value: device.deviceId,
-              label: device.label || `Cihaz ${group.length + 1}`,
-            });
-          });
-          setDevices(grouped);
-        })
-        .catch(() => {});
-    };
-
-    load();
-    mediaDevices.addEventListener("devicechange", load);
-    return () => {
-      active = false;
-      mediaDevices.removeEventListener("devicechange", load);
-    };
-  }, [refreshKey]);
-
-  return devices;
-};
-
 // Like Discord, the microphone stays open while this page is visible: it feeds
 // the level meters and the mic test
 const useMicrophone = settings => {
   const [mic, setMic] = useState(null);
   const [status, setStatus] = useState("pending"); // pending | ready | denied | failed
+  // Bumped when the open device goes away, to open the microphone again
+  const [reopen, setReopen] = useState(0);
   const { inputDeviceId, echoCancellation, noiseSuppression, autoGainControl } =
     settings;
 
   useEffect(() => {
     let cancelled = false;
     let opened = null;
+    let unwatch = () => {};
     // The previous microphone is being closed; never show its stale level
     setMic(null);
     openMicrophone(getVoiceSettings())
@@ -120,6 +64,11 @@ const useMicrophone = settings => {
           return;
         }
         opened = result;
+        unwatch = watchInputDevice(
+          result.rawStream.getAudioTracks()[0],
+          () => getVoiceSettings().inputDeviceId,
+          () => setReopen(count => count + 1)
+        );
         setMic(result);
         setStatus("ready");
       })
@@ -133,9 +82,10 @@ const useMicrophone = settings => {
       });
     return () => {
       cancelled = true;
+      unwatch();
       if (opened) opened.stop();
     };
-  }, [inputDeviceId, echoCancellation, noiseSuppression, autoGainControl]);
+  }, [inputDeviceId, echoCancellation, noiseSuppression, autoGainControl, reopen]);
 
   useEffect(() => {
     if (mic) mic.setVolume(settings.inputVolume);
@@ -182,16 +132,19 @@ const ChevronIcon = () => (
   </svg>
 );
 
-const CheckIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24">
+// The selected item's mark: a white tick in a filled circle
+const SelectedMark = () => (
+  <svg className="vv-select-check" width="20" height="20" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" fill="currentColor" />
     <path
-      fill="currentColor"
-      d="M8.99991 16.17L4.82991 12L3.40991 13.41L8.99991 19L20.9999 7.00003L19.5899 5.59003L8.99991 16.17Z"
+      fill="#fff"
+      d="M10.4 15.6L7 12.2l1.4-1.4 2 2 5.2-5.2 1.4 1.4-6.6 6.6z"
     />
   </svg>
 );
 
-const Select = ({ value, options, onChange, disabled }) => {
+// Device lists: an icon, the device name and, below it, its endpoint name
+const Select = ({ value, options, onChange, disabled, icon: Icon }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   const selected = options.find(option => option.value === value) || options[0];
@@ -218,7 +171,10 @@ const Select = ({ value, options, onChange, disabled }) => {
         disabled={disabled}
         onClick={() => setOpen(prev => !prev)}
       >
-        <span className="vv-select-label">{selected && selected.label}</span>
+        {Icon && <Icon />}
+        <span className="vv-select-label">
+          {selected && (selected.title || selected.label)}
+        </span>
         <ChevronIcon />
       </button>
       {open && (
@@ -228,6 +184,7 @@ const Select = ({ value, options, onChange, disabled }) => {
               key={option.value}
               role="option"
               aria-selected={option.value === value}
+              title={option.label}
               className={`vv-select-option${
                 option.value === value ? " selected" : ""
               }`}
@@ -236,8 +193,16 @@ const Select = ({ value, options, onChange, disabled }) => {
                 setOpen(false);
               }}
             >
-              <span className="vv-select-label">{option.label}</span>
-              {option.value === value && <CheckIcon />}
+              {Icon && <Icon />}
+              <span className="vv-select-text">
+                <span className="vv-select-label">
+                  {option.title || option.label}
+                </span>
+                {option.subtitle && (
+                  <span className="vv-select-subtitle">{option.subtitle}</span>
+                )}
+              </span>
+              {option.value === value && <SelectedMark />}
             </div>
           ))}
         </div>
@@ -484,9 +449,13 @@ const MicTest = ({ mic, settings, disabled }) => {
     if (disabled) setTesting(false);
   }, [disabled]);
 
-  // Plays the processed voice back, like Discord's test does
+  // Plays back what the others would hear, like Discord's test: the input
+  // sensitivity threshold and push-to-talk gate it exactly as in a call
   useEffect(() => {
     if (!testing || !mic) return;
+    const detachInputMode = attachInputMode(mic, undefined, {
+      ignoreSelfMute: true,
+    });
     const audio = new Audio();
     audio.srcObject = mic.stream;
     // The test is meant to be heard, even while deafened
@@ -494,6 +463,8 @@ const MicTest = ({ mic, settings, disabled }) => {
     audio.play().catch(() => {});
     audioRef.current = audio;
     return () => {
+      detachInputMode();
+      mic.setTransmitting(true);
       audio.pause();
       audio.srcObject = null;
       audioRef.current = null;
@@ -714,6 +685,7 @@ const VoiceVideo = () => {
           <Select
             value={settings.inputDeviceId}
             options={[defaultOption(devices.defaults.audioinput), ...devices.audioinput]}
+            icon={MicrophoneIcon}
             onChange={value => updateVoiceSettings({ inputDeviceId: value })}
           />
         </div>
@@ -726,6 +698,7 @@ const VoiceVideo = () => {
               ...(outputSupported ? devices.audiooutput : []),
             ]}
             disabled={!outputSupported}
+            icon={HeadphonesIcon}
             onChange={value => updateVoiceSettings({ outputDeviceId: value })}
           />
         </div>
@@ -874,6 +847,7 @@ const VoiceVideo = () => {
           <Select
             value={settings.videoDeviceId}
             options={[defaultOption(devices.defaults.videoinput), ...devices.videoinput]}
+            icon={CameraIcon}
             onChange={value => updateVoiceSettings({ videoDeviceId: value })}
           />
         </div>
@@ -898,7 +872,7 @@ const VoiceVideo = () => {
       />
       <SwitchRow
         title="Gürültü Azaltma"
-        note="Arka plandaki fan, klavye ve uğultu gibi sesleri bastırır."
+        note="Yapay zekâ ile (RNNoise) klavye, fan, uğultu ve arka plan müziğini bastırır ve sadece insan sesi aralığını (100 Hz - 7 kHz) iletir. Hoparlörden gelen konuşmaları (dizi, video) ayıramaz; bunun için kulaklık kullan."
         checked={settings.noiseSuppression}
         onChange={value => updateVoiceSettings({ noiseSuppression: value })}
       />

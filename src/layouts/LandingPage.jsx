@@ -1,10 +1,41 @@
 import "assets/css/landing-page.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  // A saved session goes straight into the app, like Discord's "Open Discord"
+  const [loggedIn, setLoggedIn] = useState(
+    () => !!localStorage.getItem("accessToken")
+  );
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+    let active = true;
+    axios
+      .post("/auth/check", { userAccessToken: token })
+      .then(() => {
+        if (active) setLoggedIn(true);
+      })
+      .catch(err => {
+        // An expired or invalid session needs a new login; network errors keep the guess
+        if (active && err.response && [401, 403].includes(err.response.status)) {
+          setLoggedIn(false);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const handleClick = url => {
     navigate(url);
+  };
+
+  const openApp = () => {
+    handleClick(loggedIn ? "/channels/@me" : "/auth/login");
   };
   return (
     <>
@@ -41,11 +72,9 @@ const LandingPage = () => {
               <div className="landing-navbar-login-wrapper">
                 <button
                   className="landing-navbar-login-button"
-                  onClick={() => {
-                    handleClick("/auth/login");
-                  }}
+                  onClick={openApp}
                 >
-                  Giriş
+                  {loggedIn ? "Discord'u Aç" : "Giriş"}
                 </button>
               </div>
             </div>
@@ -66,13 +95,8 @@ const LandingPage = () => {
                     Windows İçin İndir
                   </button>
                 </a>
-                <button
-                  className="landing-01-open-button"
-                  onClick={() => {
-                    handleClick("/auth/login");
-                  }}
-                >
-                  Discord tarayısından aç
+                <button className="landing-01-open-button" onClick={openApp}>
+                  Discord'u tarayıcında aç
                 </button>
               </div>
             </div>

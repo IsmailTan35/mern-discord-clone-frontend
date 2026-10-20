@@ -1,0 +1,116 @@
+.server-menu{
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+}
+
+.server-menu-button{
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+    border: none;
+    background: none;
+    text-align: left;
+}
+
+.server-menu-button.open{
+    background: hsla(217, 7.6%, 33.5%, .3);
+}
+
+.server-menu-name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.server-menu-popout{
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 10px;
+    right: 10px;
+    z-index: 100;
+    padding: 6px 8px;
+    background: #18191c;
+    border-radius: 4px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .24);
+}
+
+.server-menu-item{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2px 0;
+    padding: 6px 8px;
+    border: none;
+    border-radius: 2px;
+    background: none;
+    color: #b9bbbe;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+}
+
+.server-menu-item:hover{
+    background: #4752c4;
+    color: #fff;
+}
+
+.server-menu-item.invite{
+    color: #949cf7;
+}
+
+.server-menu-item.invite:hover{
+    color: #fff;
+}
+
+.server-menu-separator{
+    height: 1px;
+    margin: 4px;
+    background: rgba(79, 84, 92, .48);
+}
+
+.invite-server-name{
+    color: #fff;
+    font-weight: 700;
+}
+
+.invite-link{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    background: #202225;
+    border: 1px solid rgba(0, 0, 0, .3);
+    border-radius: 3px;
+}
+
+.invite-link.copied{
+    border-color: #3ba55d;
+}
+
+.invite-link-input{
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 32px;
+    padding: 0 8px;
+    border: none;
+    outline: none;
+    background: none;
+    color: #dcddde;
+    font-size: 15px;
+}
+
+.invite-link .dmodal-button{
+    min-width: 75px;
+    height: 32px;
+}
+
+.invite-note{
+    margin-top: 8px;
+    color: #b9bbbe;
+    font-size: 12px;
+}

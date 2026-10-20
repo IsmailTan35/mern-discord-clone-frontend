@@ -13,11 +13,24 @@ import { useDispatch } from 'react-redux';
 import { userActions } from 'store';
 import axios from 'axios';
 import VoiceVideo from './VoiceVideo';
+import Account from './Account';
+import { SETTINGS_TABS } from 'common/settingsEvents';
 
 const ESCAPE_KEYS = ['27', 'Escape'];
 
-const Settings = ({data,setData}) => {
-    const [selected, setSelected] = useState(1);
+// Menu items that have a page so far; the others are shown disabled
+const PAGES = {
+    [SETTINGS_TABS.account]: Account,
+    [SETTINGS_TABS.voiceVideo]: VoiceVideo,
+};
+
+const Settings = ({data,setData,tab}) => {
+    const [selected, setSelected] = useState(SETTINGS_TABS.account);
+
+    // Opened on a given tab, e.g. "Voice Settings" in the device menus
+    useEffect(() => {
+        if (data && PAGES[tab]) setSelected(tab);
+    }, [data, tab]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -69,6 +82,7 @@ const Settings = ({data,setData}) => {
     const handleClick = (key) => {
         setSelected(key)
     }
+    const Page = PAGES[selected];
     
     useEffect(() => {
         if(!data) return
@@ -96,10 +110,14 @@ const Settings = ({data,setData}) => {
                                         {item.head}
                                     </div>}
                                     <div className="settings-primary-item-items">
-                                        {item.items.map((i, index2) => (
-                                            <div className={`settings-primary-item-item${selected===i.key?"-active":""}`} 
-                                                key={index2} 
-                                                onClick={()=>{i.click ? i.click() : handleClick(i.key)}}>
+                                        {item.items.map((i, index2) => {
+                                            const enabled = !!i.click || !!PAGES[i.key];
+                                            return (
+                                            <div className={`settings-primary-item-item${selected===i.key?"-active":""}${enabled?"":" disabled"}`}
+                                                key={index2}
+                                                aria-disabled={!enabled}
+                                                title={enabled ? undefined : "Yakında"}
+                                                onClick={enabled ? ()=>{i.click ? i.click() : handleClick(i.key)} : undefined}>
                                                 <div className="settings-primary-item-item-value">
                                                     {i.value}
                                                 </div>
@@ -107,15 +125,16 @@ const Settings = ({data,setData}) => {
                                                     {i.icon}
                                                 </div>
                                             </div>
-                                        )
-                                        )}
+                                            );
+                                        })}
                                     </div>
                                 </div>
                                 <div className='settings-divider'/>
                                 </div>
                             )
                             )}
-                            <div className='settings-social'>
+                            {/* Not linked anywhere yet */}
+                            <div className='settings-social disabled' aria-disabled="true" title="Yakında">
                                 <IoLogoTwitter className='settings-social-icon'/>
                                 <IoLogoFacebook className='settings-social-icon'/>
                                 <IoLogoInstagram className='settings-social-icon'/>
@@ -129,8 +148,8 @@ const Settings = ({data,setData}) => {
                     </div>
                     <div className="settings-secondary-wrapper">
                         <div className="settings-secondary">
-                            {/* Mounted only while visible: the page holds the microphone open */}
-                            {data && selected === 12 && <VoiceVideo />}
+                            {/* Mounted only while visible: the voice page holds the microphone open */}
+                            {data && Page && <Page />}
                         </div>
                         <div className='settings-close-button'>
                             <IoCloseCircleOutline className='settings-close-icon' onClick={setData}/>

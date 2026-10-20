@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getRedirect, withRedirect } from "common/redirect";
 import { toast } from "react-toastify";
 
 const Register = () => {
   const navigate = useNavigate();
+  // e.g. back to the invite link that sent us here
+  const redirect = getRedirect(useLocation().search);
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -32,7 +35,7 @@ const Register = () => {
             isLoading: false,
             autoClose: 1500,
           });
-          navigate("/auth/login");
+          navigate(withRedirect("/auth/login", redirect));
         }, 500);
       })
       .catch(err => {
@@ -127,7 +130,7 @@ const Register = () => {
         <span
           className="auth-links-button"
           onClick={() => {
-            handleUrl("/auth/login");
+            handleUrl(withRedirect("/auth/login", redirect));
           }}
         >
           {"Zaten Hesabın var mı?"}

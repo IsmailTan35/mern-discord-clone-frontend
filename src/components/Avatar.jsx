@@ -1,27 +1,44 @@
-import {useSelector} from 'react-redux';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import AvatarPicture from './AvatarPicture';
-import { HeadphonesIcon, MicrophoneIcon } from './VoiceIcons';
+import DeviceMenu from './DeviceMenu';
+import {
+    ChevronIcon,
+    HeadphonesIcon,
+    InVoiceIcon,
+    MicrophoneIcon,
+    SettingsIcon,
+} from './VoiceIcons';
 import {
     toggleSelfDeaf,
     toggleSelfMute,
     useVoiceSettings,
 } from 'common/voiceSettings';
+import { useVoiceState } from 'controller/voiceChannel';
+import { openSettings } from 'common/settingsEvents';
+
+import 'assets/css/userpanel.css';
 
 const delay = { show: 50, hide: 0 };
 
-const PanelButton = ({ label, active, onClick, children, id }) => (
+// `hideTooltip`: no tooltip while the button's own menu is open
+const PanelButton = ({ label, active, onClick, children, id, className, hideTooltip }) => (
     <OverlayTrigger
         placement="top"
         delay={delay}
-        overlay={props => <Tooltip {...props}>{label}</Tooltip>}
+        overlay={props => (
+            <Tooltip {...props} style={hideTooltip ? { ...props.style, display: 'none' } : props.style}>
+                {label}
+            </Tooltip>
+        )}
     >
         <button
             type="button"
             id={id}
             aria-label={label}
             aria-pressed={active}
-            className={active ? 'active' : undefined}
+            className={className}
             onClick={onClick}
         >
             {children}
@@ -29,49 +46,104 @@ const PanelButton = ({ label, active, onClick, children, id }) => (
     </OverlayTrigger>
 );
 
+// A button with the small arrow that opens its device menu, like Discord's
+const ButtonWithMenu = ({ kind, danger, menuLabel, openMenu, setOpenMenu, children }) => (
+    <div className={`user-panel-group${danger ? ' danger' : ''}${openMenu === kind ? ' open' : ''}`}>
+        {children}
+        <PanelButton
+            label={menuLabel}
+            className="user-panel-chevron"
+            active={openMenu === kind}
+            hideTooltip={openMenu === kind}
+            onClick={() => setOpenMenu(current => (current === kind ? null : kind))}
+        >
+            <ChevronIcon />
+        </PanelButton>
+        {openMenu === kind && <DeviceMenu kind={kind} onClose={() => setOpenMenu(null)} />}
+    </div>
+);
+
+// The user panel at the bottom of the sidebar
 const Avatar = () => {
     const name = useSelector(state => state.user.name);
     const code = useSelector(state => state.user.code);
     const { selfMute, selfDeaf } = useVoiceSettings();
+    const { channel } = useVoiceState();
+    const servers = useSelector(state => state.server.items);
+    const channels = useSelector(state => state.channels.items);
+    const [openMenu, setOpenMenu] = useState(null);
     // Deafening also keeps the microphone off
     const muted = selfMute || selfDeaf;
+    // Short like Discord's "In voice"; the full place is in the tooltip
+    const voiceChannel = channel && channels.find(item => item._id === channel.channelID);
+    const voiceServer = channel && servers.find(item => item._id === channel.serverID);
+    const voicePlace = [voiceChannel && voiceChannel.channelname, voiceServer && voiceServer.servername]
+        .filter(Boolean)
+        .join(' / ');
 
-    return(
-        <>
-            <div className="dashboard-sidebar-section-wrapper">
-                    <AvatarPicture state={true}/>
-                    <div className="dashboard-sidebar-section-user">
-                    <div className="dashboard-sidebar-section-user-name">
-                        {name}
+    return (
+        <div className="user-panel">
+            <div className="user-panel-profile">
+                <AvatarPicture state={true} />
+                <div className="user-panel-names">
+                    <div className="user-panel-name">{name}</div>
+                    {channel ? (
+                        <div
+                            className="user-panel-status in-voice"
+                            title={voicePlace ? `Ses kanalında: ${voicePlace}` : 'Ses kanalında'}
+                        >
+                            <InVoiceIcon />
+                            <span>Seste</span>
                         </div>
-                    <div className="dashboard-sidebar-section-user-code">
-                        {`#${code}`}
-                    </div>
-
-                    </div>
-                    <div className="dashboard-sidebar-section-buttons">
-                        <PanelButton
-                            label={muted ? 'Susturmayı Kaldır' : 'Sustur'}
-                            active={muted}
-                            onClick={toggleSelfMute}
-                        >
-                            <MicrophoneIcon muted={muted} />
-                        </PanelButton>
-                        <PanelButton
-                            label={selfDeaf ? 'Sağırlaştırmayı Kaldır' : 'Sağırlaştır'}
-                            active={selfDeaf}
-                            onClick={toggleSelfDeaf}
-                        >
-                            <HeadphonesIcon deafened={selfDeaf} />
-                        </PanelButton>
-                        <PanelButton label="Kullanıcı Ayarları" id="settings-button">
-                        <svg aria-hidden="false" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M19.738 10H22V14H19.739C19.498 14.931 19.1 15.798 18.565 16.564L20 18L18 20L16.565 18.564C15.797 19.099 14.932 19.498 14 19.738V22H10V19.738C9.069 19.498 8.203 19.099 7.436 18.564L6 20L4 18L5.436 16.564C4.901 15.799 4.502 14.932 4.262 14H2V10H4.262C4.502 9.068 4.9 8.202 5.436 7.436L4 6L6 4L7.436 5.436C8.202 4.9 9.068 4.502 10 4.262V2H14V4.261C14.932 4.502 15.797 4.9 16.565 5.435L18 3.999L20 5.999L18.564 7.436C19.099 8.202 19.498 9.069 19.738 10ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"></path></svg>
-                        </PanelButton>
-
-                    </div>
+                    ) : (
+                        <div className="user-panel-status">{`#${code}`}</div>
+                    )}
+                </div>
             </div>
-        </>
-    )
-}
+            <div className="user-panel-buttons">
+                <ButtonWithMenu
+                    kind="input"
+                    danger={muted}
+                    menuLabel="Giriş Seçenekleri"
+                    openMenu={openMenu}
+                    setOpenMenu={setOpenMenu}
+                >
+                    <PanelButton
+                        label={muted ? 'Susturmayı Kaldır' : 'Sustur'}
+                        active={muted}
+                        className="user-panel-main"
+                        onClick={toggleSelfMute}
+                    >
+                        <MicrophoneIcon muted={muted} />
+                    </PanelButton>
+                </ButtonWithMenu>
+                <ButtonWithMenu
+                    kind="output"
+                    danger={selfDeaf}
+                    menuLabel="Çıkış Seçenekleri"
+                    openMenu={openMenu}
+                    setOpenMenu={setOpenMenu}
+                >
+                    <PanelButton
+                        label={selfDeaf ? 'Sağırlaştırmayı Kaldır' : 'Sağırlaştır'}
+                        active={selfDeaf}
+                        className="user-panel-main"
+                        onClick={toggleSelfDeaf}
+                    >
+                        <HeadphonesIcon deafened={selfDeaf} />
+                    </PanelButton>
+                </ButtonWithMenu>
+                <PanelButton
+                    label="Kullanıcı Ayarları"
+                    id="settings-button"
+                    className="user-panel-settings"
+                    onClick={() => openSettings()}
+                >
+                    <SettingsIcon />
+                </PanelButton>
+            </div>
+        </div>
+    );
+};
 
-export default Avatar
+export default Avatar;

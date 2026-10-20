@@ -113,8 +113,18 @@ export const requestUserMedia = async constraints => {
   }
 };
 
+// "Varsayılan" asks for Chrome's "default" input, which follows the Windows
+// default. With no deviceId at all Chrome opens the microphone it remembers as
+// preferred for this site instead, which can be a completely different (even
+// silent) device. Browsers without a "default" device fail with
+// OverconstrainedError, and requestUserMedia then retries without a deviceId.
+const pickInputDevice = deviceId =>
+  !deviceId || deviceId === "default"
+    ? { deviceId: { exact: "default" } }
+    : pickDevice(deviceId);
+
 export const getAudioConstraints = (s = settings) => ({
-  ...pickDevice(s.inputDeviceId),
+  ...pickInputDevice(s.inputDeviceId),
   // Only cancel the voices of the call. Measured on Windows/Chrome: "all"
   // (cancel everything the system plays) mixes system audio such as a video in
   // another tab into a silent microphone. Browsers without echo cancellation

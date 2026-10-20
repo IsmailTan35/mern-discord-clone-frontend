@@ -22,6 +22,19 @@ const { reducer, actions } = createSlice({
         ];
       }
     },
+    rename(state, action) {
+      const { _id, channelname } = action.payload;
+      state.items = state.items.map(item =>
+        item._id === _id ? { ...item, channelname } : item
+      );
+    },
+    // The server's full member list of one voice channel replaces ours
+    setChannelUsers(state, action) {
+      const { channelID, users } = action.payload;
+      state.items = state.items.map(item =>
+        item._id === channelID ? { ...item, onlineUser: users || [] } : item
+      );
+    },
     // Mute / deafen icons of a user in a voice channel
     setVoiceState(state, action) {
       const { userId, selfMute, selfDeaf } = action.payload;

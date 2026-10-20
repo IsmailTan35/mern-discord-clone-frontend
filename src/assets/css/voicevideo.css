@@ -213,7 +213,15 @@
 
 .vv-select.open .vv-select-value {
     border-color: #040405;
-    border-radius: 4px 4px 0 0;
+}
+
+.vv-select-value > svg:first-child {
+    flex: 0 0 auto;
+    color: #b9bbbe;
+}
+
+.vv-select-value .vv-select-label {
+    flex: 1 1 auto;
 }
 
 .vv-select.disabled .vv-select-value {
@@ -237,45 +245,93 @@
     transform: rotate(180deg);
 }
 
+/* Like Discord's device list: a floating panel of two-line rows */
 .vv-select-popout {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 4px);
     left: 0;
     right: 0;
     z-index: 10;
-    max-height: 300px;
+    max-height: 320px;
     overflow-y: auto;
+    padding: 6px;
     background: #2f3136;
     border: 1px solid #202225;
-    border-top: none;
-    border-radius: 0 0 4px 4px;
+    border-radius: 6px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, .24);
+}
+
+.vv-select-popout::-webkit-scrollbar {
+    width: 8px;
+}
+
+.vv-select-popout::-webkit-scrollbar-thumb {
+    background: #202225;
+    border: 2px solid #2f3136;
+    border-radius: 4px;
 }
 
 .vv-select-option {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 12px;
+    gap: 12px;
+    min-height: 52px;
+    padding: 8px 10px;
+    border-radius: 4px;
     color: #b9bbbe;
-    font-weight: 500;
     cursor: pointer;
 }
 
+.vv-select-option + .vv-select-option {
+    margin-top: 2px;
+}
+
 .vv-select-option:hover {
-    background: rgba(79, 84, 92, .16);
-    color: #dcddde;
+    background: rgba(79, 84, 92, .32);
 }
 
 .vv-select-option.selected {
-    background: rgba(79, 84, 92, .32);
+    background: rgba(79, 84, 92, .48);
+}
+
+.vv-select-option > svg:first-child {
+    flex: 0 0 auto;
+    color: #b9bbbe;
+}
+
+.vv-select-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.vv-select-option .vv-select-label {
+    color: #dcddde;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.vv-select-option.selected .vv-select-label,
+.vv-select-option:hover .vv-select-label {
     color: #fff;
 }
 
-.vv-select-option svg {
+.vv-select-subtitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #b9bbbe;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+}
+
+.vv-select-check {
     flex: 0 0 auto;
-    color: #fff;
+    color: #5865f2;
 }
 
 /* Slider */

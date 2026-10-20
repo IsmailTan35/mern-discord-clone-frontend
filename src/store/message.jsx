@@ -21,6 +21,20 @@ const { reducer, actions } = createSlice({
             state[name].push(value)
         }
     },
+    // Reactions or link previews of one message changed
+    patch(state, action) {
+      const { _id, ...fields } = action.payload;
+      state.items = state.items.map(item =>
+        (item._id || item.messageId) === _id ? { ...item, ...fields } : item
+      );
+    },
+    // The messages of a deleted channel
+    removeChannel(state, action) {
+      const { serverID, channelID } = action.payload;
+      state.items = state.items.filter(
+        item => !(item.serverName === serverID && item.channelName === channelID)
+      );
+    },
     overWrite(state, action) {
       const {name, value } = action.payload;
         state[name] = [...state[name], ...value]

@@ -24,7 +24,13 @@ const ServerHeader = () => {
     const channel = channelList.filter(
       channel => channel._id === location.pathname.split("/")[3]
     );
-    if (channel.length === 0) return navigate("/channels/@me");
+    // The channel was deleted (or never existed): go to the server's first text channel
+    if (channel.length === 0) {
+      const fallback = channelList.find(
+        item => item.serverID === server[0]._id && item.type === "text"
+      );
+      return navigate(fallback ? `/channels/${server[0]._id}/${fallback._id}` : "/channels/@me");
+    }
     setServer(channel[0]);
   }, [channelList, location]);
 

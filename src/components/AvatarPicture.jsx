@@ -1,6 +1,7 @@
 import React from "react";
 import { ReactComponent as Logo } from "assets/img/discordLogo.svg";
-const AvatarPicture = ({ picture, state }) => {
+// `state` shows the green online dot, `offline` a grey ring in its place
+const AvatarPicture = ({ picture, state, offline }) => {
   return (
     <>
       {picture ? (
@@ -10,6 +11,9 @@ const AvatarPicture = ({ picture, state }) => {
           <Logo style={{ width: 22, height: 15 }} />
           {state && (
             <div className="dashboard-sidebar-section-avatar-state"></div>
+          )}
+          {!state && offline && (
+            <div className="dashboard-sidebar-section-avatar-state offline"></div>
           )}
         </div>
       )}

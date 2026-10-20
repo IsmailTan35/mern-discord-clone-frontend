@@ -144,6 +144,16 @@
     background: #3C3F45;
 }
 
+/* Menu items without a page yet */
+.settings-primary-item-item.disabled{
+    cursor: default;
+    opacity: .4;
+}
+
+.settings-primary-item-item.disabled:hover{
+    background: none;
+}
+
 .settings-social{
     margin: 10px 0px;
 }
@@ -157,6 +167,18 @@
 
 .settings-social-icon:hover{
     color: #fff;
+}
+
+.settings-social.disabled{
+    opacity: .4;
+}
+
+.settings-social.disabled .settings-social-icon{
+    cursor: default;
+}
+
+.settings-social.disabled .settings-social-icon:hover{
+    color: #b9bbbe;
 }
 
 .settings-close-button{

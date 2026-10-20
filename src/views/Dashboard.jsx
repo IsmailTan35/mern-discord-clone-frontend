@@ -18,29 +18,16 @@ import Chat from "views/Chat";
 
 import "assets/css/dashboard.css";
 import { useSelector } from "react-redux";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { useContext } from "react";
-import { SocketContext } from "controller/Context";
-import {
-  startScreenShare,
-  stopScreenShare,
-  stopVoiceChannel,
-  useVoiceState,
-} from "controller/voiceChannel";
+import VoiceConnectedPanel from "components/VoiceConnectedPanel";
+import ServerMenu from "components/ServerMenu";
 
-import { ReactComponent as HangUp } from "assets/img/hangUp.svg";
-const delay = { show: 50, hide: 0 };
 const Dashboard = ({ show2, setShow2 }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const socket = useContext(SocketContext);
   const [server, setServer] = useState({});
   const [stream, setStream] = useState(false);
   const [friends, setFriends] = useState("online");
-  const userInfo = useSelector(state => state.user);
   const serverList = useSelector(state => state.server.items);
-  const channelsList = useSelector(state => state.channels.items);
-  const voice = useVoiceState();
 
   useEffect(() => {
     const handleStreamStart = () => setStream(true);
@@ -70,16 +57,6 @@ const Dashboard = ({ show2, setShow2 }) => {
     navigate(e);
     if (e === "/channels/@me") setFriends("online");
     else setFriends(null);
-  };
-
-  const leaveChannel = () => {
-    stopVoiceChannel();
-    socket.emit("leaveAllChannels");
-  };
-
-  const handleCopyServerCode = text => {
-    if (!text) return;
-    navigator.clipboard.writeText(text);
   };
 
   return (
@@ -119,26 +96,7 @@ const Dashboard = ({ show2, setShow2 }) => {
                     />
                     <Route
                       path={":serverID/:channelID"}
-                      element={
-                        <OverlayTrigger
-                          placement="bottom"
-                          delay={delay}
-                          overlay={props => (
-                            <Tooltip {...props}>{`Davet Kodu: ${
-                              server.inviteCode || "Bulunamadı"
-                            }`}</Tooltip>
-                          )}
-                        >
-                          <h1
-                            className="dashboard-navbar-server-name"
-                            onClick={() => {
-                              handleCopyServerCode(server.inviteCode);
-                            }}
-                          >
-                            {server.servername}
-                          </h1>
-                        </OverlayTrigger>
-                      }
+                      element={<ServerMenu server={server} />}
                     />
                     <Route
                       index
@@ -195,101 +153,7 @@ const Dashboard = ({ show2, setShow2 }) => {
                   />
                 </Routes>
               </nav>
-              {channelsList.map((channel, index) => {
-                if (!channel.onlineUser || channel.onlineUser.length === 0)
-                  return null;
-
-                const rawMe = channel.onlineUser.find(
-                  user => user._id === userInfo.id
-                );
-
-                if (!rawMe) return null;
-
-                const rawServer = serverList.find(
-                  server => server._id === channel.serverID
-                );
-
-                if (!rawServer) return null;
-                return (
-                  <div
-                    style={{
-                      background: "#292B2F",
-                      display: "flex",
-                      flexDirection: "column",
-                      padding: 5,
-                      borderBottom: "1px solid #36393E",
-                      color: "white",
-                      gap: 5,
-                    }}
-                    key={index}
-                  >
-                    <div style={{ display: "flex", color: "#96989d" }}>
-                      <div style={{ flex: "1 1" }}>
-                        <div style={{ color: "#3BA55D" }}>
-                          Ses Bağlantısı Kuruldu
-                        </div>
-                        <div style={{ display: "flex", gap: 3 }}>
-                          <div>{rawServer.servername}</div>
-                          <div>/</div>
-                          <div>{channel.channelname}</div>
-                        </div>
-                      </div>
-                      <div
-                        onClick={leaveChannel}
-                        className="dashboard-btn-hangup-wrapper"
-                      >
-                        <div className="dashboard-btn-hangup">
-                          <HangUp />
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        textAlign: "center",
-                        gap: 10,
-                        height: 30,
-                      }}
-                    >
-                      <div
-                        style={{
-                          flex: "1 1",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          background: "#393C43",
-                          borderRadius: 5,
-                          cursor: "pointer",
-                          display: "flex",
-                        }}
-                      >
-                        Video
-                      </div>
-                      <div
-                        style={{
-                          flex: "1 1",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          background: voice.sharing ? "#3BA55D" : "#393C43",
-                          color: voice.sharing ? "#fff" : undefined,
-                          borderRadius: 5,
-                          cursor: "pointer",
-                          display: "flex",
-                        }}
-                        title={
-                          voice.sharing
-                            ? "Ekran paylaşımını durdur"
-                            : "Ekranını paylaş"
-                        }
-                        onClick={
-                          voice.sharing ? stopScreenShare : startScreenShare
-                        }
-                      >
-                        {voice.sharing ? "Yayını Durdur" : "Ekran"}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+              <VoiceConnectedPanel />
               <Avatar />
             </div>
           </div>

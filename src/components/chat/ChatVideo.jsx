@@ -13,6 +13,7 @@ import { ReactComponent as ScreenShareIcon } from "assets/img/stream/stream-2.sv
 import { ReactComponent as MicrophoneIcon } from "assets/img/stream/stream-3.svg";
 import { ReactComponent as HangupIcon } from "assets/img/stream/stream-4.svg";
 import hark from "hark";
+import { watchInputDevice } from "common/mediaDevices";
 import {
   applyOutputSettings,
   getAudioConstraints,
@@ -63,10 +64,14 @@ const Video = ({ peer, mute }) => {
 
   useEffect(() => {
     let isApiSubscribed = true;
-    peer.on("stream", stream => {
+    let speechEvents = null;
+
+    const handleStream = stream => {
       ref.current.srcObject = stream;
 
-      let speechEvents = hark(stream, {});
+      // hark polls every 50 ms and keeps the stream alive until it is stopped
+      if (speechEvents) speechEvents.stop();
+      speechEvents = hark(stream, {});
       speechEvents.on("speaking", () => {
         if (isApiSubscribed) setSpeaking(true);
       });
@@ -74,9 +79,13 @@ const Video = ({ peer, mute }) => {
       speechEvents.on("stopped_speaking", () => {
         if (isApiSubscribed) setSpeaking(false);
       });
-    });
+    };
+
+    peer.on("stream", handleStream);
     return () => {
       isApiSubscribed = false;
+      peer.removeListener("stream", handleStream);
+      if (speechEvents) speechEvents.stop();
     };
   }, []);
 
@@ -103,20 +112,56 @@ const Room = () => {
   const [mute, setMute] = useState(false);
   const [headphone, setHeadphone] = useState(false);
   const myStoreStream = useSelector(state => state.stream.items);
+  // The screen being shared, sent instead of the camera; kept apart from
+  // item.stream (the camera/microphone each peer was created with)
+  const screenRef = useRef(null);
+
+  // Sends the camera again (if there is one) and stops capturing the screen
+  const stopScreenShare = () => {
+    const screen = screenRef.current;
+    if (!screen) return;
+    screenRef.current = null;
+    const screenTrack = screen.getVideoTracks()[0];
+    peersRef.current.forEach(item => {
+      const cameraTrack = item.stream.getVideoTracks()[0];
+      if (!cameraTrack || item.peer.destroyed) return;
+      try {
+        item.peer.replaceTrack(screenTrack, cameraTrack, item.stream);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+    screen.getTracks().forEach(track => track.stop());
+  };
+
+  // Closes a connection and our camera/microphone that went with it
+  const releasePeer = item => {
+    item.peer.destroy();
+    item.stream.getTracks().forEach(track => track.stop());
+  };
+
+  const endCall = () => {
+    stopScreenShare();
+    peersRef.current.forEach(releasePeer);
+  };
 
   const removePeer = id => {
-    setPeers(items =>
-      items
-        .map(item => {
-          if (item.peerID == id) {
-            item.peer.destroy();
-            item.stream.getTracks().map(track => track.stop());
-          }
-          return item;
-        })
-        .filter(p => p.peerID != id)
-    );
+    const item = peersRef.current.find(p => p.peerID == id);
+    if (item) releasePeer(item);
+    if (peersRef.current.every(p => p.peerID == id)) stopScreenShare();
+    setPeers(items => items.filter(p => p.peerID != id));
   };
+
+  // Leaving the page in the middle of a call ends it, instead of keeping the
+  // connection, microphone and camera running out of sight
+  useEffect(
+    () => () => {
+      if (peersRef.current.length === 0) return;
+      socket.emit("hangupCall");
+      endCall();
+    },
+    []
+  );
 
   useEffect(() => {
     if (!peers) return;
@@ -165,7 +210,31 @@ const Room = () => {
       oldTrack.stop();
     });
     if (!used) newTrack.stop();
+    if (kind === "audio") watchMicrophone();
   };
+
+  // Opens the microphone again if its device goes away mid-call, or Windows
+  // switches its default input while "Varsayılan" is selected
+  const unwatchMicrophoneRef = useRef(() => {});
+  const watchMicrophone = () => {
+    unwatchMicrophoneRef.current();
+    unwatchMicrophoneRef.current = () => {};
+    const item = peersRef.current.find(
+      peer => peer.stream && peer.stream.getAudioTracks()[0]
+    );
+    if (!item) return;
+    unwatchMicrophoneRef.current = watchInputDevice(
+      item.stream.getAudioTracks()[0],
+      () => getVoiceSettings().inputDeviceId,
+      () => switchLocalTrack("audio")
+    );
+  };
+
+  useEffect(() => {
+    watchMicrophone();
+  }, [peers]);
+
+  useEffect(() => () => unwatchMicrophoneRef.current(), []);
 
   useEffect(() => {
     let last = getVoiceSettings();
@@ -246,7 +315,10 @@ const Room = () => {
     })
       .then(stream => {
         const item = peersRef.current.find(p => p.peerID == receiver);
-        if (item) return;
+        if (item) {
+          stream.getTracks().forEach(track => track.stop());
+          return;
+        }
         applySelfMute(stream);
         const peer = new Peer({
           initiator: true,
@@ -289,7 +361,10 @@ const Room = () => {
     })
       .then(stream => {
         const item = peersRef.current.find(p => p.peerID == receiver);
-        if (item) return;
+        if (item) {
+          stream.getTracks().forEach(track => track.stop());
+          return;
+        }
         applySelfMute(stream);
 
         const peer = new Peer({
@@ -319,21 +394,11 @@ const Room = () => {
       });
   };
 
+  // Also while still connecting: every connection and track is released
   const handleHangup = () => {
-    if (!peers) return;
-
     socket.emit("hangupCall");
-    peers.map(item => {
-      if (!item.peer || !item.peer.streams || item.peer.streams.length <= 0)
-        return;
-      item.peer.destroy();
-      item.peer.streams[0].getTracks().map(track => track.stop());
-      item.stream.getTracks().map(track => track.stop());
-      item.peer.removeListener("stream", () => {});
-    });
-    setTimeout(() => {
-      setPeers([]);
-    }, 250);
+    endCall();
+    setPeers([]);
   };
 
   const handleMute = () => {
@@ -363,28 +428,34 @@ const Room = () => {
   };
 
   const handleShareScreen = () => {
+    // A second click stops sharing instead of starting another capture
+    if (screenRef.current) {
+      stopScreenShare();
+      return;
+    }
     navigator.mediaDevices
       .getDisplayMedia({ video: { cursor: true }, audio: true })
-      .then(screenStream => {
-        let videoTrack = screenStream.getVideoTracks()[0];
-
-        videoTrack.onended = () => {
-          console.info("first");
-        };
-        setPeers(items =>
-          items.map(item => {
-            try {
-              item.peer.replaceTrack(
-                item.stream.getVideoTracks()[0],
-                screenStream.getVideoTracks()[0],
-                item.stream
-              );
-              item.stream = screenStream;
-            } catch (error) {}
-            return item;
-          })
-        );
-      });
+      .then(screen => {
+        // The call ended while the picker was open
+        if (peersRef.current.length === 0) {
+          screen.getTracks().forEach(track => track.stop());
+          return;
+        }
+        const screenTrack = screen.getVideoTracks()[0];
+        screenRef.current = screen;
+        // The browser's own "Stop sharing" bar brings the camera back
+        screenTrack.onended = stopScreenShare;
+        peersRef.current.forEach(item => {
+          const cameraTrack = item.stream.getVideoTracks()[0];
+          if (!cameraTrack) return;
+          try {
+            item.peer.replaceTrack(cameraTrack, screenTrack, item.stream);
+          } catch (error) {
+            console.error(error);
+          }
+        });
+      })
+      .catch(() => {});
   };
 
   return (

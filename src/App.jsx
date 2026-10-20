@@ -14,6 +14,7 @@ import Auth from "layouts/Auth";
 import Dashboard from "views/Dashboard";
 import LoginPage from "components/auth/Login";
 import Register from "components/auth/Register";
+import Invite from "views/Invite";
 import SocketController from "controller/SocketController";
 import { SocketContext, client } from "controller/Context";
 import { ToastContainer } from "react-toastify";
@@ -57,7 +58,12 @@ const App = () => {
       .catch(err => {
         // Network errors have no response
         if (!err.response) return;
-        if (location.pathname !== "/" && !location.pathname.includes("auth")) {
+        // Invite links are shown logged out too
+        if (
+          location.pathname !== "/" &&
+          !location.pathname.includes("auth") &&
+          !location.pathname.startsWith("/invite/")
+        ) {
           switch (err.response.status) {
             case 401:
               navigate("/auth/login");
@@ -79,6 +85,7 @@ const App = () => {
         <SocketController />
         <Routes>
           <Route exact path="/" element={<LandingPage />} />
+          <Route path="invite/:code" element={<Invite />} />
           <Route strict path="auth/" element={<Auth />}>
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<Register />} />

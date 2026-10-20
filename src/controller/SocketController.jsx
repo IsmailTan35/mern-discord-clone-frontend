@@ -1,10 +1,12 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { messageActions } from "store";
 import { userActions } from "store";
 import { friendsActions, streamActions } from "store";
 import { SocketContext } from "./Context";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { channelKey, clearTyping, dmKey, startTyping, stopTyping } from "controller/typing";
 import { serversActions } from "store";
 import { userListActions } from "store";
 import messageSound from "assets/audio/discordMessage.mp3";
@@ -37,7 +39,11 @@ const SocketController = () => {
   const token = useSelector(state => state.user.token);
   const userID = useSelector(state => state.user.id);
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  // Read by listeners that are registered once
+  const userIdRef = useRef(userID);
+  userIdRef.current = userID;
 
   useEffect(() => {
     if (location.pathname !== "/") {
@@ -48,8 +54,6 @@ const SocketController = () => {
     if (!token || !socket.connected || !userID) return;
 
     const audio = new Audio(messageSound);
-    const discordJoin = new Audio(joinSound);
-    const discordLeave = new Audio(leaveSound);
 
     return subscribe(socket, {
       connect: () => {
@@ -65,8 +69,45 @@ const SocketController = () => {
       },
 
       newMessage: message => {
-        playSound(audio);
+        const [msg] = message;
+        if (msg && msg.sender !== userID) playSound(audio);
+        // Whoever sent a message has stopped typing it
+        if (msg) {
+          const key = msg.serverName
+            ? channelKey(msg.serverName, msg.channelName)
+            : dmKey(msg.sender === userID ? msg.receiver : msg.sender);
+          stopTyping(key, msg.sender);
+        }
         dispatch(messageActions.overWrite({ name: "items", value: message }));
+      },
+
+      // Reactions or link previews of a message changed
+      messageUpdated: data => {
+        dispatch(messageActions.patch(data));
+      },
+
+      typing: data => {
+        const key = data.receiver
+          ? dmKey(data.userId)
+          : channelKey(data.serverName, data.channelName);
+        startTyping(key, data.userId, data.name);
+      },
+
+      // Someone (maybe us, in another tab) changed their username
+      userUpdated: data => {
+        dispatch(userListActions.update({ type: "add", name: "items", value: data }));
+        dispatch(friendsActions.renameUser(data));
+        if (data.id === userID) dispatch(userActions.refresh({ name: "name", value: data.name }));
+      },
+
+      // The password was changed on another device
+      sessionEnded: () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        delete axios.defaults.headers.common["Authorization"];
+        dispatch(userActions.delete());
+        navigate("/auth/login");
+        toast.info("Şifren değiştirildiği için bu cihazda oturumun kapatıldı.");
       },
 
       friendLeft: user => {
@@ -161,6 +202,32 @@ const SocketController = () => {
         );
       },
 
+      newUserInfo: data => {
+        dispatch(
+          userListActions.update({ type: "add", name: "items", value: data })
+        );
+      },
+
+      serverUsers: data => {
+        data.forEach(user => {
+          dispatch(
+            userListActions.update({ type: "add", name: "items", value: user })
+          );
+        });
+      },
+
+    });
+  }, [token, socket.connected, userID]);
+
+  // Server, channel and voice channel events are listened to from the start:
+  // a list that arrives before our user id is known must not be dropped
+  useEffect(() => {
+    let mount = true;
+    let id = null;
+    const discordJoin = new Audio(joinSound);
+    const discordLeave = new Audio(leaveSound);
+
+    const unsubscribeSocket = subscribe(socket, {
       serverList: data => {
         dispatch(
           serversActions.refresh({ type: "add", name: "items", value: data })
@@ -183,24 +250,20 @@ const SocketController = () => {
         );
       },
 
+      channelUpdated: data => {
+        dispatch(channelsActions.rename(data));
+      },
+
+      // Pages showing the channel move on by themselves (see ServerHeader)
+      channelDeleted: data => {
+        dispatch(channelsActions.update({ type: "remove", name: "items", value: data }));
+        dispatch(messageActions.removeChannel({ serverID: data.serverID, channelID: data._id }));
+      },
+
       newServer: data => {
         dispatch(
           serversActions.update({ type: "add", name: "items", value: data })
         );
-      },
-
-      newUserInfo: data => {
-        dispatch(
-          userListActions.update({ type: "add", name: "items", value: data })
-        );
-      },
-
-      serverUsers: data => {
-        data.forEach(user => {
-          dispatch(
-            userListActions.update({ type: "add", name: "items", value: user })
-          );
-        });
       },
 
       joinUserVoiceChannelInChannel: data => {
@@ -226,9 +289,20 @@ const SocketController = () => {
         playSound(discordLeave);
       },
 
+      // The full member list of a voice channel, sent after every join/leave:
+      // replaces our copy, which also repairs anything we missed
+      voiceChannelUsers: data => {
+        dispatch(
+          channelsActions.setChannelUsers({
+            channelID: data.channelID,
+            users: data.users,
+          })
+        );
+      },
+
       voiceSpeaking: data => {
         // Our own ring is driven by the microphone directly, without the round trip
-        if (data.userId === userID) return;
+        if (data.userId === userIdRef.current) return;
         setSpeaking(data.userId, data.speaking);
       },
 
@@ -250,17 +324,11 @@ const SocketController = () => {
           })
         );
       },
-    });
-  }, [token, socket.connected, userID]);
 
-  useEffect(() => {
-    let mount = true;
-    let id = null;
-
-    const unsubscribeSocket = subscribe(socket, {
       disconnect: () => {
         // We no longer hear about others stopping, so drop every ring
         clearSpeaking();
+        clearTyping();
         toast.error("Server ile bağlantı kesildi.", {
           position: "bottom-right",
           autoClose: 5000,
@@ -282,6 +350,9 @@ const SocketController = () => {
         dispatch(userActions.refresh({ name: "id", value: data.userId }));
         dispatch(userActions.refresh({ name: "name", value: data.name }));
         dispatch(userActions.refresh({ name: "code", value: data.code }));
+        // The server now knows who we are. Fetch the servers and voice channels
+        // again: this also catches up on anything missed while reconnecting.
+        socket.emit("getServerList");
       },
     });
 

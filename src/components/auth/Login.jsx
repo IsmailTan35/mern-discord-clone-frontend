@@ -2,7 +2,8 @@ import axios from "axios";
 import { SocketContext } from "controller/Context";
 import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getRedirect, withRedirect } from "common/redirect";
 import { toast } from "react-toastify";
 import discordo from "assets/audio/discordo.mpeg";
 import { useDispatch } from "react-redux";
@@ -12,10 +13,12 @@ const LoginPage = () => {
   const socket = useContext(SocketContext);
 
   const [form, setForm] = useState({
-    email: "demo@discord.com",
-    password: "demo",
+    email: "",
+    password: "",
   });
   const navigate = useNavigate();
+  // e.g. back to the invite link that sent us here
+  const redirect = getRedirect(useLocation().search);
 
   const handleChange = e => {
     setForm({
@@ -37,7 +40,7 @@ const LoginPage = () => {
         socket.emit("configuration", { token: res.data[6].value });
         axios.defaults.headers.common["Authorization"] = res.data[6].value;
         setTimeout(() => {
-          navigate(url);
+          navigate(redirect || url);
           toast.update(id, {
             render: "Giriş yapıldı.",
             type: toast.TYPE.SUCCESS,
@@ -129,7 +132,7 @@ const LoginPage = () => {
             <button
               className="auth-links-button"
               onClick={() => {
-                handleUrl("/auth/register");
+                handleUrl(withRedirect("/auth/register", redirect));
               }}
             >
               Kaydol!

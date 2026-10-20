@@ -10,6 +10,7 @@ import AddServerModal from "components/modal/AddServerModal";
 import CallRequest from "components/modal/callrequest";
 import CallerRequest from "components/modal/CallerRequest";
 import StreamViewer from "components/StreamViewer";
+import { onOpenSettings } from "common/settingsEvents";
 
 const ESCAPE_KEYS = ["27", "Escape"];
 
@@ -18,6 +19,7 @@ const Panel = ({ show2, setShow2 }) => {
   const message = useSelector(state => state.user.message);
   const userID = useSelector(state => state.user.id);
   const [show, setShow] = useState(false);
+  const [settingsTab, setSettingsTab] = useState(null);
 
   const [showAddServerModal, setShowAddServerModal] = useState(false);
 
@@ -35,9 +37,16 @@ const Panel = ({ show2, setShow2 }) => {
     document.title = `New Message (${counter.length})`;
   }, [message]);
 
-  function handler({ key }) {
-    setShow(true);
-  }
+  // The settings button sends this event itself, so it keeps working when the
+  // sidebar is re-created (e.g. going from the Store to a server)
+  useEffect(
+    () =>
+      onOpenSettings(({ tab }) => {
+        setSettingsTab(tab || null);
+        setShow(true);
+      }),
+    []
+  );
 
   function handleAddServerModal() {
     setShowAddServerModal(true);
@@ -55,26 +64,14 @@ const Panel = ({ show2, setShow2 }) => {
   }
 
   useEffect(() => {
-    if (!document.getElementById("settings-button")) return;
-    document
-      .getElementById("settings-button")
-      .addEventListener("mousedown", handler);
-    document
-      .getElementById("addServerModal")
-      .addEventListener("mousedown", handleAddServerModal);
-
+    const addServerButton = document.getElementById("addServerModal");
+    if (addServerButton)
+      addServerButton.addEventListener("mousedown", handleAddServerModal);
     document.addEventListener("keydown", handler2);
 
     return () => {
-      if (!document.getElementById("settings-button")) return;
-
-      document
-        .getElementById("settings-button")
-        .removeEventListener("mousedown", handler);
-      document
-        .getElementById("addServerModal")
-        .removeEventListener("mousedown", handleAddServerModal);
-
+      if (addServerButton)
+        addServerButton.removeEventListener("mousedown", handleAddServerModal);
       document.removeEventListener("keydown", handler2);
     };
   }, []);
@@ -85,7 +82,7 @@ const Panel = ({ show2, setShow2 }) => {
         <Navbar show2={show2} setShow2={setShow2} />
         <Outlet />
       </div>
-      <Settings data={show} setData={handleClick} />
+      <Settings data={show} setData={handleClick} tab={settingsTab} />
       <AddServerModal show={showAddServerModal} setShow={handleClick} />
       <CallRequest />
       <CallerRequest />

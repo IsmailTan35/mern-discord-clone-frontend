@@ -32,6 +32,21 @@ const { reducer, actions } = createSlice({
             state[name].push(value)
         }
         state[name] = [...new Map(state[name].map(item=> [getId(item),item])).values()]
+    },
+
+    // A friend changed their username; lists hold it as `name` or `username`
+    renameUser(state, action) {
+      const { id, name } = action.payload;
+      Object.keys(state).forEach(list => {
+        state[list] = state[list].map(item => {
+          if (!item || typeof item !== 'object' || getId(item) !== String(id)) return item;
+          return {
+            ...item,
+            ...('name' in item ? { name } : {}),
+            ...('username' in item ? { username: name } : {}),
+          };
+        });
+      });
     }
   }
 });

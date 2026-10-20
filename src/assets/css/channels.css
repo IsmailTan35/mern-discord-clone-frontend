@@ -42,25 +42,72 @@
 
 .channels-group-header-add{
 	display: flex;
+	padding: 0;
+	border: none;
+	background: none;
+	color: inherit;
+	cursor: pointer;
+}
 
+.channels-group-header-add:hover{
+	color: #fff;
 }
 
 .channels-group-body{
 	padding-left: 8px;
+	margin-top: 4px;
 }
 
+/* Channel names keep their case, unlike the group headers */
 .channel-wrapper{
 	display: flex;
 	cursor: pointer;
 	border-radius: 4px;
 	height: 32px;
 	align-items: center;
-	padding-left: 10px;
+	padding: 0 6px 0 10px;
+	margin-bottom: 2px;
+	color: #8e9297;
+	font-size: 16px;
+	font-weight: 500;
+	text-transform: none;
+	line-height: 20px;
 }
 
 .channel-wrapper:hover{
+	background:rgba(79,84,92,0.4);
+	color:#dcddde;
+}
+
+.channel-wrapper.active{
 	background:rgba(79,84,92,0.6);
 	color:#fff;
+}
+
+.channel-name{
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.channel-settings{
+	display: none;
+	padding: 0 2px;
+	border: none;
+	background: none;
+	color: #b9bbbe;
+	cursor: pointer;
+}
+
+.channel-settings:hover{
+	color: #dcddde;
+}
+
+.channel-wrapper:hover .channel-settings,
+.channel-wrapper.active .channel-settings{
+	display: flex;
 }
 
 /* Users connected to a voice channel */

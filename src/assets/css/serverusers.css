@@ -2,25 +2,71 @@
 	display:flex;
 	height:100%;
 	width:240px;
+	flex-shrink:0;
 	background:#2f3136;
 	flex-direction:column;
-	padding:20px 10px;
-	row-gap:7px
+	padding:8px 8px 20px;
+	row-gap:2px;
+	overflow-y:auto
+}
+
+.serverusers-group{
+	padding:16px 8px 4px;
+	color:#96989d;
+	font-size:12px;
+	font-weight:600;
+	letter-spacing:.02em
 }
 
 .serveruser{
 	cursor: pointer;
 	display:flex;
-	opacity: .5;
-	border-radius: 6px;
-	padding: 8px 10px;
+	align-items:center;
+	border-radius: 4px;
+	padding: 6px 8px;
 	color:#96989d
 }
 
 .serveruser:hover{
-	opacity: 1;
 	background-color: rgba(79,84,92,0.4);
 	color: #dcddde;
+}
+
+.serveruser-name{
+	min-width:0;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	font-size:15px;
+	font-weight:500
+}
+
+/* Like Discord: offline members are faded until hovered */
+.serveruser-offline{
+	opacity: .35;
+}
+
+.serveruser-offline:hover{
+	opacity: 1;
+}
+
+/* The ring around the status dot takes the colour of the list behind it */
+.serveruser .dashboard-sidebar-section-avatar-state{
+	box-shadow: 0px 0px 0px 3px #2f3136;
+}
+
+.serveruser:hover .dashboard-sidebar-section-avatar-state{
+	box-shadow: 0px 0px 0px 3px #3c3f45;
+}
+
+.dashboard-sidebar-section-avatar-state.offline{
+	box-sizing: border-box;
+	background-color: #2f3136;
+	border: 2.5px solid #747f8d;
+}
+
+.serveruser:hover .dashboard-sidebar-section-avatar-state.offline{
+	background-color: #3c3f45;
 }
 
 @media only screen and (max-width : 768px){

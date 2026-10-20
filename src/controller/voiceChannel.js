@@ -7,6 +7,7 @@ import {
   subscribeVoiceSettings,
 } from "common/voiceSettings";
 import { setSpeaking } from "controller/speaking";
+import { watchInputDevice } from "common/mediaDevices";
 
 // Voice channels use a full mesh: one WebRTC connection per other member,
 // keyed by that member's socket id. Kept at module level so the call survives
@@ -15,6 +16,7 @@ let localStream = null; // handed to every peer; its track is swapped when the m
 let mic = null;
 let screenStream = null; // our own screen share, sent to every peer as a second stream
 let detachInputMode = null;
+let unwatchMicrophone = () => {};
 let unsubscribeSettings = null;
 let lastSettings = null;
 let current = null; // { serverID, channelID }
@@ -104,6 +106,33 @@ const destroyPeer = socketId => {
   removeRemoteScreen(entry.userId);
 };
 
+// Every screen share adds slots (transceivers) to the connection and
+// removeStream only stops sending on them, so without this each share would
+// make every later renegotiation bigger. Once a negotiation has settled, close
+// the slots nobody sends on any more. Only the side that makes the offers can
+// close a slot for both sides: with simple-peer that is always the initiator.
+const releaseIdleSlots = peer => {
+  const pc = peer._pc; // simple-peer has no public accessor for it
+  if (!peer.initiator || peer.destroyed || !pc || !pc.getTransceivers) return;
+  let released = false;
+  pc.getTransceivers().forEach(transceiver => {
+    // "sendonly" with no track of ours: the other side does not send either
+    const idle =
+      transceiver.currentDirection === "inactive" ||
+      transceiver.currentDirection === "sendonly";
+    if (!idle || transceiver.sender.track || transceiver.direction === "stopped")
+      return;
+    try {
+      transceiver.stop();
+      released = true;
+    } catch (error) {
+      console.error(error);
+    }
+  });
+  // simple-peer ignores "negotiationneeded", so the offer has to be asked for
+  if (released) peer.negotiate();
+};
+
 const createPeer = (socket, socketId, userId, initiator) => {
   const streams = screenStream ? [localStream, screenStream] : [localStream];
   const peer = new Peer({ initiator, trickle: false, streams });
@@ -123,6 +152,7 @@ const createPeer = (socket, socketId, userId, initiator) => {
     }
     entry.audio = playRemoteStream(stream);
   });
+  peer.on("negotiated", () => releaseIdleSlots(peer));
   // simple-peer throws on an "error" event nobody listens to
   peer.on("error", error => {
     console.error(error);
@@ -147,6 +177,13 @@ const useMicrophone = opened => {
   mic = opened;
   mic.setTransmitting(false);
   detachInputMode = attachInputMode(mic, handleSpeakingChange);
+  // An unplugged device, or a new Windows default while "Varsayılan" is
+  // selected, would otherwise leave the call silent
+  unwatchMicrophone = watchInputDevice(
+    opened.rawStream.getAudioTracks()[0],
+    () => getVoiceSettings().inputDeviceId,
+    () => restartMicrophone(getVoiceSettings())
+  );
 };
 
 // Swaps in a freshly opened microphone without dropping the connections
@@ -179,6 +216,7 @@ const restartMicrophone = async settings => {
   localStream.addTrack(newTrack);
 
   detachInputMode();
+  unwatchMicrophone();
   mic.stop();
   useMicrophone(next);
 };
@@ -269,6 +307,8 @@ export const stopVoiceChannel = () => {
   // Tell the others we stopped streaming and talking while still in the channel
   stopScreenShare();
   if (detachInputMode) detachInputMode();
+  unwatchMicrophone();
+  unwatchMicrophone = () => {};
   Object.keys(peers).forEach(destroyPeer);
   if (unsubscribeSettings) unsubscribeSettings();
   if (mic) mic.stop();
