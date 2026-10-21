@@ -5,8 +5,8 @@ import { userActions } from "store";
 import { friendsActions, streamActions } from "store";
 import { SocketContext } from "./Context";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { channelKey, clearTyping, dmKey, startTyping, stopTyping } from "controller/typing";
+import { logout } from "common/session";
 import { serversActions } from "store";
 import { userListActions } from "store";
 import messageSound from "assets/audio/discordMessage.mp3";
@@ -102,11 +102,7 @@ const SocketController = () => {
 
       // The password was changed on another device
       sessionEnded: () => {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        delete axios.defaults.headers.common["Authorization"];
-        dispatch(userActions.delete());
-        navigate("/auth/login");
+        logout({ socket, dispatch, navigate, tellServer: false });
         toast.info("Şifren değiştirildiği için bu cihazda oturumun kapatıldı.");
       },
 
@@ -325,10 +321,12 @@ const SocketController = () => {
         );
       },
 
-      disconnect: () => {
+      disconnect: reason => {
         // We no longer hear about others stopping, so drop every ring
         clearSpeaking();
         clearTyping();
+        // Logging out reconnects on purpose
+        if (reason === "io client disconnect") return;
         toast.error("Server ile bağlantı kesildi.", {
           position: "bottom-right",
           autoClose: 5000,

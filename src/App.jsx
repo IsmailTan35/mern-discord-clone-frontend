@@ -15,6 +15,7 @@ import Dashboard from "views/Dashboard";
 import LoginPage from "components/auth/Login";
 import Register from "components/auth/Register";
 import Invite from "views/Invite";
+import { logout } from "common/session";
 import SocketController from "controller/SocketController";
 import { SocketContext, client } from "controller/Context";
 import { ToastContainer } from "react-toastify";
@@ -64,16 +65,9 @@ const App = () => {
           !location.pathname.includes("auth") &&
           !location.pathname.startsWith("/invite/")
         ) {
-          switch (err.response.status) {
-            case 401:
-              navigate("/auth/login");
-              break;
-            case 403:
-              navigate("/auth/login");
-              break;
-            default:
-              break;
-          }
+          // No session, or an expired / invalid one: nothing of it may stay behind
+          if (err.response.status === 401 || err.response.status === 403)
+            logout({ socket: client, dispatch, navigate, tellServer: false });
         }
       });
   }, [location.pathname]);

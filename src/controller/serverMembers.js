@@ -11,6 +11,11 @@ export const setServerMembers = (serverId, list) => {
   listeners.forEach(listener => listener(members));
 };
 
+export const clearServerMembers = () => {
+  members = {};
+  listeners.forEach(listener => listener(members));
+};
+
 export const useServerMembers = serverId => {
   const [value, setValue] = useState(() => members[serverId] || []);
   useEffect(() => {

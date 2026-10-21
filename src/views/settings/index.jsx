@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import "assets/css/settings.css"
 import { 
     IoLogoInstagram, 
@@ -10,8 +10,8 @@ import Nitro from "assets/img/nitro.svg";
 import { RiLoginBoxFill } from "react-icons/ri";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { userActions } from 'store';
-import axios from 'axios';
+import { SocketContext } from 'controller/Context';
+import { logout } from 'common/session';
 import VoiceVideo from './VoiceVideo';
 import Account from './Account';
 import { SETTINGS_TABS } from 'common/settingsEvents';
@@ -34,14 +34,11 @@ const Settings = ({data,setData,tab}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const socket = useContext(SocketContext);
+
     const handleLogout = () => {
-        const token = localStorage.getItem("accessToken");
-        if (token) axios.post("/auth/logout", { token }).catch(() => {});
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        delete axios.defaults.headers.common["Authorization"];
-        dispatch(userActions.delete())
-        navigate("/auth/login");
+        setData();
+        logout({ socket, dispatch, navigate });
     }
     const header = [
     { head: 'Kullanıcı Ayarları', items: [
