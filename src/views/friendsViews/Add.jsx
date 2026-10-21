@@ -4,6 +4,16 @@ import { useRef, useState } from "react";
 import { ReactComponent as AddFriend } from "assets/img/addFriend.svg";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+
+// The server answers in English; these are the texts shown for its answers
+const FRIEND_ERRORS = {
+  "Invalid user tag": "Geçersiz kullanıcı etiketi. Kullanıcıadı#0000 biçiminde gir.",
+  "You are not authenticated!": "Oturum bulunamadı.",
+  "User not found!": "Kullanıcı bulunamadı.",
+  "You can't add yourself": "Kendini arkadaş olarak ekleyemezsin.",
+  "Request already exists": "Bu kullanıcıyla zaten bir arkadaşlık isteği ya da arkadaşlık var.",
+  "Request could not be sent": "Arkadaşlık isteği gönderilemedi.",
+};
 const Add = () => {
   const ref = useRef();
   const [name, setName] = useState("demo2#6846");
@@ -25,9 +35,8 @@ const Add = () => {
       })
       .catch(err => {
         const message =
-          err.response && typeof err.response.data === "string" && err.response.data
-            ? err.response.data
-            : "Arkadaşlık isteği gönderilemedi.";
+          (err.response && FRIEND_ERRORS[err.response.data]) ||
+          "Arkadaşlık isteği gönderilemedi.";
         toast.error(message);
       });
   };

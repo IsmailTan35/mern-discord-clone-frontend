@@ -4,6 +4,7 @@ import { ReactComponent as HashIcon } from "assets/img/hashIcon.svg";
 import { ReactComponent as VoiceIcon } from "assets/img/voiceIcon.svg";
 import { SocketContext } from "controller/Context";
 import DiscordModal, { ModalField } from "components/modal/DiscordModal";
+import serverError from "common/serverErrors";
 
 const TYPES = [
   {
@@ -46,7 +47,7 @@ const ChannelModal = ({ serverID, channel, initialType = "text", onClose }) => {
     socket.timeout(8000).emit(event, data, (timeoutError, result) => {
       setBusy(false);
       if (timeoutError || !result) return setError("Sunucu yanıt vermedi, tekrar dene.");
-      if (!result.ok) return setError(result.error);
+      if (!result.ok) return setError(serverError(result));
       onDone(result);
     });
   };
