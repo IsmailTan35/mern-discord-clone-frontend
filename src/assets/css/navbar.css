@@ -230,3 +230,9 @@
 .dashboard-navbar-server-name:hover{
     background:hsla(217,7.6%,33.5%,0.4);
 }
+
+.navbar-home-icon{
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}

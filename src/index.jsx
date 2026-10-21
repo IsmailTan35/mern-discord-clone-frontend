@@ -6,8 +6,11 @@ import store from "store";
 import App from "App";
 import axios from "axios";
 import { url } from "controller/Context";
+import { applyFavicon } from "common/logo";
 import "assets/css/index.css";
 import "react-toastify/dist/ReactToastify.css";
+
+applyFavicon();
 
 axios.defaults.baseURL = url;
 console.info(url);

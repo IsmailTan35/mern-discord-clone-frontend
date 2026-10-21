@@ -387,7 +387,7 @@ export const joinVoiceChannel = async (socket, serverID, channelID, userId) => {
     opened = await openMicrophone(getVoiceSettings());
   } catch (error) {
     console.error(error);
-    socket.emit("hata", error.message);
+    socket.emit("clientError", error.message);
     return;
   }
 

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { userActions } from "store";
 import AvatarPicture from "components/AvatarPicture";
+import serverError from "common/serverErrors";
 import DiscordModal, { ModalField } from "components/modal/DiscordModal";
 
 import "assets/css/account.css";
@@ -15,10 +16,10 @@ const maskEmail = email => {
   return `${"*".repeat(Math.max(name.length, 4))}@${domain}`;
 };
 
-// The server answers { error, field }; an error without a field belongs to the form
+// The server answers { error, code, field }; an error without a field belongs to the form
 const errorsFrom = (err, fallback) => {
   const data = err.response && err.response.data;
-  if (data && data.error) return { [data.field || "form"]: data.error };
+  if (data && data.error) return { [data.field || "form"]: serverError(data) };
   return { form: fallback };
 };
 
